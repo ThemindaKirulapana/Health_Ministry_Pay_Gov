@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Health Ministry Sri Lanka</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1210;
+  --bg2:#141a16;
+  --bg3:#1a2320;
+  --bg4:#1f2b28;
+  --border:#263330;
+  --border2:#2f3f3b;
+  --green:#2d6a4f;
+  --green-mid:#3a8c68;
+  --green-lite:#52b788;
+  --ash-mid:#5a706a;
+  --ash-lite:#8aa39d;
+  --cream:#d8e8e2;
+  --white:#eef5f2;
+  --muted:#6a8a82;
+  --danger:#b05040;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Lora',serif;
+  padding:32px 16px;
+  position:relative;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 700px 500px at 20% 20%, rgba(165, 162, 71, 0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 500px 400px at 80% 80%, rgba(58,140,104,0.05) 0%, transparent 65%);
+  pointer-events:none;
+}
+
+/* ── CARD ── */
+.register-card{
+  width:100%;
+  max-width:520px;
+  background:var(--bg2);
+  border:1px solid var(--border2);
+  border-radius:18px;
+  padding:40px 42px 36px;
+  position:relative;
+  box-shadow:0 28px 80px rgba(0,0,0,0.55);
+  animation:slideUp .4s ease both;
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+
+.register-card::before{
+  content:'';
+  position:absolute;top:0;left:50%;transform:translateX(-50%);
+  width:55%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green-lite),transparent);
+  border-radius:0 0 4px 4px;
+}
+
+/* ── HEADER ── */
+.card-header{
+  display:flex;align-items:center;gap:13px;
+  margin-bottom:26px;
+}
+.header-emblem{
+  width:46px;height:46px;
+  background:linear-gradient(135deg,var(--green),var(--green-mid));
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 0 20px rgba(58,140,104,0.3);
+  flex-shrink:0;
+}
+.header-text h1{
+  font-family:'Syne',sans-serif;
+  font-size:13px;font-weight:700;
+  color:var(--green-lite);
+  line-height:1.35;
+}
+.header-text p{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;color:var(--muted);
+  letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;
+}
+
+.form-title{
+  font-family:'Syne',sans-serif;
+  font-size:22px;font-weight:800;
+  color:var(--white);letter-spacing:-.3px;
+  margin-bottom:4px;
+}
+.form-sub{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:var(--muted);
+  letter-spacing:1px;margin-bottom:26px;
+}
+
+/* ── FLASH MESSAGES ── */
+.flash-box{
+  border-radius:8px;padding:10px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.3px;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.flash-success{
+  background:rgba(82,183,136,0.1);
+  border:1px solid rgba(82,183,136,0.28);
+  color:var(--green-lite);
+}
+.flash-danger{
+  background:rgba(176,80,64,0.1);
+  border:1px solid rgba(176,80,64,0.28);
+  color:#e08070;
+}
+
+/* ── FORM GRID ── */
+.form-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+}
+.f-full{grid-column:1/-1;}
+
+.f-grp{display:flex;flex-direction:column;gap:5px;}
+.f-lbl{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);
+}
+
+.f-inp,
+.f-select{
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:9px;
+  padding:11px 14px;
+  color:var(--cream);
+  font-family:'Lora',serif;
+  font-size:14px;
+  outline:none;
+  width:100%;
+  transition:border-color .2s, box-shadow .2s;
+  appearance:none;
+  -webkit-appearance:none;
+}
+.f-inp:focus,
+.f-select:focus{
+  border-color:var(--green-mid);
+  box-shadow:0 0 0 3px rgba(58,140,104,0.12);
+}
+.f-inp::placeholder{color:var(--muted);font-size:13px;}
+
+/* select wrapper for custom arrow */
+.select-wrap{position:relative;}
+.select-wrap::after{
+  content:'▾';
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  color:var(--muted);font-size:13px;pointer-events:none;
+}
+.f-select{padding-right:34px;cursor:pointer;}
+.f-select option{background:var(--bg3);color:var(--cream);}
+
+/* role pills */
+.role-group{
+  display:flex;gap:10px;
+}
+.role-pill{
+  flex:1;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:10px;
+  background:var(--bg3);
+  border:1px solid var(--border2);
+  border-radius:9px;
+  cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--ash-mid);
+  transition:all .2s;
+  user-select:none;
+}
+.role-pill input{display:none;}
+.role-pill:hover{border-color:var(--green-mid);color:var(--cream);}
+.role-pill.selected{
+  background:rgba(82,183,136,0.1);
+  border-color:var(--green-lite);
+  color:var(--green-lite);
+}
+.role-icon{font-size:15px;}
+
+/* divider */
+.divider{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:20px 0;
+}
+
+/* submit btn */
+.btn-register{
+  width:100%;padding:13px;
+  background:linear-gradient(135deg,var(--green),var(--green-mid));
+  border:none;color:#fff;
+  border-radius:10px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;letter-spacing:2px;text-transform:uppercase;font-weight:500;
+  cursor:pointer;
+  transition:filter .2s, box-shadow .2s;
+  margin-top:6px;
+}
+.btn-register:hover{
+  filter:brightness(1.12);
+  box-shadow:0 6px 24px rgba(58,140,104,0.3);
+}
+
+/* login link */
+.login-link{
+  margin-top:18px;text-align:center;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  color:var(--muted);letter-spacing:.5px;
+}
+.login-link a{
+  color:var(--green-lite);text-decoration:none;
+  border-bottom:1px solid rgba(82,183,136,0.3);
+  padding-bottom:1px;transition:border-color .2s;
+}
+.login-link a:hover{border-color:var(--green-lite);}
+
+.card-footer{
+  margin-top:22px;
+  text-align:center;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;
+  color:var(--muted);letter-spacing:.5px;line-height:1.7;
+  border-top:1px solid var(--border);
+  padding-top:16px;
+}
+</style>
+</head>
+<body>
+
+<div class="register-card">
+
+  <!-- Header -->
+  <div class="card-header">
+    <div class="header-emblem">🏥</div>
+    <div class="header-text">
+      <h1>Ministry of Health<br>Sri Lanka</h1>
+      <p>Employee Salary Portal</p>
+    </div>
+  </div>
+
+  <div class="form-title">Create Account</div>
+  <div class="form-sub">Register as a new employee or administrator</div>
+
+  <!-- Flash messages -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="flash-box flash-{{ category }}">
+          {{ '✓' if category == 'success' else '⚠' }} {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+
+  <!-- Form -->
+  <form action="/register" method="POST">
+
+    <div class="form-grid">
+
+      <!-- Employee No -->
+      <div class="f-grp">
+        <label class="f-lbl">Employee No</label>
+        <input class="f-inp" type="text" name="emp_no" placeholder="e.g. 2005" required>
+      </div>
+
+      <!-- Full Name -->
+      <div class="f-grp">
+        <label class="f-lbl">Full Name</label>
+        <input class="f-inp" type="text" name="Name" placeholder="Dr. Kamal Perera" required>
+      </div>
+
+      <!-- Designation -->
+      <div class="f-grp">
+        <label class="f-lbl">Designation</label>
+        <input class="f-inp" type="text" name="designation" placeholder="e.g. Doctor" required>
+      </div>
+
+      <!-- Department -->
+      <div class="f-grp">
+        <label class="f-lbl">Department</label>
+        <input class="f-inp" type="text" name="department" placeholder="e.g. Cardiology" required>
+      </div>
+
+      <!-- Email -->
+      <div class="f-grp f-full">
+        <label class="f-lbl">Email Address</label>
+        <input class="f-inp" type="text" name="email" placeholder="kamal@health.gov.lk" required>
+      </div>
+
+      <!-- Password -->
+      <div class="f-grp f-full">
+        <label class="f-lbl">Password</label>
+        <input class="f-inp" type="password" name="password" placeholder="••••••••" required>
+      </div>
+
+      <!-- Role -->
+      <div class="f-grp f-full">
+        <label class="f-lbl">Role</label>
+        <div class="role-group">
+          <label class="role-pill selected" id="pill-employee">
+            <input type="radio" name="role" value="employee" checked onchange="selectRole('employee')">
+            <span class="role-icon">👤</span> Employee
+          </label>
+          <label class="role-pill" id="pill-admin">
+            <input type="radio" name="role" value="admin" onchange="selectRole('admin')">
+            <span class="role-icon">🛡</span> Admin
+          </label>
+        </div>
+      </div>
+
+    </div>
+
+    <hr class="divider">
+
+    <button class="btn-register" type="submit">Create Account →</button>
+  </form>
+
+  <div class="login-link">
+    Already have an account? <a href="/login">Sign in here</a>
+  </div>
+
+  <div class="card-footer">
+    Ministry of Health · Democratic Socialist Republic of Sri Lanka<br>
+    Salary Management System v2.0
+  </div>
+
+</div>
+
+<script>
+function selectRole(role) {
+  document.getElementById('pill-employee').classList.toggle('selected', role === 'employee');
+  document.getElementById('pill-admin').classList.toggle('selected', role === 'admin');
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Employee Portal — Health Ministry Sri Lanka</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root{
+  --bg:      #0e1210;
+  --bg2:     #141a16;
+  --bg3:     #1a2320;
+  --bg4:     #1f2b28;
+  --border:  #263330;
+  --border2: #2f3f3b;
+  --green:      #2d6a4f;
+  --green-mid:  #3a8c68;
+  --green-lite: #52b788;
+  --green-glow: rgba(82,183,136,0.15);
+  --ash:     #3d4f4a;
+  --ash-mid: #5a706a;
+  --ash-lite:#8aa39d;
+  --cream:   #d8e8e2;
+  --white:   #eef5f2;
+  --muted:   #6a8a82;
+  --danger:  #b05040;
+  --warn:    #c8882a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:var(--bg);color:var(--cream);
+  font-family:'Lora',serif;min-height:100vh;display:flex;
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar{
+  width:252px;min-height:100vh;
+  background:var(--bg2);border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;top:0;left:0;bottom:0;z-index:100;
+}
+.sidebar-top{padding:24px 20px 20px;border-bottom:1px solid var(--border);}
+.logo-row{display:flex;align-items:center;gap:11px;margin-bottom:16px;}
+.logo-emblem{
+  width:42px;height:42px;
+  background:linear-gradient(135deg,var(--green),var(--green-mid));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:20px;box-shadow:0 0 18px rgba(58,140,104,0.32);flex-shrink:0;
+}
+.logo-text h1{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;color:var(--green-lite);line-height:1.35;}
+.logo-text p{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+
+.profile-mini{
+  background:var(--bg3);border:1px solid var(--border);border-radius:10px;
+  padding:13px;display:flex;align-items:center;gap:10px;
+}
+.avatar-ring{
+  width:42px;height:42px;border-radius:50%;
+  border:2px solid var(--green-mid);
+  background:linear-gradient(135deg,var(--green),var(--ash));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:14px;font-weight:700;
+  color:var(--white);flex-shrink:0;
+  box-shadow:0 0 10px rgba(58,140,104,0.22);
+}
+.pmi-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--white);}
+.pmi-desig{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green-lite);letter-spacing:.8px;margin-top:2px;}
+.online-dot{width:7px;height:7px;background:var(--green-lite);border-radius:50%;margin-left:auto;flex-shrink:0;box-shadow:0 0 6px var(--green-lite);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+.nav{padding:16px 0;flex:1;}
+.nav-lbl{font-family:'IBM Plex Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 20px;margin:14px 0 5px;}
+.nav-item{
+  display:flex;align-items:center;gap:11px;padding:11px 20px;
+  cursor:pointer;border-left:3px solid transparent;
+  font-family:'Syne',sans-serif;font-size:13px;font-weight:600;
+  color:var(--ash-mid);transition:all .2s;
+}
+.nav-item:hover{background:rgba(82,183,136,0.05);color:var(--cream);border-left-color:rgba(82,183,136,0.25);}
+.nav-item.active{background:rgba(82,183,136,0.1);color:var(--green-lite);border-left-color:var(--green-lite);}
+.nav-icon{font-size:15px;width:20px;text-align:center;}
+
+.sidebar-footer{padding:16px 20px;border-top:1px solid var(--border);}
+.logout-btn{
+  width:100%;padding:11px;
+  background:rgba(176,80,64,0.1);border:1px solid rgba(176,80,64,0.28);
+  color:#e08070;border-radius:8px;cursor:pointer;
+  font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:1.8px;text-transform:uppercase;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+}
+.logout-btn:hover{background:rgba(176,80,64,0.22);border-color:rgba(176,80,64,0.55);color:#ff9080;}
+
+/* ══ MAIN ══ */
+.main{margin-left:252px;flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{
+  background:var(--bg2);border-bottom:1px solid var(--border);
+  padding:14px 32px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:50;
+}
+.tb-page{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;color:var(--white);}
+.tb-page span{color:var(--green-lite);}
+.tb-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;margin-top:2px;}
+.tb-right{display:flex;align-items:center;gap:14px;}
+.clock{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ash-lite);letter-spacing:.5px;}
+.emp-chip{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:20px;
+  padding:4px 13px;font-family:'IBM Plex Mono',monospace;font-size:9px;
+  color:var(--green-lite);letter-spacing:1px;text-transform:uppercase;
+}
+.content{padding:30px 32px;flex:1;}
+
+/* ══ SECTION ANIM ══ */
+.sec{animation:fadeUp .35s ease both;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ HERO ══ */
+.hero{
+  background:linear-gradient(135deg,var(--bg3) 0%,var(--bg4) 100%);
+  border:1px solid var(--border2);border-radius:14px;
+  padding:26px 30px;display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:22px;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,rgba(58,140,104,0.13) 0%,transparent 70%);pointer-events:none;}
+.hero-greeting{font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--green-lite);margin-bottom:5px;}
+.hero-name{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--white);margin-bottom:8px;letter-spacing:-.3px;}
+.meta-row{display:flex;gap:12px;flex-wrap:wrap;}
+.meta-chip{background:var(--bg);border:1px solid var(--border2);border-radius:6px;padding:4px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ash-lite);}
+.meta-chip span{color:var(--cream);}
+.hero-right{text-align:right;}
+.net-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.net-amt{font-family:'Syne',sans-serif;font-size:32px;font-weight:800;color:var(--green-lite);letter-spacing:-1px;line-height:1;}
+.net-period{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);margin-top:4px;}
+
+/* ══ STAT BOXES ══ */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:26px;}
+.stat-box{
+  background:var(--bg2);border:1px solid var(--border);border-radius:12px;
+  padding:18px 20px;position:relative;overflow:hidden;transition:transform .2s,box-shadow .2s;
+}
+.stat-box:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.4);}
+.stat-box::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--green-mid));}
+.sb-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.sb-val{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--white);}
+.sb-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green-lite);margin-top:4px;}
+.sb-icon{position:absolute;top:14px;right:16px;font-size:24px;opacity:.1;}
+
+/* ══ SECTION HEADER ══ */
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.sec-title{
+  font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);
+  display:flex;align-items:center;gap:9px;
+}
+.sec-title::before{content:'';display:inline-block;width:4px;height:19px;background:var(--green-lite);border-radius:2px;}
+.view-all{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--green-lite);cursor:pointer;letter-spacing:.5px;}
+.view-all:hover{text-decoration:underline;}
+
+/* ══ MINI TABLE ══ */
+.mini-table-wrap{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.mini-table{width:100%;border-collapse:collapse;font-size:14px;}
+.mini-table th{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:11px 16px;text-align:left;border-bottom:1px solid var(--border);}
+.mini-table td{padding:11px 16px;border-bottom:1px solid rgba(38,51,48,.5);color:var(--cream);vertical-align:middle;}
+.mini-table tr:last-child td{border-bottom:none;}
+.mini-table tr:hover td{background:rgba(82,183,136,0.03);}
+.mono{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ash-lite);}
+.net-cell{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--green-lite);}
+.s-badge{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;padding:3px 10px;border-radius:20px;text-transform:uppercase;}
+.s-paid{background:rgba(82,183,136,0.12);color:#52b788;border:1px solid rgba(82,183,136,0.25);}
+.s-pending{background:rgba(200,136,42,0.12);color:#f0b060;border:1px solid rgba(200,136,42,0.25);}
+
+/* ══ MONTH TABS ══ */
+.month-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.m-tab{
+  padding:7px 15px;background:var(--bg3);border:1px solid var(--border);
+  border-radius:20px;font-family:'IBM Plex Mono',monospace;font-size:10px;
+  letter-spacing:.8px;color:var(--ash-mid);cursor:pointer;transition:all .2s;
+}
+.m-tab:hover{border-color:var(--green-mid);color:var(--cream);}
+.m-tab.active{background:rgba(82,183,136,0.12);border-color:var(--green-lite);color:var(--green-lite);}
+
+/* ══ PAYSLIP CARD ══ */
+.payslip-card{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;overflow:hidden;}
+.ps-header{
+  background:linear-gradient(135deg,var(--green) 0%,#1d4535 100%);
+  padding:22px 26px;display:flex;align-items:center;justify-content:space-between;
+  position:relative;overflow:hidden;
+}
+.ps-header::before{content:'';position:absolute;top:-30px;right:-20px;width:150px;height:150px;background:rgba(255,255,255,0.04);border-radius:50%;}
+.ps-header::after{content:'';position:absolute;bottom:-50px;right:60px;width:100px;height:100px;background:rgba(255,255,255,0.03);border-radius:50%;}
+.ps-ministry{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.55);margin-bottom:4px;}
+.ps-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:5px;}
+.ps-period{font-family:'IBM Plex Mono',monospace;font-size:11px;color:rgba(255,255,255,.75);letter-spacing:.5px;}
+.ps-right{text-align:right;}
+.ps-no-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:3px;}
+.ps-no{font-family:'IBM Plex Mono',monospace;font-size:15px;font-weight:500;color:#fff;letter-spacing:1px;}
+.ps-badge{
+  display:inline-block;margin-top:8px;
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);
+  border-radius:20px;padding:3px 12px;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:#fff;
+  letter-spacing:1.5px;text-transform:uppercase;
+}
+.ps-badge.pending{background:rgba(200,136,42,.25);border-color:rgba(200,136,42,.5);color:#f0b060;}
+
+.ps-body{padding:22px 26px;}
+.ps-emp-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding-bottom:18px;border-bottom:1px solid var(--border);margin-bottom:18px;}
+.pe-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);margin-bottom:4px;}
+.pe-val{font-size:14px;color:var(--white);font-weight:600;}
+
+.ps-amounts{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+.amt-block-title{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+.amt-line{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(38,51,48,.5);font-size:14px;}
+.amt-line:last-child{border-bottom:none;}
+.al-lbl{color:var(--ash-lite);}
+.al-val{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--cream);}
+.al-earn{color:var(--green-lite);}
+.al-deduct{color:#e08070;}
+.al-bold{font-size:14px;font-weight:600;}
+
+.ps-net{
+  background:var(--bg3);border:1px solid var(--border2);border-radius:10px;
+  padding:17px 20px;display:flex;align-items:center;justify-content:space-between;
+}
+.ps-net-lbl{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white);}
+.ps-net-lbl small{display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;}
+.ps-net-amt{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;color:var(--green-lite);letter-spacing:-.5px;}
+
+.ps-remarks{margin-top:13px;padding:11px 15px;background:rgba(58,140,104,0.05);border-left:3px solid var(--green-mid);border-radius:0 6px 6px 0;font-size:13px;color:var(--ash-lite);font-style:italic;}
+
+.ps-actions{display:flex;justify-content:flex-end;gap:10px;padding-top:16px;border-top:1px solid var(--border);margin-top:18px;}
+.btn-outline{background:transparent;border:1px solid var(--border2);color:var(--ash-lite);padding:9px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;}
+.btn-outline:hover{border-color:var(--green-mid);color:var(--green-lite);}
+.btn-dl{background:linear-gradient(135deg,var(--green),var(--green-mid));border:none;color:#fff;padding:9px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;gap:7px;transition:filter .2s;}
+.btn-dl:hover{filter:brightness(1.12);}
+
+/* loading */
+.payslip-loading{text-align:center;padding:60px;color:var(--muted);font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:1px;}
+
+/* ══ PROFILE ══ */
+.profile-panel{display:grid;grid-template-columns:1fr 2fr;gap:18px;}
+.p-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;}
+.p-card-left{padding:28px 20px;text-align:center;}
+.p-avatar-big{
+  width:76px;height:76px;border-radius:50%;
+  background:linear-gradient(135deg,var(--green),var(--ash));
+  border:3px solid var(--green-mid);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--white);
+  margin:0 auto 13px;box-shadow:0 0 22px rgba(58,140,104,0.28);
+}
+.p-full-name{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white);margin-bottom:3px;}
+.p-desig{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green-lite);letter-spacing:1px;margin-bottom:3px;}
+.p-dept{font-size:13px;color:var(--muted);margin-bottom:16px;}
+.p-empid{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:7px 12px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ash-lite);letter-spacing:1px;}
+
+.p-card-right{padding:24px 26px;}
+.p-card-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--white);margin-bottom:18px;padding-bottom:11px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:13px;}
+.fg-full{grid-column:1/-1;}
+.f-grp{display:flex;flex-direction:column;gap:5px;}
+.f-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);}
+.f-inp{background:var(--bg3);border:1px solid var(--border2);border-radius:8px;padding:10px 13px;color:var(--cream);font-family:'Lora',serif;font-size:14px;outline:none;transition:border-color .2s,box-shadow .2s;width:100%;}
+.f-inp:focus{border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(58,140,104,0.12);}
+.f-inp[readonly]{color:var(--ash-lite);cursor:default;}
+.f-inp::placeholder{color:var(--muted);font-size:13px;}
+.pf-actions{display:flex;gap:10px;margin-top:18px;}
+.btn-save{background:linear-gradient(135deg,var(--green),var(--green-mid));border:none;color:#fff;padding:10px 24px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:filter .2s;}
+.btn-save:hover{filter:brightness(1.1);}
+.btn-cancel{background:transparent;border:1px solid var(--border2);color:var(--ash-lite);padding:10px 18px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.btn-cancel:hover{border-color:var(--ash-mid);color:var(--cream);}
+
+.pwd-box{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-top:16px;}
+.info-note{background:rgba(58,140,104,.05);border:1px solid rgba(58,140,104,.18);border-radius:9px;padding:14px 18px;margin-top:14px;font-size:12px;color:var(--muted);line-height:1.8;}
+.info-note strong{font-family:'IBM Plex Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--green-lite);}
+
+/* ══ MODAL ══ */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(5,10,8,.88);z-index:200;align-items:center;justify-content:center;backdrop-filter:blur(5px);}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--bg2);border:1px solid var(--border2);border-radius:14px;width:370px;padding:34px;text-align:center;}
+.modal-icon{font-size:40px;margin-bottom:13px;}
+.modal h2{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:var(--white);margin-bottom:8px;}
+.modal p{color:var(--muted);font-size:14px;margin-bottom:22px;line-height:1.65;}
+.modal-btns{display:flex;gap:10px;justify-content:center;}
+.btn-mc{background:transparent;border:1px solid var(--border2);color:var(--ash-lite);padding:10px 22px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.btn-mc:hover{border-color:var(--ash-mid);color:var(--cream);}
+.btn-ml{background:rgba(176,80,64,.14);border:1px solid rgba(176,80,64,.44);color:#e08070;padding:10px 22px;border-radius:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;}
+.btn-ml:hover{background:rgba(176,80,64,.28);}
+
+/* ══ TOAST ══ */
+.toast{
+  position:fixed;bottom:24px;right:24px;
+  background:var(--bg2);border:1px solid var(--green-mid);border-radius:10px;
+  padding:12px 18px;display:flex;align-items:center;gap:10px;
+  font-size:13px;color:var(--cream);z-index:300;
+  transform:translateY(60px);opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 8px 28px rgba(0,0,0,.5);
+}
+.toast.show{transform:translateY(0);opacity:1;}
+.t-icon{font-size:15px;color:var(--green-lite);}
+
+/* scrollbar */
+::-webkit-scrollbar{width:5px;}::-webkit-scrollbar-track{background:var(--bg);}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-top">
+    <div class="logo-row">
+      <div class="logo-emblem">🏥</div>
+      <div class="logo-text">
+        <h1>Ministry of Health<br>Sri Lanka</h1>
+        <p>Employee Portal</p>
+      </div>
+    </div>
+    <div class="profile-mini">
+      <div class="avatar-ring" id="sb-avatar">{{ session.name[:2].upper() }}</div>
+      <div>
+        <div class="pmi-name" id="sb-name">{{ session.name.split()[-1] if session.name else '' }}</div>
+        <div class="pmi-desig">{{ session.designation }}</div>
+      </div>
+      <div class="online-dot"></div>
+    </div>
+  </div>
+
+  <nav class="nav">
+    <div class="nav-lbl">Main</div>
+    <div class="nav-item active" onclick="showSection('overview')">
+      <span class="nav-icon">⬛</span> Overview
+    </div>
+    <div class="nav-lbl">Salary</div>
+    <div class="nav-item" onclick="showSection('payslip')">
+      <span class="nav-icon">📄</span> My Pay Slips
+    </div>
+    <div class="nav-lbl">Account</div>
+    <div class="nav-item" onclick="showSection('profile')">
+      <span class="nav-icon">👤</span> My Profile
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <button class="logout-btn" onclick="openLogout()">
+      <span>⏻</span> Logout
+    </button>
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <div class="tb-page" id="page-title"><span>Overview</span></div>
+      <div class="tb-sub">Ministry of Health Sri Lanka — Salary Management System</div>
+    </div>
+    <div class="tb-right">
+      <div class="clock" id="clock"></div>
+      <div class="emp-chip">{{ session.emp_no }}</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ OVERVIEW ══ -->
+    <div class="sec" id="section-overview">
+      <div class="hero">
+        <div>
+          <div class="hero-greeting">Welcome back</div>
+          <div class="hero-name" id="hero-name">{{ session.name }}</div>
+          <div class="meta-row">
+            <div class="meta-chip">Dept: <span>{{ session.department }}</span></div>
+            <div class="meta-chip">ID: <span>{{ session.emp_no }}</span></div>
+            <div class="meta-chip">Role: <span>{{ session.designation }}</span></div>
+          </div>
+        </div>
+
+      
+      </div>
+
+    </div>
+
+    <!-- ══ PAY SLIPS ══ -->
+    <div class="sec" id="section-payslip" style="display:none">
+      <div class="sec-hdr">
+        <div class="sec-title">My Pay Slips — Last 6 Months</div>
+      </div>
+      <div class="month-tabs" id="month-tabs">
+        <div class="payslip-loading">Loading pay slips…</div>
+      </div>
+      <div id="payslip-display"></div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="sec" id="section-profile" style="display:none">
+      <div class="sec-hdr"><div class="sec-title">My Profile &amp; Account</div></div>
+      <div class="profile-panel">
+
+        <!-- LEFT CARD -->
+        <div>
+          <div class="p-card p-card-left">
+            <div class="p-avatar-big" id="prof-avatar">{{ session.name[:2].upper() }}</div>
+            <div class="p-full-name" id="prof-fullname">{{ session.name }}</div>
+            <div class="p-desig">{{ session.designation }}</div>
+            <div class="p-dept">{{ session.department }}</div>
+            <div class="p-empid">{{ session.emp_no }}</div>
+          </div>
+
+          <!-- CHANGE PASSWORD -->
+          <div class="pwd-box">
+            <div class="p-card-title">🔒 Change Password</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <div class="f-grp">
+                <label class="f-lbl">Current Password</label>
+                <input class="f-inp" type="password" id="pw-current" placeholder="••••••••">
+              </div>
+              <div class="f-grp">
+                <label class="f-lbl">New Password</label>
+                <input class="f-inp" type="password" id="pw-new" placeholder="••••••••">
+              </div>
+              <div class="f-grp">
+                <label class="f-lbl">Confirm New Password</label>
+                <input class="f-inp" type="password" id="pw-confirm" placeholder="••••••••">
+              </div>
+              <button class="btn-save" style="align-self:flex-start;margin-top:4px" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT CARD -->
+        <div>
+          <div class="p-card p-card-right">
+            <div class="p-card-title">✏️ Update Account Details</div>
+            <div class="fg2">
+              <div class="f-grp">
+                <label class="f-lbl">Employee Number</label>
+                <input class="f-inp" value="{{ session.emp_no }}" readonly>
+              </div>
+              <div class="f-grp">
+                <label class="f-lbl">Full Name</label>
+                <input class="f-inp" id="p-name" value="{{ session.name }}">
+              </div>
+              <div class="f-grp">
+                <label class="f-lbl">Designation</label>
+                <input class="f-inp" value="{{ session.designation }}" readonly>
+              </div>
+              <div class="f-grp">
+                <label class="f-lbl">Department</label>
+                <input class="f-inp" value="{{ session.department }}" readonly>
+              </div>
+              <div class="f-grp fg-full">
+                <label class="f-lbl">Email Address</label>
+                <input class="f-inp" type="email" id="p-email" value="{{ session.email }}">
+              </div>
+            </div>
+            <div class="pf-actions">
+              <button class="btn-save" onclick="saveProfile()">Save Changes</button>
+              <button class="btn-cancel" onclick="resetProfile()">Reset</button>
+            </div>
+          </div>
+          <div class="info-note">
+            <strong>ℹ Information</strong><br>
+            Employee Number, Designation, and Department are managed by the Super Admin.
+            Contact HR to update these fields.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ══ LOGOUT MODAL ══ -->
+<div class="modal-overlay" id="logout-modal">
+  <div class="modal">
+    <div class="modal-icon">⏻</div>
+    <h2>End Session</h2>
+    <p>You are about to log out of the Employee Portal. Ensure all changes are saved before leaving.</p>
+    <div class="modal-btns">
+      <button class="btn-mc" onclick="closeLogout()">Cancel</button>
+      <button class="btn-ml" onclick="doLogout()">Logout</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ TOAST ══ -->
+<div class="toast" id="toast">
+  <span class="t-icon">✓</span>
+  <span id="toast-msg">Done.</span>
+</div>
+
+<script>
+// ── stored originals for reset ──
+const origName  = "{{ session.name }}";
+const origEmail = "{{ session.email }}";
+
+// ── CLOCK ──
+function tick(){
+  const n=new Date();
+  document.getElementById('clock').textContent=
+    n.toLocaleString('en-GB',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit',hour12:false});
+}
+tick(); setInterval(tick,30000);
+
+// ── NAVIGATION ──
+const sections=['overview','payslip','profile'];
+const titles={overview:'Overview',payslip:'My Pay Slips',profile:'My Profile'};
+function showSection(id){
+  sections.forEach(s=>document.getElementById('section-'+s).style.display=s===id?'':'none');
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+  const map={overview:0,payslip:1,profile:2};
+  document.querySelectorAll('.nav-item')[map[id]]?.classList.add('active');
+  document.getElementById('page-title').innerHTML=`<span>${titles[id]}</span>`;
+  if(id==='payslip') loadPayslips();
+}
+
+// ── PAYSLIPS ──
+let slips=[], activeIdx=0;
+async function loadPayslips(){
+  document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">Loading pay slips…</div>';
+  document.getElementById('payslip-display').innerHTML='';
+  try{
+    const res=await fetch('/api/payslips');
+    slips=await res.json();
+    if(!slips.length){
+      document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">No salary records found.</div>';
+      return;
+    }
+    renderTabs(); renderSlip(0);
+  }catch(e){
+    document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">Failed to load data.</div>';
+  }
+}
+function renderTabs(){
+  document.getElementById('month-tabs').innerHTML=slips.map((s,i)=>
+    `<div class="m-tab ${i===0?'active':''}" onclick="switchSlip(${i})">${formatPeriod(s.pay_period)}</div>`
+  ).join('');
+}
+function switchSlip(i){
+  activeIdx=i;
+  document.querySelectorAll('.m-tab').forEach((t,j)=>t.classList.toggle('active',i===j));
+  renderSlip(i);
+}
+function renderSlip(i){
+  const s=slips[i];
+  const net=s.total_earnings-s.total_deductions;
+  const isPaid=s.status==='paid';
+  document.getElementById('payslip-display').innerHTML=`
+  <div class="payslip-card">
+    <div class="ps-header">
+      <div>
+        <div class="ps-ministry">Ministry of Health · Sri Lanka</div>
+        <div class="ps-title">SALARY SLIP</div>
+        <div class="ps-period">${formatPeriod(s.pay_period)}</div>
+      </div>
+      <div class="ps-right">
+        <div class="ps-no-lbl">Employee No</div>
+        <div class="ps-no">${s.emp_no}</div>
+        <span class="ps-badge ${isPaid?'':'pending'}">${isPaid?'✓ PAID':'⏳ PENDING'}</span>
+      </div>
+    </div>
+    <div class="ps-body">
+      <div class="ps-emp-row">
+        <div><div class="pe-lbl">Full Name</div><div class="pe-val">${s.name}</div></div>
+        <div><div class="pe-lbl">Designation</div><div class="pe-val">${s.designation}</div></div>
+        <div><div class="pe-lbl">Pay Period</div><div class="pe-val">${formatPeriod(s.pay_period)}</div></div>
+      </div>
+      <div class="ps-amounts">
+        <div>
+         
+          <div class="amt-block-title">Earnings</div>    
+           <div class="amt-line"><span class="al-lbl">Basic Salary</span><span class="al-val al-earn">LKR ${fmt(s.basic_salary)}</span></div>     
+          
+          <div class="amt-line"><span class="al-lbl">OT</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">C.O.L 2500 /5000</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Fuel Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl"> Lang Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Execetive Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line" style="border-top:1px solid var(--border2);margin-top:4px;padding-top:8px">
+            <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Earnings</span>
+            <span class="al-val al-earn al-bold">LKR ${fmt(s.total_earnings)}</span>
+          </div>
+        </div>
+        <div>
+          <div class="amt-block-title">Deductions</div>
+           <div class="amt-line"><span class="al-lbl">W. &.O.p </span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Agrahara</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">UNION</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+           <div class="amt-line"><span class="al-lbl">Stamp</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line" style="border-top:1px solid var(--border2);margin-top:4px;padding-top:8px">
+            <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Deductions</span>
+            <span class="al-val al-deduct al-bold">LKR ${fmt(s.total_deductions)}</span>
+          </div>
+        </div>
+      </div>
+      <div class="ps-net">
+        <div class="ps-net-lbl"><small>Net Salary Payable</small>${formatPeriod(s.pay_period)}</div>
+        <div class="ps-net-amt">LKR ${fmt(net)}</div>
+      </div>
+      ${s.remarks?`<div class="ps-remarks">📝 ${s.remarks}</div>`:''}
+      <div class="ps-actions">
+        <button class="btn-dl" onclick="showToast('Pay slip download initiated.')">⬇ Download PDF</button>
+        <button class="btn-outline" onclick="printReceiptFormat(${i})">🖨 Print</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function printReceiptFormat(i) {
+  const s = slips[i];
+  const net = s.total_earnings - s.total_deductions;
+  const W = 36; // inner width (between the | pipes)
+
+  // Format number with commas and 2 decimals
+  const fmtNum = (val) => {
+    const n = parseFloat(val) || 0;
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  // | label         :  value |
+  const line = (label, value) => {
+    const lbl = `  ${label}`;
+    const val = fmtNum(value);
+    const colon = ' : ';
+    const available = W - lbl.length - colon.length;
+    const valStr = val.padStart(available);
+    return `|${lbl}${colon}${valStr}|`;
+  };
+
+  // | bold label    :  value | (for totals)
+  const boldLine = (label, value) => {
+    return line(label, value); // same format, bold handled in HTML
+  };
+
+  // centered line
+  const center = (text) => {
+    const totalPad = W - text.length;
+    const left = Math.floor(totalPad / 2);
+    const right = totalPad - left;
+    return `|${' '.repeat(left)}${text}${' '.repeat(right)}|`;
+  };
+
+  const sep  = `|${'-'.repeat(W)}|`;
+  const top  = `*${'-'.repeat(W)}*`;
+  const blank = `|${' '.repeat(W)}|`;
+
+  const period = formatPeriod(s.pay_period).toUpperCase();
+
+  // --- Calculate sub-totals ---
+  const langAllow     = parseFloat(s.lang_allowance)      || 0;
+  const colAllow      = parseFloat(s.col_allowance)       || 0;
+  const fuelAllow     = parseFloat(s.fuel_allowance)      || 0;
+  const otAllow       = parseFloat(s.ot_allowance)        || 0;
+  const execAllow     = parseFloat(s.executive_allowance) || 0;
+  const subTotal      = s.basic_salary + langAllow + colAllow + fuelAllow + otAllow;
+  const grossPay      = subTotal + execAllow;
+
+  const wop           = parseFloat(s.wop)            || 0;
+  const agrahara      = parseFloat(s.agrahara)        || 0;
+  const bankDed       = parseFloat(s.bank_deduction)  || 0;
+  const apit          = parseFloat(s.apit)            || 0;
+  const stamp         = parseFloat(s.stamp)           || 0;
+  const distLoan      = parseFloat(s.dist_loan)       || 0;
+  const empSupLoan    = parseFloat(s.emp_sup_loan)    || 0;
+  const union         = parseFloat(s.union)           || 0;
+
+  const receipt = [
+    top,
+    center('MINISTRY OF HEALTH'),
+    center(`PAY REPORT FOR MON : ${period}`),
+    blank,
+    center(`Emp No. :  ${s.emp_no}`),
+    center(`Mr. ${s.name}`),
+    center(`${s.designation}`),
+    sep,
+    center('E A R N I N G S'),
+    line('Basic',              s.basic_salary),
+    line('Lang.Allow.',        langAllow),
+    line('C.O.L 2500/5000',   colAllow),
+    line('Fuel Allow.',        fuelAllow),
+    line('OT',                 otAllow),
+    line('SUB.TOTAL',          subTotal),
+    sep,
+    line('Executive all.',     execAllow),
+    sep,
+    line('Gross Pay',          grossPay),
+    sep,
+    center('D E D U C T I O N S'),
+    line('W.&.O.P(1)',         wop),
+    line('AGRAHARA',           agrahara),
+    line('Bank ded/Rental',    bankDed),
+    line('A.P.I.T.',           apit),
+    line('STAMP',              stamp),
+    line('Dist.Loan',          distLoan),
+    line('EMP.SUP.LOAN',       empSupLoan),
+    line('UNION',              union),
+    blank,
+    line('Tot.Ded.',           s.total_deductions),
+    sep,
+    line('N E T  P A Y',      net),
+    center(`B/F:0.00  PAID: ${fmtNum(net)}  C/R:0.00`),
+    top,
+  ].join('\n');
+
+  // --- Open print window ---
+  const win = window.open('', '_blank', 'width=520,height=750');
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <title>Pay Slip - ${s.emp_no}</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      background: #fff;
+      color: #000;
+      padding: 30px;
+      white-space: pre;
+      line-height: 1.6;
+      margin: 0;
+    }
+    @media print {
+      body { padding: 10px; }
+    }
+  </style>
+</head>
+<body>${receipt}</body>
+</html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 300); // slight delay so window renders first
+}
+
+
+function fmt(n){ return parseFloat(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function formatPeriod(p){
+  if(!p) return p;
+  const [y,m]=p.split('-');
+  const months=['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  return `${months[parseInt(m)]} ${y}`;
+}
+
+// ── PROFILE SAVE ──
+async function saveProfile(){
+  const name=document.getElementById('p-name').value.trim();
+  const email=document.getElementById('p-email').value.trim();
+  if(!name||!email){showToast('⚠ Name and email are required.','#f0b060');return;}
+  const res=await fetch('/api/update_profile',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({name,email})
+  });
+  const data=await res.json();
+  if(data.success){
+    document.getElementById('hero-name').textContent=name;
+    document.getElementById('sb-name').textContent=name.split(' ').pop();
+    document.getElementById('prof-fullname').textContent=name;
+    document.getElementById('sb-avatar').textContent=name.slice(0,2).toUpperCase();
+    document.getElementById('prof-avatar').textContent=name.slice(0,2).toUpperCase();
+    showToast('✓ '+data.message);
+  }else{
+    showToast('⚠ '+data.message,'#f0b060');
+  }
+}
+function resetProfile(){
+  document.getElementById('p-name').value=origName;
+  document.getElementById('p-email').value=origEmail;
+}
+
+// ── CHANGE PASSWORD ──
+async function changePassword(){
+  const cur=document.getElementById('pw-current').value;
+  const nw=document.getElementById('pw-new').value;
+  const cf=document.getElementById('pw-confirm').value;
+  if(!cur||!nw||!cf){showToast('⚠ All password fields are required.','#f0b060');return;}
+  if(nw!==cf){showToast('⚠ New passwords do not match.','#e08070');return;}
+  if(nw.length<6){showToast('⚠ Password must be at least 6 characters.','#f0b060');return;}
+  const res=await fetch('/api/change_password',{
+    method:'POST',headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({current_password:cur,new_password:nw})
+  });
+  const data=await res.json();
+  if(data.success){
+    document.getElementById('pw-current').value='';
+    document.getElementById('pw-new').value='';
+    document.getElementById('pw-confirm').value='';
+    showToast('✓ '+data.message);
+  }else{
+    showToast('⚠ '+data.message,'#e08070');
+  }
+}
+
+// ── LOGOUT ──
+function openLogout(){document.getElementById('logout-modal').classList.add('open');}
+function closeLogout(){document.getElementById('logout-modal').classList.remove('open');}
+function doLogout(){window.location.href='/logout';}
+
+// ── TOAST ──
+function showToast(msg,color='#52b788'){
+  const t=document.getElementById('toast');
+  document.getElementById('toast-msg').textContent=msg;
+  t.style.borderColor=color;
+  t.querySelector('.t-icon').style.color=color;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+</script>
+</body>
+</html>

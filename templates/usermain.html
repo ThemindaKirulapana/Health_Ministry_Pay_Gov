@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Health Ministry Sri Lanka — Salary Management</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@300;400;600&family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --gold-dim: #7a6330;
+    --navy: #0B1E3D;
+    --navy-mid: #122547;
+    --navy-light: #1A3460;
+    --navy-border: #1f3f6e;
+    --cream: #F5EDD8;
+    --cream-dim: #c9b98a;
+    --white: #FDFAF3;
+    --text-muted: #7a8fa8;
+    --danger: #c0392b;
+    --success: #1a7a4a;
+    --success-light: #27ae60;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: 'Crimson Pro', serif;
+    min-height: 100vh;
+    display: flex;
+    overflow-x: hidden;
+  }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--navy-mid);
+    border-right: 1px solid var(--navy-border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    z-index: 100;
+  }
+
+  .sidebar-logo {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .sidebar-logo .emblem {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    margin-bottom: 12px;
+    box-shadow: 0 0 24px rgba(201,168,76,0.3);
+  }
+  .sidebar-logo h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--gold-light);
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+  }
+  .sidebar-logo p {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'DM Mono', monospace;
+    margin-top: 3px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .nav-section {
+    padding: 20px 0;
+    flex: 1;
+  }
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0 24px;
+    margin-bottom: 8px;
+    margin-top: 16px;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 11px 24px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    font-size: 15px;
+    color: #8da3bb;
+  }
+  .nav-item:hover {
+    background: rgba(201,168,76,0.06);
+    color: var(--cream);
+    border-left-color: rgba(201,168,76,0.3);
+  }
+  .nav-item.active {
+    background: rgba(201,168,76,0.1);
+    color: var(--gold-light);
+    border-left-color: var(--gold);
+  }
+  .nav-item .icon { font-size: 17px; width: 22px; text-align: center; }
+
+  .sidebar-footer {
+    padding: 20px 24px;
+    border-top: 1px solid var(--navy-border);
+  }
+  .admin-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .admin-avatar {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 600;
+    color: var(--navy);
+    font-family: 'DM Mono', monospace;
+  }
+  .admin-info .name { font-size: 14px; color: var(--cream); font-weight: 600; }
+  .admin-info .role {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .logout-btn {
+    width: 100%;
+    padding: 10px;
+    background: rgba(192,57,43,0.12);
+    border: 1px solid rgba(192,57,43,0.3);
+    color: #e07060;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .logout-btn:hover {
+    background: rgba(192,57,43,0.25);
+    border-color: rgba(192,57,43,0.6);
+    color: #ff8070;
+  }
+
+  /* ── MAIN CONTENT ── */
+  .main {
+    margin-left: 260px;
+    flex: 1;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    background: var(--navy-mid);
+    border-bottom: 1px solid var(--navy-border);
+    padding: 16px 36px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0;
+    z-index: 50;
+  }
+  .topbar-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--white);
+  }
+  .topbar-title span { color: var(--gold); }
+  .topbar-right {
+    display: flex; align-items: center; gap: 20px;
+  }
+  .badge-time {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+  .badge-super {
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    color: var(--navy);
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .content {
+    padding: 36px;
+    flex: 1;
+  }
+
+  /* ── STAT CARDS ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 36px;
+  }
+  .stat-card {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 12px;
+    padding: 22px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .stat-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-sub {
+    font-size: 12px;
+    color: var(--gold);
+  }
+  .stat-icon {
+    position: absolute;
+    top: 18px; right: 20px;
+    font-size: 28px;
+    opacity: 0.15;
+  }
+
+  /* ── PANELS ── */
+  .panels-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 28px;
+  }
+  .panel {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .panel-header {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--navy-border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .panel-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    color: var(--gold-light);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .panel-body { padding: 24px; }
+
+  /* ── SALARY ENTRY FORM ── */
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .form-input, .form-select {
+    background: var(--navy);
+    border: 1px solid var(--navy-border);
+    border-radius: 7px;
+    padding: 10px 14px;
+    color: var(--cream);
+    font-family: 'Crimson Pro', serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--gold-dim);
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+  }
+  .form-input::placeholder { color: var(--text-muted); font-size: 14px; }
+  .form-select option { background: var(--navy-mid); }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
+    color: var(--navy);
+    border: none;
+    border-radius: 8px;
+    padding: 12px 28px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+    margin-top: 6px;
+  }
+  .btn-primary:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 4px 16px rgba(201,168,76,0.3);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--navy-border);
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 6px;
+  }
+  .btn-ghost:hover { border-color: var(--text-muted); color: var(--cream); }
+  .form-actions { display: flex; gap: 10px; margin-top: 6px; }
+
+  /* ── SALARY RECORDS TABLE ── */
+  .salary-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+  .salary-table th {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 1px solid var(--navy-border);
+  }
+  .salary-table td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(31,63,110,0.4);
+    color: var(--cream);
+    vertical-align: middle;
+  }
+  .salary-table tr:last-child td { border-bottom: none; }
+  .salary-table tr:hover td { background: rgba(201,168,76,0.04); }
+  .emp-id {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+  .status-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 1px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    text-transform: uppercase;
+  }
+  .status-paid {
+    background: rgba(26,122,74,0.18);
+    color: #4dd88a;
+    border: 1px solid rgba(39,174,96,0.25);
+  }
+  .status-pending {
+    background: rgba(201,168,76,0.12);
+    color: var(--gold-light);
+    border: 1px solid rgba(201,168,76,0.25);
+  }
+  .amount-cell { font-family: 'DM Mono', monospace; font-size: 13px; }
+
+  /* ── EMPLOYEE OVERVIEW ── */
+  .emp-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .emp-card {
+    background: var(--navy);
+    border: 1px solid var(--navy-border);
+    border-radius: 10px;
+    padding: 16px;
+    display: flex; align-items: center; gap: 12px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+  .emp-card:hover { border-color: var(--gold-dim); }
+  .emp-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 600;
+    font-family: 'DM Mono', monospace;
+    flex-shrink: 0;
+  }
+  .emp-avatar.a { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .emp-avatar.b { background: rgba(26,122,74,0.15); color: #4dd88a; }
+  .emp-avatar.c { background: rgba(52,100,180,0.2); color: #7aafff; }
+  .emp-name { font-size: 14px; font-weight: 600; color: var(--white); line-height: 1.3; }
+  .emp-dept {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+  .emp-grade {
+    margin-left: auto;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    flex-shrink: 0;
+  }
+
+  /* ── FULL WIDTH PANEL ── */
+  .panel-full { margin-bottom: 28px; }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(7,14,28,0.85);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--navy-mid);
+    border: 1px solid var(--navy-border);
+    border-radius: 14px;
+    width: 400px;
+    padding: 36px;
+    text-align: center;
+    position: relative;
+  }
+  .modal h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: var(--gold-light);
+    margin-bottom: 10px;
+  }
+  .modal p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
+  .modal-actions { display: flex; gap: 12px; justify-content: center; }
+  .btn-danger {
+    background: rgba(192,57,43,0.15);
+    border: 1px solid rgba(192,57,43,0.5);
+    color: #e07060;
+    border-radius: 8px;
+    padding: 11px 24px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-danger:hover { background: rgba(192,57,43,0.3); }
+
+  /* ── TOAST ── */
+  .toast {
+    position: fixed;
+    bottom: 28px; right: 28px;
+    background: var(--navy-mid);
+    border: 1px solid var(--success-light);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px;
+    color: var(--cream);
+    z-index: 300;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.35s cubic-bezier(.4,0,.2,1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { color: #4dd88a; font-size: 18px; }
+
+  /* ── SEARCH BAR ── */
+  .search-wrap {
+    position: relative;
+    display: flex; align-items: center;
+  }
+  .search-icon {
+    position: absolute; left: 12px;
+    color: var(--text-muted); font-size: 14px;
+  }
+  .search-input {
+    background: var(--navy);
+    border: 1px solid var(--navy-border);
+    border-radius: 7px;
+    padding: 8px 14px 8px 34px;
+    color: var(--cream);
+    font-family: 'Crimson Pro', serif;
+    font-size: 14px;
+    outline: none;
+    width: 200px;
+    transition: border-color 0.2s;
+  }
+  .search-input:focus { border-color: var(--gold-dim); }
+  .search-input::placeholder { color: var(--text-muted); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 4px; }
+
+  @keyframes fadeSlideIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .content > * { animation: fadeSlideIn 0.4s ease both; }
+  .content > *:nth-child(2) { animation-delay: 0.06s; }
+  .content > *:nth-child(3) { animation-delay: 0.12s; }
+  .content > *:nth-child(4) { animation-delay: 0.18s; }
+</style>
+</head>
+<body>
+
+<!-- ══ SIDEBAR ══ -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="emblem">🏥</div>
+    <h1>Ministry of Health<br>Sri Lanka</h1>
+    <p>Salary Management</p>
+  </div>
+
+  <nav class="nav-section">
+    <div class="nav-label">Overview</div>
+    <div class="nav-item active" onclick="showSection('dashboard')">
+      <span class="icon">⬛</span> Dashboard
+    </div>
+
+    <div class="nav-label">Salary</div>
+    <div class="nav-item" onclick="showSection('enter-salary')">
+      <span class="icon">✏️</span> Enter Salary
+    </div>
+    <div class="nav-item" onclick="showSection('view-salary')">
+      <span class="icon">📋</span> View Salary Details
+    </div>
+
+    <div class="nav-label">Employees</div>
+    <div class="nav-item" onclick="showSection('employees')">
+      <span class="icon">👥</span> All Employees
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="admin-card">
+      <div class="admin-avatar">SA</div>
+      <div class="admin-info">
+        <div class="name">Admin User</div>
+        <div class="role">Super Admin</div>
+      </div>
+    </div>
+    <form action="logout" method="GET">
+        <input type="submit" class="logout-btn" name="logout" value="Logout" onclick="openLogout()">
+       
+    </form>    
+    
+  </div>
+</aside>
+
+<!-- ══ MAIN ══ -->
+<main class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="page-title">
+      <span>Salary Management</span> Information System
+    </div>
+    <div class="topbar-right">
+      <div class="badge-time" id="clock"></div>
+      <div class="badge-super">Super Admin</div>
+    </div>
+  </div>
+
+  <div class="content" id="main-content">
+
+    <!-- ── DASHBOARD ── -->
+    <div id="section-dashboard">
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-label">Total Employees</div>
+          <div class="stat-value">1,248</div>
+          <div class="stat-sub">↑ 12 this month</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-label">Total Payroll (LKR)</div>
+          <div class="stat-value">142M</div>
+          <div class="stat-sub">March 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">✅</div>
+          <div class="stat-label">Salaries Paid</div>
+          <div class="stat-value">1,190</div>
+          <div class="stat-sub">95.4% processed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">⏳</div>
+          <div class="stat-label">Pending</div>
+          <div class="stat-value">58</div>
+          <div class="stat-sub">Requires action</div>
+        </div>
+      </div>
+
+      
+    </div>
+
+    <!-- ── ENTER SALARY ── -->
+    <div id="section-enter-salary" style="display:none">
+      <div class="panel panel-full" style="max-width:700px">
+
+        <div class="panel-header">
+          <div class="panel-title">✏️ Enter Salary Details</div>
+        </div>
+        <form method="POST" action="/save_salary">
+        <div class="panel-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label">Employee ID</label>
+              <input class="form-input" name="empid" type="text" placeholder="e.g. EMP-1002">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Name</label>
+              <input class="form-input" name="name" type="text" placeholder="Miss Dinuka Rajaguru">
+            </div>
+            
+            <div class="form-group">
+              <label class="form-label">Designation</label>
+              <select class="form-select" name="desig">
+                <option value="">Select designation…</option>
+                <option>Director</option>
+                <option>Ass.Director</option>
+                <option>Accountant</option>
+                <option>Doctor</option>
+                <option>Medical Officer</option>
+                <option>Nurse </option>
+                <option>Lab Technician</option>
+                <option>Administrative Officer</option>
+                <option>Clerk</option>
+                
+                
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Basic Salary (LKR)</label>
+              <input class="form-input" name="basic" type="number" placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Total Earninins(LKR)</label>
+                <input class="form-input" name="Totearn" type="number" placeholder="0.00">
+              </div>
+            <div class="form-group">
+              <label class="form-label">Allowances (LKR)</label>
+              <input class="form-input" name="allow" type="number" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Total Deductions (LKR)</label>
+              <input class="form-input" name="Totdeduct" type="number" placeholder="0.00">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Pay Period</label>
+              <input class="form-input" name="period" type="month" value="2026-03">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Payment Status</label>
+              <select class="form-select" name="status">
+                <option value="pending">Pending</option>
+                <option value="paid">Paid</option>
+              </select>
+            </div>
+            
+            <div class="form-group full">
+              <label class="form-label">Remarks</label>
+              <input class="form-input" name="remarks" type="text" placeholder="Optional notes…">
+            </div>
+          </div>
+          <div class="form-actions" style="margin-top:20px">
+            <button type="submit" class="btn-primary" >Save Salary Record</button>
+            <button  type="reset" class="btn-ghost" onclick="clearForm()">Clear</button>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- ── VIEW SALARY ── -->
+    <div id="section-view-salary" style="display:none">
+      <div class="panel panel-full">
+        <div class="panel-header">
+          <div class="panel-title">📋 Salary Records</div>
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input class="search-input" type="text" placeholder="Search employee…" oninput="filterTable(this.value)">
+          </div>
+        </div>
+        <div class="panel-body" style="padding:0;overflow-x:auto">
+          <table class="salary-table" id="salary-table">
+            <thead>
+              <tr>
+                <th>Emp ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Designation</th>
+                <th>Basic (LKR)</th>
+                <th>Net (LKR)</th>
+                <th>Period</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── EMPLOYEES ── -->
+    <div id="section-employees" style="display:none">
+      <div class="panel panel-full">
+        <div class="panel-header">
+          <div class="panel-title">👥 All Employee Details</div>
+          <div class="search-wrap">
+            <span class="search-icon">🔍</span>
+            <input class="search-input" type="text" placeholder="Search…" oninput="filterEmp(this.value)">
+          </div>
+        </div>
+        <div class="panel-body">
+            <div class="emp-grid" id="emp-grid"></div>
+          </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</main>
+
+<!-- ══ LOGOUT MODAL ══ -->
+<div class="modal-overlay" id="logout-modal">
+    <div class="modal">
+      <div style="font-size:36px;margin-bottom:14px">⏻</div>
+      <h2>Confirm Logout</h2>
+      <p>You are about to end your session as Super Admin. All unsaved changes will be lost.</p>
+      <div class="modal-actions">
+        <button class="btn-ghost" onclick="closeLogout()">Cancel</button>      
+        <form action="logout" method="GET">
+            <input type="submit" class="btn-danger" name="logout" value="Logout" onclick="openLogout()">
+           
+        </form> 
+
+      </div>
+    </div>
+  </div>
+<script>
+// ── CLOCK ──
+function updateClock() {
+  const now = new Date();
+  document.getElementById('clock').textContent =
+    now.toLocaleString('en-GB', { day:'2-digit', month:'short', year:'numeric',
+      hour:'2-digit', minute:'2-digit', hour12: false });
+}
+updateClock(); setInterval(updateClock, 30000);
+
+// ── NAV ──
+const sections = ['dashboard','enter-salary','view-salary','employees'];
+const titles = {
+  dashboard: ['Dashboard','Overview'],
+  'enter-salary': ['Salary','Enter Details'],
+  'view-salary': ['Salary','View Records'],
+  employees: ['Employees','All Staff']
+};
+function showSection(id) {
+  sections.forEach(s => {
+    document.getElementById('section-'+s).style.display = s===id ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach((el,i) => el.classList.remove('active'));
+  const map = {dashboard:0,'enter-salary':1,'view-salary':2,employees:3};
+  document.querySelectorAll('.nav-item')[map[id]]?.classList.add('active');
+  const t = titles[id];
+  document.getElementById('page-title').innerHTML = `<span>${t[0]}</span> ${t[1]}`;
+  if(id==='view-salary') renderTable();
+  if(id==='employees') renderEmp();
+}
+
+function filterTable(v) { renderTable(v); }
+
+// ── EMP GRID ──
+const avatarClasses = ['a','b','c'];
+function renderEmp(filter='') {
+  const grid = document.getElementById('emp-grid');
+  const rows = salaryData.filter(e =>
+    !filter || e.name.toLowerCase().includes(filter.toLowerCase()) ||
+    e.id.toLowerCase().includes(filter.toLowerCase())
+  );
+  grid.innerHTML = rows.map((e,i) => `
+    <div class="emp-card">
+      <div class="emp-avatar ${avatarClasses[i%3]}">${e.name.split(' ').map(w=>w[0]).join('').slice(0,2)}</div>
+      <div>
+        <div class="emp-name">${e.name}</div>
+        <div class="emp-dept">${e.dept} · ${e.desig}</div>
+      </div>
+      <div class="emp-grade">${e.grade}</div>
+    </div>`).join('');
+}
+function filterEmp(v) { renderEmp(v); }
+
+
+
+// ── TOAST ──
+function showToast(msg, color='#4dd88a') {
+  const t = document.getElementById('toast');
+  document.getElementById('toast-msg').textContent = msg;
+  t.style.borderColor = color;
+  t.querySelector('.toast-icon').style.color = color;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── LOGOUT ──
+function openLogout()  { document.getElementById('logout-modal').classList.add('open'); }
+function closeLogout() { document.getElementById('logout-modal').classList.remove('open'); }
+
+
+// ── INIT ──
+renderTable(); renderEmp();
+</script>
+</body>
+</html>

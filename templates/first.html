@@ -1,0 +1,79 @@
+<html>
+<head>
+    <title>Ministry Pay System</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.3);
+            width: 400px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+        }
+
+        .logo {
+            margin-top: 10px;
+            width: 100px;
+            margin: 20px 0;   /* space above and below image */
+        }
+
+        .login-btn {
+            display: inline-block;
+            margin-top: logo ? 200px : 0; /* Add margin if logo is present */
+            padding: 10px 20px;
+            background-color:rgb(17, 96, 36);
+            width: 75%;
+            padding: 10px;
+           
+            color: white;
+            border: none;
+        
+            text-decoration: none;
+            border-radius: 5px;
+            margin-left: 20px;
+
+        }
+
+        .login-btn:hover {
+            background-color: rgb(59, 168, 83);
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Welcome to the Health Ministry Sri Lanka Pay System</h1>
+        <p>Please log in to access your account.</p>
+
+        <!-- Image placed above button -->
+        <img src="static/images/governmentlogo.jpg" 
+             alt="Ministry of Health Sri Lanka Logo" 
+             class="logo">
+
+        <a href="/login" class="login-btn">Login to the system</a>
+    </div>
+
+</body>
+</html>
