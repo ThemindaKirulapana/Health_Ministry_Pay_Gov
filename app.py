@@ -294,6 +294,97 @@ def change_password():
     return jsonify({'success': True, 'message': 'Password changed successfully.'})
 
 
+@app.route('/save_salary', methods=['POST'])
+@login_required
+def save_salary():
+
+    # Employee details
+    emp_no = request.form.get('emp_no',0)
+    name = request.form.get('name')
+    designation = request.form.get('designation')
+    pay_period = request.form.get('pay_period')
+    status = request.form.get('status')
+    remarks = request.form.get('remarks')
+
+    # Earnings
+    basic_salary = float(request.form.get('basic_salary') or 0)
+    language_allowance = float(request.form.get('language_allowance') or 0)
+    coliving = float(request.form.get('coliving') or 0)
+    coliving = float(request.form.get('coliving') or 0)
+    telephone_allowance = float(request.form.get('telephone_allowance') or 0)
+    fuel_allowance = float(request.form.get('fuel_allowance') or 0)
+    executive_allowance = float(request.form.get('executive_allowance') or 0)
+    extra_duty_ot = float(request.form.get('extra_duty_ot') or 0)
+    basic_arrears = float(request.form.get('basic_arrears') or 0)
+    total_earnings = float(request.form.get('total_earnings') or 0)
+
+# Deductions
+    wop = float(request.form.get('wop') or 0)
+    agrahara = float(request.form.get('agrahara') or 0)
+    apit_tax = float(request.form.get('apit_tax') or 0)
+    stamp_duty = float(request.form.get('stamp_duty') or 0)
+    union_fee = float(request.form.get('union_fee') or 0)
+    news_payment = float(request.form.get('news_payment') or 0)
+    mileage = float(request.form.get('mileage') or 0)
+    wop_arrears = float(request.form.get('wop_arrears') or 0)
+    distress_loan = float(request.form.get('distress_loan') or 0)
+    total_deductions = float(request.form.get('total_deductions') or 0)
+
+# Net Salary
+    net_salary = float(request.form.get('net_salary') or 0)
+
+
+
+    conn = get_db()
+
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error'})
+
+    try:
+        cursor = conn.cursor()
+
+        query = """
+        INSERT INTO salary (
+            emp_no, name, designation,
+            basic_salary, language_allowance, coliving,
+            telephone_allowance, fuel_allowance, executive_allowance,
+            extra_duty_ot, basic_arrears, total_earnings,
+            wop, agrahara, apit_tax, stamp_duty, union_fee,
+            news_payment, mileage, wop_arrears, distress_loan,
+            total_deductions,net_salary, pay_period, status, remarks
+        )
+        VALUES (
+            %s,%s,%s,
+            %s,%s,%s,
+            %s,%s,%s,
+            %s,%s,%s,
+            %s,%s,%s,%s,%s,
+            %s,%s,%s,%s,
+            %s,%s,%s,%s,%s
+        )
+        """
+
+        values = (
+            emp_no, name, designation,
+            basic_salary, language_allowance, coliving,
+            telephone_allowance, fuel_allowance, executive_allowance,
+            extra_duty_ot, basic_arrears, total_earnings,
+            wop, agrahara, apit_tax, stamp_duty, union_fee,
+            news_payment, mileage, wop_arrears, distress_loan,
+            total_deductions,net_salary, pay_period, status, remarks
+        )
+
+        cursor.execute(query, values)
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+        flash('Salary record saved successfully.', 'success')
+        return redirect(url_for('usermain'))
+        
+
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
 
 
 

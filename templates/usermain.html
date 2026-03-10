@@ -549,6 +549,25 @@
   .search-input:focus { border-color: var(--gold-dim); }
   .search-input::placeholder { color: var(--text-muted); }
 
+  /* ── FLASH MESSAGES ── */
+.flash-box{
+  border-radius:8px;padding:10px 14px;
+  font-family:'IBM Plex Mono',monospace;font-size:11px;
+  letter-spacing:.3px;margin-bottom:18px;
+  display:flex;align-items:center;gap:8px;
+}
+.flash-success{
+  background:rgba(82,183,136,0.1);
+  border:1px solid rgba(82,183,136,0.28);
+  color:var(--green-lite);
+}
+.flash-danger{
+  background:rgba(176,80,64,0.1);
+  border:1px solid rgba(176,80,64,0.28);
+  color:#e08070;
+}
+
+
   /* scrollbar */
   ::-webkit-scrollbar { width: 5px; }
   ::-webkit-scrollbar-track { background: var(--navy); }
@@ -663,6 +682,17 @@
         <div class="panel-header">
           <div class="panel-title">✏️ Enter Salary Details</div>
         </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="flash-box flash-{{ category }}">
+              {{ '✓' if category == 'success' else '⚠' }} {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+        {% endwith %}
+    
+        
         <form method="POST" action="/save_salary">
           <div class="panel-body">
           <div class="form-grid">
