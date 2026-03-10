@@ -546,6 +546,8 @@ function switchSlip(i){
 }
 function renderSlip(i){
   const s=slips[i];
+  const total_earnings=s.basic_salary + s.language_allowance+s.coliving+s.telephone_allowance+s.fuel_allowance+s.executive_allowance+s.extra_duty_ot+s.basic_arrears;
+  const total_deductions=s.wop+s.agrahara+s.apit_tax+s.stamp_duty+s.union_fee+s.news_payment+s.mileage+s.wop_arrears+s.distress_loan;
   const net=s.total_earnings-s.total_deductions;
   const isPaid=s.status==='paid';
   document.getElementById('payslip-display').innerHTML=`
@@ -574,11 +576,12 @@ function renderSlip(i){
           <div class="amt-block-title">Earnings</div>    
            <div class="amt-line"><span class="al-lbl">Basic Salary</span><span class="al-val al-earn">LKR ${fmt(s.basic_salary)}</span></div>     
           
-          <div class="amt-line"><span class="al-lbl">OT</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl">C.O.L 2500 /5000</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl">Fuel Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl"> Lang Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl">Execetive Allowances</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">language Allowance</span><span class="al-val al-earn">LKR ${fmt(s.language_allowance)}</span></div>
+          <div class="amt-line"><span class="al-lbl">C.O.L 2500 /5000</span><span class="al-val al-earn">LKR ${fmt(s.coliving)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Telephone Allowances</span><span class="al-val al-earn">LKR ${fmt(s.telephone_allowance)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Execetiveang Allowances</span><span class="al-val al-earn">LKR ${fmt(s.executive_allowance)}</span></div>
+          <div class="amt-line"><span class="al-lbl">OT</span><span class="al-val al-earn">LKR ${fmt(s.extra_duty_ot)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Basic Arreas</span><span class="al-val al-earn">LKR ${fmt(s.basic_arrears)}</span></div>
           <div class="amt-line" style="border-top:1px solid var(--border2);margin-top:4px;padding-top:8px">
             <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Earnings</span>
             <span class="al-val al-earn al-bold">LKR ${fmt(s.total_earnings)}</span>
@@ -586,10 +589,16 @@ function renderSlip(i){
         </div>
         <div>
           <div class="amt-block-title">Deductions</div>
-           <div class="amt-line"><span class="al-lbl">W. &.O.p </span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl">Agrahara</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-          <div class="amt-line"><span class="al-lbl">UNION</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
-           <div class="amt-line"><span class="al-lbl">Stamp</span><span class="al-val al-earn">LKR ${fmt(s.allowances)}</span></div>
+          <div class="amt-line"><span class="al-lbl">W. &.O.p </span><span class="al-val al-earn">LKR ${fmt(s.wop)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Agrahara</span><span class="al-val al-earn">LKR ${fmt(s.agrahara)}</span></div>
+          <div class="amt-line"><span class="al-lbl">APIT TAX</span><span class="al-val al-earn">LKR ${fmt(s.apit_tax)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Stamp</span><span class="al-val al-earn">LKR ${fmt(s.stamp_duty)}</span></div>
+          <div class="amt-line"><span class="al-lbl">UNION </span><span class="al-val al-earn">LKR ${fmt(s.union_fee)}</span></div>
+          <div class="amt-line"><span class="al-lbl">News Payment</span><span class="al-val al-earn">LKR ${fmt(s.news_payment)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Mileage</span><span class="al-val al-earn">LKR ${fmt(s.mileage)}</span></div>
+          <div class="amt-line"><span class="al-lbl">WOP Arrears</span><span class="al-val al-earn">LKR ${fmt(s.wop_arrears)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Distress loan</span><span class="al-val al-earn">LKR ${fmt(s.distress_loan)}</span></div>
+
           <div class="amt-line" style="border-top:1px solid var(--border2);margin-top:4px;padding-top:8px">
             <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Deductions</span>
             <span class="al-val al-deduct al-bold">LKR ${fmt(s.total_deductions)}</span>

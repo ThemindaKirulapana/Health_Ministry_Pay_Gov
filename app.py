@@ -208,12 +208,32 @@ def api_payslips():
             'emp_no':           r['emp_no'],
             'name':             r['name'],
             'designation':      r['designation'],
-            'basic_salary':     float(r['basic_salary']   or 0),
-            'total_earnings':   float(r['total_earnings'] or 0),
-            'allowances':       float(r['allowances']     or 0),
-            'total_deductions': float(r['total_deductions'] or 0),
             'pay_period':       r['pay_period'],
             'status':           r['status'],
+                       
+            'basic_salary':     float(r['basic_salary']   or 0),
+            'language_allowance': float(r['language_allowance'] or 0),
+            'coliving':        float(r['coliving'] or 0),
+            'telephone_allowance': float(r['telephone_allowance'] or 0),
+            'fuel_allowance':   float(r['fuel_allowance'] or 0),
+            'executive_allowance': float(r['executive_allowance'] or 0),
+            'extra_duty_ot':   float(r['extra_duty_ot'] or 0),
+            'basic_arrears':   float(r['basic_arrears'] or 0),
+            'total_earnings':   float(r['total_earnings'] or 0),
+            
+            'wop':             float(r['wop'] or 0),
+            'agrahara':        float(r['agrahara'] or 0),
+            'apit_tax':        float(r['apit_tax'] or 0),
+            'stamp_duty':      float(r['stamp_duty'] or 0),
+            'union_fee':       float(r['union_fee'] or 0),
+            'news_payment':    float(r['news_payment'] or 0),
+            'mileage':         float(r['mileage'] or 0),
+            'wop_arrears':     float(r['wop_arrears'] or 0),
+            'distress_loan':   float(r['distress_loan'] or 0),
+            'total_deductions': float(r['total_deductions'] or 0),
+            
+            'net_salary':      float(r['net_salary'] or 0),
+            
             'remarks':          r['remarks'] or ''
         })
 
