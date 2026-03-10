@@ -518,7 +518,7 @@ function showSection(id){
 }
 
 // ── PAYSLIPS ──
-let slips=[], activeIdx=0;
+var slips=[], activeIdx=0;
 async function loadPayslips(){
   document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">Loading pay slips…</div>';
   document.getElementById('payslip-display').innerHTML='';
@@ -579,11 +579,12 @@ function renderSlip(i){
           <div class="amt-line"><span class="al-lbl">language Allowance</span><span class="al-val al-earn">LKR ${fmt(s.language_allowance)}</span></div>
           <div class="amt-line"><span class="al-lbl">C.O.L 2500 /5000</span><span class="al-val al-earn">LKR ${fmt(s.coliving)}</span></div>
           <div class="amt-line"><span class="al-lbl">Telephone Allowances</span><span class="al-val al-earn">LKR ${fmt(s.telephone_allowance)}</span></div>
+          <div class="amt-line"><span class="al-lbl">Telephone Allowances</span><span class="al-val al-earn">LKR ${fmt(s.fuel_allowance)}</span></div>
           <div class="amt-line"><span class="al-lbl">Execetiveang Allowances</span><span class="al-val al-earn">LKR ${fmt(s.executive_allowance)}</span></div>
           <div class="amt-line"><span class="al-lbl">OT</span><span class="al-val al-earn">LKR ${fmt(s.extra_duty_ot)}</span></div>
           <div class="amt-line"><span class="al-lbl">Basic Arreas</span><span class="al-val al-earn">LKR ${fmt(s.basic_arrears)}</span></div>
           <div class="amt-line" style="border-top:1px solid var(--border2);margin-top:4px;padding-top:8px">
-            <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Earnings</span>
+            <span class="al-lbl" style="color:var(--cream);font-weight:600">Total Earnings</span>    fuel_allowance
             <span class="al-val al-earn al-bold">LKR ${fmt(s.total_earnings)}</span>
           </div>
         </div>
@@ -659,22 +660,37 @@ function printReceiptFormat(i) {
   const period = formatPeriod(s.pay_period).toUpperCase();
 
   // --- Calculate sub-totals ---
-  const langAllow     = parseFloat(s.lang_allowance)      || 0;
-  const colAllow      = parseFloat(s.col_allowance)       || 0;
-  const fuelAllow     = parseFloat(s.fuel_allowance)      || 0;
-  const otAllow       = parseFloat(s.ot_allowance)        || 0;
-  const execAllow     = parseFloat(s.executive_allowance) || 0;
-  const subTotal      = s.basic_salary + langAllow + colAllow + fuelAllow + otAllow;
-  const grossPay      = subTotal + execAllow;
+  //EARNINGS
+  const basic_salary = parseFloat(s.basic_salary) || 0;
+  const langAllow  = parseFloat(s.language_allowance) || 0;  
+  const colAllow   = parseFloat(s.coliving)           || 0; 
+  const telephone_allowance = parseFloat(s.telephone_allowance) || 0; 
+  const executive_allowance   = parseFloat(s.executive_allowance) || 0; 
+  const fuelAllow  = parseFloat(s.fuel_allowance)     || 0;  
+  const otAllow    = parseFloat(s.extra_duty_ot)      || 0;   
+  const basic_arrears = parseFloat(s.basic_arrears)        || 0;
 
-  const wop           = parseFloat(s.wop)            || 0;
-  const agrahara      = parseFloat(s.agrahara)        || 0;
-  const bankDed       = parseFloat(s.bank_deduction)  || 0;
-  const apit          = parseFloat(s.apit)            || 0;
-  const stamp         = parseFloat(s.stamp)           || 0;
-  const distLoan      = parseFloat(s.dist_loan)       || 0;
-  const empSupLoan    = parseFloat(s.emp_sup_loan)    || 0;
-  const union         = parseFloat(s.union)           || 0;
+//DEDUCTIONS
+  const wop        = parseFloat(s.wop)                || 0;  
+  const agrahara   = parseFloat(s.agrahara)           || 0;  
+  const apit       = parseFloat(s.apit_tax)           || 0;  
+  const stamp      = parseFloat(s.stamp_duty)         || 0;
+  const union      = parseFloat(s.union_fee)          || 0;  
+  const news_payment = parseFloat(s.news_payment)     || 0;
+  const mileage    = parseFloat(s.mileage)            || 0;  
+  const wop_arrears = parseFloat(s.wop_arrears)      || 0;
+  const distLoan   = parseFloat(s.distress_loan)      || 0;  
+  const bankDed     = parseFloat(s.bank_deduction)      || 0;  
+  const empSupLoan  = parseFloat(s.emp_sup_loan)        || 0;  
+    
+
+  const total_earnings     = s.basic_salary + langAllow + colAllow + telephone_allowance + fuelAllow + otAllow + basic_arrears;
+  const grossPay      = total_earnings + executive_allowance;
+
+  const total_deductions     = wop + agrahara + apit + stamp + union + news_payment + mileage + wop_arrears + distLoan + bankDed + empSupLoan;
+  const net          = grossPay - total_deductions;
+
+  
 
   const receipt = [
     top,
@@ -689,23 +705,29 @@ function printReceiptFormat(i) {
     line('Basic',              s.basic_salary),
     line('Lang.Allow.',        langAllow),
     line('C.O.L 2500/5000',   colAllow),
+    line('Tel.Allow.',        telephone_allowance),
     line('Fuel Allow.',        fuelAllow),
     line('OT',                 otAllow),
+    line('Basic Arrears',      basic_arrears),
     line('SUB.TOTAL',          subTotal),
     sep,
-    line('Executive all.',     execAllow),
+    line('Executive all.',     executive_allowance),
     sep,
     line('Gross Pay',          grossPay),
     sep,
     center('D E D U C T I O N S'),
     line('W.&.O.P(1)',         wop),
     line('AGRAHARA',           agrahara),
-    line('Bank ded/Rental',    bankDed),
     line('A.P.I.T.',           apit),
     line('STAMP',              stamp),
-    line('Dist.Loan',          distLoan),
-    line('EMP.SUP.LOAN',       empSupLoan),
     line('UNION',              union),
+    line('News Payment',       news_payment),
+    line('Mileage',           mileage),
+    line('WOP Arrears',       wop_arrears),
+    line('Dist.Loan',          distLoan),
+    
+    line('Bank ded/Rental', bankDed),
+    line('EMP.SUP.LOAN',    empSupLoan),
     blank,
     line('Tot.Ded.',           s.total_deductions),
     sep,
