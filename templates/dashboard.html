@@ -518,7 +518,7 @@ function showSection(id){
 }
 
 // ── PAYSLIPS ──
-var slips=[], activeIdx=0;
+let slips=[], activeIdx=0;
 async function loadPayslips(){
   document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">Loading pay slips…</div>';
   document.getElementById('payslip-display').innerHTML='';
@@ -620,8 +620,7 @@ function renderSlip(i){
 }
 
 function printReceiptFormat(i) {
-  const s = slips[i];
-  const net = s.total_earnings - s.total_deductions;
+  const s = slips[i]; 
   const W = 36; // inner width (between the | pipes)
 
   // Format number with commas and 2 decimals
@@ -670,7 +669,7 @@ function printReceiptFormat(i) {
   const otAllow    = parseFloat(s.extra_duty_ot)      || 0;   
   const basic_arrears = parseFloat(s.basic_arrears)        || 0;
 
-//DEDUCTIONS
+ //DEDUCTIONS
   const wop        = parseFloat(s.wop)                || 0;  
   const agrahara   = parseFloat(s.agrahara)           || 0;  
   const apit       = parseFloat(s.apit_tax)           || 0;  
@@ -709,7 +708,7 @@ function printReceiptFormat(i) {
     line('Fuel Allow.',        fuelAllow),
     line('OT',                 otAllow),
     line('Basic Arrears',      basic_arrears),
-    line('SUB.TOTAL',          subTotal),
+    line('SUB.TOTAL',         total_earnings),
     sep,
     line('Executive all.',     executive_allowance),
     sep,
@@ -729,7 +728,7 @@ function printReceiptFormat(i) {
     line('Bank ded/Rental', bankDed),
     line('EMP.SUP.LOAN',    empSupLoan),
     blank,
-    line('Tot.Ded.',           s.total_deductions),
+    line('Tot.Ded.',           total_deductions),
     sep,
     line('N E T  P A Y',      net),
     center(`B/F:0.00  PAID: ${fmtNum(net)}  C/R:0.00`),
@@ -763,7 +762,8 @@ function printReceiptFormat(i) {
   win.document.close();
   win.focus();
   setTimeout(() => win.print(), 300); // slight delay so window renders first
-}
+} 
+
 
 
 function fmt(n){ return parseFloat(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}); }
