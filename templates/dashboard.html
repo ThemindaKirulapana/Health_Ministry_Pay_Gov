@@ -755,7 +755,7 @@ function printReceiptFormat(i) {
 }
 
 
-///  this function is not working properly because of the length of the values, we need to add guards to handle cases where the formatted number exceeds the available width. The current implementation assumes that all values will fit within the defined width, which may not always be the case, especially for larger numbers. To fix this, we can add a check to see if the formatted number exceeds the available space and adjust the formatting accordingly, such as by truncating the number or using a smaller font size in the printed version.
+/// 1 this function is not working properly because of the length of the values, we need to add guards to handle cases where the formatted number exceeds the available width. The current implementation assumes that all values will fit within the defined width, which may not always be the case, especially for larger numbers. To fix this, we can add a check to see if the formatted number exceeds the available space and adjust the formatting accordingly, such as by truncating the number or using a smaller font size in the printed version.
 function printReceiptFormati(i) {
   const s = slips[i]; 
   const W = 36; // inner width (between the | pipes)
