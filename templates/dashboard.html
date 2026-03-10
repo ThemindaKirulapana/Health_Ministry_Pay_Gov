@@ -518,7 +518,7 @@ function showSection(id){
 }
 
 // ── PAYSLIPS ──
-let slips=[], activeIdx=0;
+var slips=[], activeIdx=0;
 async function loadPayslips(){
   document.getElementById('month-tabs').innerHTML='<div class="payslip-loading">Loading pay slips…</div>';
   document.getElementById('payslip-display').innerHTML='';
@@ -618,8 +618,145 @@ function renderSlip(i){
     </div>
   </div>`;
 }
-
 function printReceiptFormat(i) {
+  const s = slips[i];
+  const W = 38;
+
+  const fmtNum = (val) => {
+    const n = parseFloat(val) || 0;
+    return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  };
+
+  const line = (label, value) => {
+    const lbl = `  ${label}`;
+    const val = fmtNum(value);
+    const colon = ' : ';
+    const available = W - lbl.length - colon.length;
+    // ✅ Guard: if value too long, just pad 1 space
+    const valStr = available > 0 ? val.padStart(available) : ' ' + val;
+    return `|${lbl}${colon}${valStr}|`;
+  };
+
+  const center = (text) => {
+    // ✅ Guard: if text longer than W, just show it without padding
+    if (text.length >= W) return `|${text}|`;
+    const totalPad = W - text.length;
+    const left = Math.floor(totalPad / 2);
+    const right = totalPad - left;
+    return `|${' '.repeat(left)}${text}${' '.repeat(right)}|`;
+  };
+
+  const sep   = `|${'-'.repeat(W)}|`;
+  const top   = `+${'-'.repeat(W)}+`;
+  const blank = `|${' '.repeat(W)}|`;
+
+  const period = formatPeriod(s.pay_period).toUpperCase();
+
+  // EARNINGS
+  const basic_salary        = parseFloat(s.basic_salary)         || 0;
+  const langAllow           = parseFloat(s.language_allowance)   || 0;
+  const colAllow            = parseFloat(s.coliving)             || 0;
+  const telAllow            = parseFloat(s.telephone_allowance)  || 0;
+  const execAllow           = parseFloat(s.executive_allowance)  || 0;
+  const fuelAllow           = parseFloat(s.fuel_allowance)       || 0;
+  const otAllow             = parseFloat(s.extra_duty_ot)        || 0;
+  const basicArrears        = parseFloat(s.basic_arrears)        || 0;
+
+  // DEDUCTIONS
+  const wop                 = parseFloat(s.wop)                  || 0;
+  const agrahara            = parseFloat(s.agrahara)             || 0;
+  const apit                = parseFloat(s.apit_tax)             || 0;
+  const stamp               = parseFloat(s.stamp_duty)           || 0;
+  const union               = parseFloat(s.union_fee)            || 0;
+  const newsPayment         = parseFloat(s.news_payment)         || 0;
+  const mileage             = parseFloat(s.mileage)              || 0;
+  const wopArrears          = parseFloat(s.wop_arrears)          || 0;
+  const distLoan            = parseFloat(s.distress_loan)        || 0;
+  const bankDed             = parseFloat(s.bank_deduction)       || 0;
+  const empSupLoan          = parseFloat(s.emp_sup_loan)         || 0;
+
+  // TOTALS
+  const subTotal      = basic_salary + langAllow + colAllow + telAllow + fuelAllow + otAllow + basicArrears;
+  const grossPay      = subTotal + execAllow;
+  const totalDed      = wop + agrahara + apit + stamp + union + newsPayment + mileage + wopArrears + distLoan + bankDed + empSupLoan;
+  const net           = grossPay - totalDed;
+
+  const receipt = [
+    top,
+    center('MINISTRY OF HEALTH'),
+    center('PAY REPORT FOR MON : ' + period),
+    blank,
+    center('Emp No. : ' + s.emp_no),
+    center(s.name),
+    center(s.designation),
+    sep,
+    center('E A R N I N G S'),
+    line('Basic',            basic_salary),
+    line('Lang.Allow.',      langAllow),
+    line('C.O.L 2500/5000',  colAllow),
+    line('Tel.Allow.',       telAllow),
+    line('Fuel Allow.',      fuelAllow),
+    line('OT',               otAllow),
+    line('Basic Arrears',    basicArrears),
+    line('SUB.TOTAL',        subTotal),
+    sep,
+    line('Executive all.',   execAllow),
+    sep,
+    line('Gross Pay',        grossPay),
+    sep,
+    center('D E D U C T I O N S'),
+    line('W.&.O.P(1)',       wop),
+    line('AGRAHARA',         agrahara),
+    line('A.P.I.T.',         apit),
+    line('STAMP',            stamp),
+    line('UNION',            union),
+    line('News Payment',     newsPayment),
+    line('Mileage',          mileage),
+    line('WOP Arrears',      wopArrears),
+    line('Dist.Loan',        distLoan),
+    line('Bank ded/Rental',  bankDed),
+    line('EMP.SUP.LOAN',     empSupLoan),
+    blank,
+    line('Tot.Ded.',         totalDed),
+    sep,
+    line('N E T  P A Y',    net),
+    center('B/F:0.00  PAID: ' + fmtNum(net) + '  C/R:0.00'),
+    top,
+  ].join('\n');
+
+  const win = window.open('', '_blank', 'width=560,height=800');
+  if (!win) {
+    alert('Popup blocked! Please allow popups for this site and try again.');
+    return;
+  }
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <title>Pay Slip - ${s.emp_no}</title>
+  <style>
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      background: #fff;
+      color: #000;
+      padding: 30px;
+      white-space: pre;
+      line-height: 1.6;
+      margin: 0;
+    }
+    @media print { body { padding: 10px; } }
+  </style>
+</head>
+<body>${receipt}</body>
+</html>`);
+  win.document.close();
+  win.focus();
+  setTimeout(() => win.print(), 400);
+}
+
+
+///  this function is not working properly because of the length of the values, we need to add guards to handle cases where the formatted number exceeds the available width. The current implementation assumes that all values will fit within the defined width, which may not always be the case, especially for larger numbers. To fix this, we can add a check to see if the formatted number exceeds the available space and adjust the formatting accordingly, such as by truncating the number or using a smaller font size in the printed version.
+function printReceiptFormati(i) {
   const s = slips[i]; 
   const W = 36; // inner width (between the | pipes)
 
@@ -683,7 +820,7 @@ function printReceiptFormat(i) {
   const empSupLoan  = parseFloat(s.emp_sup_loan)        || 0;  
     
 
-  const total_earnings     = s.basic_salary + langAllow + colAllow + telephone_allowance + fuelAllow + otAllow + basic_arrears;
+  const total_earnings     = basic_salary + langAllow + colAllow + telephone_allowance + fuelAllow + otAllow + basic_arrears;
   const grossPay      = total_earnings + executive_allowance;
 
   const total_deductions     = wop + agrahara + apit + stamp + union + news_payment + mileage + wop_arrears + distLoan + bankDed + empSupLoan;
@@ -701,7 +838,7 @@ function printReceiptFormat(i) {
     center(`${s.designation}`),
     sep,
     center('E A R N I N G S'),
-    line('Basic',              s.basic_salary),
+    line('Basic',              basic_salary),
     line('Lang.Allow.',        langAllow),
     line('C.O.L 2500/5000',   colAllow),
     line('Tel.Allow.',        telephone_allowance),
@@ -761,7 +898,7 @@ function printReceiptFormat(i) {
 </html>`);
   win.document.close();
   win.focus();
-  setTimeout(() => win.print(), 300); // slight delay so window renders first
+  setTimeout(() => win.print(), 300); 
 } 
 
 
