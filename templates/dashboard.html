@@ -334,7 +334,7 @@ body{
     <div class="profile-mini">
       <div class="avatar-ring" id="sb-avatar">{{ session.name[:2].upper() }}</div>
       <div>
-        <div class="pmi-name" id="sb-name">{{ session.name.split()[-1] if session.name else '' }}</div>
+        <div class="pmi-name" style="color: var(--green-lite);" id="sb-name">{{ session.name.split()[-1] if session.name else '' }}</div>
         <div class="pmi-desig">{{ session.designation }}</div>
       </div>
       <div class="online-dot"></div>
