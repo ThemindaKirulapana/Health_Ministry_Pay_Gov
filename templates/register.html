@@ -472,7 +472,7 @@ function checkPassword(val) {
   setRule('rule-at',    hasAt);
 
   // Strength bar
-  const score = [hasLen, hasUpper, hasAt].filter(Boolean).length;
+  const score = [hasLen, hasUpper, hasAt ,hasSim].filter(Boolean).length;
   const fill  = document.getElementById('pw-fill');
   const pcts  = ['0%', '33%', '66%', '100%'];
   const cols  = ['transparent', '#e08070', '#e8c97a', '#52b788'];
@@ -545,7 +545,7 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
   const hasAt    = pw.includes('@');
   const hasSim= /[a-z]/.test(pw);
 
-  if (!hasLen || !hasUpper || !hasAt) {
+  if (!hasLen || !hasUpper || !hasAt || !hasSim) {
     pwEl.classList.add('input-error');
     pwEl.classList.remove('input-ok');
 
