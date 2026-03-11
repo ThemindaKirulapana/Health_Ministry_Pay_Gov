@@ -68,7 +68,20 @@ body{
 }
 .pmi-name{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--white);}
 .pmi-desig{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--green-lite);letter-spacing:.8px;margin-top:2px;}
-.online-dot{width:7px;height:7px;background:var(--green-lite);border-radius:50%;margin-left:auto;flex-shrink:0;box-shadow:0 0 6px var(--green-lite);animation:blink 2s infinite;}
+.online-dot {
+  width: 10px;
+  height: 10px;
+  background:rgb(235, 220, 118);
+  border-radius: 50%;
+  margin-left: auto;
+  flex-shrink: 0;
+  box-shadow: 
+    0 0 6px #ffdd00,
+    0 0 12px #ffdd00,
+    0 0 24px #ffdd00,
+    0 0 60px #ffdd00;
+  animation: blink 2s infinite;
+}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:.35;}}
 
 .nav{padding:16px 0;flex:1;}
@@ -342,7 +355,7 @@ body{
       <span class="nav-icon">👤</span> My Profile
     </div>
   </nav>
-
+  
   <div class="sidebar-footer">
     <button class="logout-btn" onclick="openLogout()">
       <span>⏻</span> Logout
@@ -680,7 +693,9 @@ function printReceiptFormat(i) {
   const grossPay      = subTotal + execAllow;
   const totalDed      = wop + agrahara + apit + stamp + union + newsPayment + mileage + wopArrears + distLoan + bankDed + empSupLoan;
   const net           = grossPay - totalDed;
-
+  
+  // Helper function — add this inside printReceiptFormat, near the top
+ 
   const receipt = [
     top,
     center('MINISTRY OF HEALTH'),
@@ -755,7 +770,7 @@ function printReceiptFormat(i) {
 }
 
 
-/// 1 this function is not working properly because of the length of the values, we need to add guards to handle cases where the formatted number exceeds the available width. The current implementation assumes that all values will fit within the defined width, which may not always be the case, especially for larger numbers. To fix this, we can add a check to see if the formatted number exceeds the available space and adjust the formatting accordingly, such as by truncating the number or using a smaller font size in the printed version.
+///  this function is not working properly because of the length of the values, we need to add guards to handle cases where the formatted number exceeds the available width. The current implementation assumes that all values will fit within the defined width, which may not always be the case, especially for larger numbers. To fix this, we can add a check to see if the formatted number exceeds the available space and adjust the formatting accordingly, such as by truncating the number or using a smaller font size in the printed version.
 function printReceiptFormati(i) {
   const s = slips[i]; 
   const W = 36; // inner width (between the | pipes)
