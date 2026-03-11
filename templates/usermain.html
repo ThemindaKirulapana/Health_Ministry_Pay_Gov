@@ -582,6 +582,35 @@
   .content > *:nth-child(3) { animation-delay: 0.12s; }
   .content > *:nth-child(4) { animation-delay: 0.18s; }
 </style>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    function recalculate() {
+      var earningFields = ['basic_salary','language_allowance','coliving','telephone_allowance','fuel_allowance','executive_allowance','extra_duty_ot','basic_arrears'];
+      var deductionFields = ['wop','agrahara','apit_tax','stamp_duty','union_fee','news_payment','mileage','wop_arrears','distress_loan'];
+  
+      var totalEarnings = 0;
+      earningFields.forEach(function(name) {
+        var el = document.querySelector('[name="' + name + '"]');
+        totalEarnings += el ? (parseFloat(el.value) || 0) : 0;
+      });
+  
+      var totalDeductions = 0;
+      deductionFields.forEach(function(name) {
+        var el = document.querySelector('[name="' + name + '"]');
+        totalDeductions += el ? (parseFloat(el.value) || 0) : 0;
+      });
+  
+      document.getElementById('total_earnings').value = totalEarnings.toFixed(2);
+      document.getElementById('total_deductions').value = totalDeductions.toFixed(2);
+      document.getElementById('net_salary').value = (totalEarnings - totalDeductions).toFixed(2);
+    }
+  
+    document.getElementById('salaryForm').addEventListener('input', recalculate);
+  
+  });
+</script>
+
 </head>
 <body>
 
@@ -590,7 +619,7 @@
   <div class="sidebar-logo">
     <div class="emblem">🏥</div>
     <h1>Ministry of Health<br>Sri Lanka</h1>
-    <p>Salary Management</p>
+    <p style="font-size: small;">Salary Management System</p>
     
   </div>
   
@@ -638,7 +667,7 @@
       <span>Salary Management</span> Information System
     </div>
     <div class="topbar-right">
-      <div class="badge-time" id="clock"></div>
+      <div class="badge-time" style="font-size: small;" id="clock"></div>
       <div class="badge-super">Super Admin</div>
     </div>
   </div>
@@ -695,7 +724,7 @@
         {% endwith %}
     
         
-        <form method="POST" action="/save_salary">
+        <form method="POST" action="/save_salary"  id="salaryForm">
           <div class="panel-body">
           <div class="form-grid">
         <div class="card-section" style="grid-column: 1 / -1; margin-bottom: 24px; border-bottom: 1px solid var(--navy-border); padding-bottom: 12px;">
@@ -731,7 +760,7 @@
           <!-- Salary -->
           <div class="form-group">
           <label class="form-label">Basic Salary</label>
-          <input class="form-input" name="basic_salary" type="number" step="0.01">
+          <input class="form-input" name="basic_salary" type="number" step="0.01" required>
           </div>
           
           <div class="form-group">
@@ -771,7 +800,7 @@
           
           <div class="form-group">
           <label class="form-label" style="color: #4dd88a; font-weight: bold;">Total Earnings</label>
-          <input class="form-input" name="total_earnings" type="number" step="0.01">
+          <input class="form-input"  id="total_earnings" name="total_earnings" type="number" step="0.01" readonly>
           </div>
         </div>
         
@@ -825,19 +854,19 @@
           
           <div class="form-group">
           <label class="form-label" style="color:#c0392b; font-weight: bold;">Total Deductions</label>
-          <input class="form-input" name="total_deductions" type="number" step="0.01">
+          <input class="form-input" id="total_deductions" name="total_deductions" type="number" step="0.01" readonly>
           </div>
         </div>
         <div class="card-section" style="grid-column: 1;   margin-bottom: 24px; border-bottom: 1px solid var(--navy-border); padding-bottom: 12px;">
         <p style="color:rgb(93, 190, 71);">NET SALARY</p>
           <div class="form-group">
           <label class="form-label">Net Salary</label>
-          <input class="form-input" name="net_salary" type="number" step="0.01">
+          <input class="form-input"  id="net_salary" name="net_salary" type="number" step="0.01" readonly>
           </div>
         </div>
         <div class="card-section" style="grid-column:1/-1;">
          <p style="color:rgb(232, 76, 118);">OTHER DETAILS</p>          
-          <!-- Other -->
+          <!-- Other --> 
           <div class="form-group">
           <label class="form-label">Pay Period</label>
           <input class="form-input" name="pay_period" type="month">
@@ -1005,6 +1034,7 @@ function closeLogout() { document.getElementById('logout-modal').classList.remov
 
 // ── INIT ──
 renderTable(); renderEmp();
+
 </script>
 </body>
 </html>
