@@ -41,7 +41,7 @@ body::before{
   content:'';
   position:fixed;inset:0;
   background:
-    radial-gradient(ellipse 700px 500px at 20% 20%, rgba(165, 162, 71, 0.07) 0%, transparent 65%),
+    radial-gradient(ellipse 700px 500px at 20% 20%, rgba(165,162,71,0.07) 0%, transparent 65%),
     radial-gradient(ellipse 500px 400px at 80% 80%, rgba(58,140,104,0.05) 0%, transparent 65%);
   pointer-events:none;
 }
@@ -159,6 +159,14 @@ body::before{
   border-color:var(--green-mid);
   box-shadow:0 0 0 3px rgba(58,140,104,0.12);
 }
+.f-inp.input-error{
+  border-color:rgba(176,80,64,0.7) !important;
+  box-shadow:0 0 0 3px rgba(176,80,64,0.1) !important;
+}
+.f-inp.input-ok{
+  border-color:rgba(82,183,136,0.5);
+  box-shadow:0 0 0 3px rgba(82,183,136,0.07);
+}
 .f-inp::placeholder{color:var(--muted);font-size:13px;}
 
 /* select wrapper for custom arrow */
@@ -170,6 +178,57 @@ body::before{
 }
 .f-select{padding-right:34px;cursor:pointer;}
 .f-select option{background:var(--bg3);color:var(--cream);}
+
+/* ── PASSWORD STRENGTH ── */
+.pw-wrap{ position:relative; }
+.pw-toggle{
+  position:absolute;right:13px;top:50%;transform:translateY(-50%);
+  cursor:pointer;font-size:15px;color:var(--muted);
+  user-select:none;transition:color .2s;
+}
+.pw-toggle:hover{ color:var(--cream); }
+
+/* strength bar */
+.pw-strength-bar{
+  height:3px;border-radius:2px;margin-top:6px;
+  background:var(--border2);overflow:hidden;
+}
+.pw-strength-fill{
+  height:100%;border-radius:2px;width:0%;
+  transition:width .35s ease, background .35s ease;
+}
+
+/* requirements checklist */
+.pw-rules{
+  margin-top:8px;
+  display:flex;flex-direction:column;gap:4px;
+}
+.pw-rule{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;letter-spacing:.3px;
+  color:var(--muted);
+  display:flex;align-items:center;gap:6px;
+  transition:color .2s;
+}
+.pw-rule .dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--border2);flex-shrink:0;
+  transition:background .2s;
+}
+.pw-rule.ok{ color:var(--green-lite); }
+.pw-rule.ok .dot{ background:var(--green-lite); }
+.pw-rule.fail{ color:#e08070; }
+.pw-rule.fail .dot{ background:#e08070; }
+
+/* field error hint */
+.f-error{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;color:#e08070;
+  letter-spacing:.3px;
+  display:none;
+  margin-top:2px;
+}
+.f-error.show{ display:block; }
 
 /* role pills */
 .role-group{
@@ -221,6 +280,9 @@ body::before{
   filter:brightness(1.12);
   box-shadow:0 6px 24px rgba(58,140,104,0.3);
 }
+.btn-register:disabled{
+  opacity:0.45;cursor:not-allowed;filter:none;box-shadow:none;
+}
 
 /* login link */
 .login-link{
@@ -261,7 +323,7 @@ body::before{
   <div class="form-title">Create Account</div>
   <div class="form-sub">Register as a new employee or administrator</div>
 
-  <!-- Flash messages -->
+  <!-- Flash messages (from Flask — duplicate user, success, etc.) -->
   {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
       {% for category, message in messages %}
@@ -273,44 +335,76 @@ body::before{
   {% endwith %}
 
   <!-- Form -->
-  <form action="/register" method="POST">
+  <form action="/register" method="POST" id="registerForm" novalidate>
 
     <div class="form-grid">
 
       <!-- Employee No -->
       <div class="f-grp">
         <label class="f-lbl">Employee No</label>
-        <input class="f-inp" type="text" name="emp_no" placeholder="e.g. 2005" required>
+        <input class="f-inp" type="text" name="emp_no" id="emp_no" placeholder="e.g. 2005" required>
+        <span class="f-error" id="err-emp_no">Employee number is required.</span>
       </div>
 
       <!-- Full Name -->
       <div class="f-grp">
         <label class="f-lbl">Full Name</label>
-        <input class="f-inp" type="text" name="Name" placeholder="Dr. Kamal Perera" required>
+        <input class="f-inp" type="text" name="Name" id="fullname" placeholder="Dr. Kamal Perera" required>
+        <span class="f-error" id="err-fullname">Full name is required.</span>
       </div>
 
       <!-- Designation -->
       <div class="f-grp">
         <label class="f-lbl">Designation</label>
-        <input class="f-inp" type="text" name="designation" placeholder="e.g. Doctor" required>
+        <input class="f-inp" type="text" name="designation" id="designation" placeholder="e.g. Doctor" required>
+        <span class="f-error" id="err-designation">Designation is required.</span>
       </div>
 
       <!-- Department -->
       <div class="f-grp">
         <label class="f-lbl">Department</label>
-        <input class="f-inp" type="text" name="department" placeholder="e.g. Cardiology" required>
+        <input class="f-inp" type="text" name="department" id="department" placeholder="e.g. Cardiology" required>
+        <span class="f-error" id="err-department">Department is required.</span>
       </div>
 
       <!-- Email -->
       <div class="f-grp f-full">
         <label class="f-lbl">Email Address</label>
-        <input class="f-inp" type="text" name="email" placeholder="kamal@health.gov.lk" required>
+        <input class="f-inp" type="text" name="email" id="email" placeholder="kamal@health.gov.lk" required>
+        <span class="f-error" id="err-email">Enter a valid email address.</span>
       </div>
 
       <!-- Password -->
       <div class="f-grp f-full">
         <label class="f-lbl">Password</label>
-        <input class="f-inp" type="password" name="password" placeholder="••••••••" required>
+        <div class="pw-wrap">
+          <input class="f-inp" type="password" name="password" id="password"
+                 placeholder="••••••••" required autocomplete="new-password"
+                 style="padding-right:40px;" oninput="checkPassword(this.value)">
+          <span class="pw-toggle" onclick="togglePw()" id="pw-eye">👁</span>
+        </div>
+
+        <!-- Strength bar -->
+        <div class="pw-strength-bar">
+          <div class="pw-strength-fill" id="pw-fill"></div>
+        </div>
+
+        <!-- Rules checklist -->
+        <div class="pw-rules">
+          <div class="pw-rule" id="rule-len">
+            <span class="dot"></span> At least 6 characters
+          </div>
+          <div class="pw-rule" id="rule-upper">
+            <span class="dot"></span> At least one Capital letter (A–Z)
+          </div>
+          <div class="pw-rule" id="rule-upper">
+            <span class="dot"></span> At least one Simple letter (a–z)
+          </div>
+          <div class="pw-rule" id="rule-at">
+            <span class="dot"></span> Must contain the @ symbol
+          </div>
+        </div>
+        <span class="f-error" id="err-password">Password does not meet all requirements.</span>
       </div>
 
       <!-- Role -->
@@ -332,7 +426,7 @@ body::before{
 
     <hr class="divider">
 
-    <button class="btn-register" type="submit">Create Account →</button>
+    <button class="btn-register" type="submit" id="submit-btn">Create Account →</button>
   </form>
 
   <div class="login-link">
@@ -347,10 +441,138 @@ body::before{
 </div>
 
 <script>
+// ── ROLE PILLS ──
 function selectRole(role) {
   document.getElementById('pill-employee').classList.toggle('selected', role === 'employee');
   document.getElementById('pill-admin').classList.toggle('selected', role === 'admin');
 }
+
+// ── PASSWORD SHOW / HIDE ──
+function togglePw() {
+  const inp = document.getElementById('password');
+  const eye = document.getElementById('pw-eye');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    eye.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    eye.textContent = '👁';
+  }
+}
+
+// ── PASSWORD LIVE VALIDATION ──
+function checkPassword(val) {
+  const hasLen   = val.length >= 6;
+  const hasUpper = /[A-Z]/.test(val);
+  const hasSim= /[a-z]/.test(val);
+  const hasAt    = val.includes('@');
+
+  setRule('rule-len',   hasLen);
+  setRule('rule-upper', hasUpper);
+  setRule('rule-at',    hasAt);
+
+  // Strength bar
+  const score = [hasLen, hasUpper, hasAt].filter(Boolean).length;
+  const fill  = document.getElementById('pw-fill');
+  const pcts  = ['0%', '33%', '66%', '100%'];
+  const cols  = ['transparent', '#e08070', '#e8c97a', '#52b788'];
+  fill.style.width      = pcts[score];
+  fill.style.background = cols[score];
+
+  // Hide error once valid
+  if (hasLen && hasUpper && hasAt) {
+    document.getElementById('err-password').classList.remove('show');
+    document.getElementById('password').classList.remove('input-error');
+    document.getElementById('password').classList.add('input-ok');
+  } else if (val.length > 0) {
+    document.getElementById('password').classList.remove('input-ok');
+  }
+}
+
+function setRule(id, pass) {
+  const el = document.getElementById(id);
+  el.classList.toggle('ok',   pass);
+  el.classList.toggle('fail', !pass && document.getElementById('password').value.length > 0);
+}
+
+// ── FORM SUBMIT VALIDATION ──
+document.getElementById('registerForm').addEventListener('submit', function(e) {
+  let valid = true;
+
+  // Simple required fields
+  const required = [
+    { id: 'emp_no',      errId: 'err-emp_no',      msg: 'Employee number is required.' },
+    { id: 'fullname',    errId: 'err-fullname',    msg: 'Full name is required.' },
+    { id: 'designation', errId: 'err-designation', msg: 'Designation is required.' },
+    { id: 'department',  errId: 'err-department',  msg: 'Department is required.' },
+  ];
+
+  required.forEach(function(f) {
+    const el  = document.getElementById(f.id);
+    const err = document.getElementById(f.errId);
+    if (!el.value.trim()) {
+      el.classList.add('input-error');
+      err.textContent = f.msg;
+      err.classList.add('show');
+      valid = false;
+    } else {
+      el.classList.remove('input-error');
+      err.classList.remove('show');
+    }
+  });
+
+  // Email check
+  const emailEl  = document.getElementById('email');
+  const emailErr = document.getElementById('err-email');
+  const emailVal = emailEl.value.trim();
+  if (!emailVal || !emailVal.includes('@') || !emailVal.includes('.')) {
+    emailEl.classList.add('input-error');
+    emailErr.textContent = 'Enter a valid email address (e.g. name@domain.com).';
+    emailErr.classList.add('show');
+    valid = false;
+  } else {
+    emailEl.classList.remove('input-error');
+    emailErr.classList.remove('show');
+  }
+
+  // Password check — must have @, uppercase, and min 3 chars
+  const pw    = document.getElementById('password').value;
+  const pwErr = document.getElementById('err-password');
+  const pwEl  = document.getElementById('password');
+
+  const hasLen   = pw.length >= 6;
+  const hasUpper = /[A-Z]/.test(pw);
+  const hasAt    = pw.includes('@');
+  const hasSim= /[a-z]/.test(pw);
+
+  if (!hasLen || !hasUpper || !hasAt) {
+    pwEl.classList.add('input-error');
+    pwEl.classList.remove('input-ok');
+
+    // Specific message about what's missing
+    let missing = [];
+    if (!hasLen)   missing.push('at least 6 characters');
+    if (!hasUpper) missing.push('an uppercase letter');
+    if (!hasAt)    missing.push('the @ symbol');
+    if (!hasSim)   missing.push('a lowercase letter');
+    pwErr.textContent = 'Password must include: ' + missing.join(', ') + '.';
+    pwErr.classList.add('show');
+
+    // Also trigger rule highlights
+    checkPassword(pw);
+    valid = false;
+  } else {
+    pwEl.classList.remove('input-error');
+    pwErr.classList.remove('show');
+  }
+
+  if (!valid) {
+    e.preventDefault(); // stop form submit
+    // Scroll to first error
+    const firstError = document.querySelector('.input-error');
+    if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+});
 </script>
 
 </body>

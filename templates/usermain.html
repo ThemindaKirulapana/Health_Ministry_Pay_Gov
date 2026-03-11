@@ -890,7 +890,7 @@ function renderSalaryTable(rows) {
     </table>`;
 }
 
-// ── MODAL HELPERS ──
+
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 // Close on overlay click
@@ -952,6 +952,7 @@ function openView(id) {
     <div class="net-box">
       <div class="net-label">Net Salary</div>
       <div class="net-amount">LKR ${fmt(r.net_salary)}</div>
+      
     </div>
     ${r.remarks ? `<div class="remarks-row">📝 Remarks: ${r.remarks}</div>` : ''}
   `;
