@@ -7,12 +7,12 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'ministrypay_secret_2026'
 
-# ── DB CONFIG ──────────────────────────────────────────────
+# ── DATABASE CONFIGURATION ─────────────────────────────────
 DB_CONFIG = {
     'host': '127.0.0.1',
     'database': 'ministrypay',
     'user': 'root',
-    'password': 'THrenuka*123'          # change to your MySQL password
+    'password': 'THrenuka*123'          
 }
 
 def get_db():
@@ -139,13 +139,13 @@ def login():
 
     return render_template('login.html', error=error)
 
-# ── LOGOUT ────────────────────────────────────────────────
+# ── logout
 @app.route('/logout')
 def logout():
     session.clear()
     return redirect(url_for('login'))
 
-# ── DASHBOARD (main page) ─────────────────────────────────
+# ── dashbord  ─────────────────────────────────
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -181,7 +181,7 @@ def dashboard():
                            latest=latest,
                            recent=recent)
 
-# ── API: LAST 6 MONTHS PAYSLIPS ───────────────────────────
+# ─ LAST 6 MONTHS PAYSLIPS ───────────────────────────
 @app.route('/api/payslips')
 @login_required
 def api_payslips():
@@ -239,7 +239,7 @@ def api_payslips():
 
     return jsonify(result)
 
-# ── API: UPDATE PROFILE ───────────────────────────────────
+#  UPDATE PROFILE ───────────────────────────────────
 @app.route('/api/update_profile', methods=['POST'])
 @login_required
 def update_profile():
@@ -276,7 +276,7 @@ def update_profile():
     except Error as e:
         return jsonify({'success': False, 'message': str(e)})
 
-# ── API: CHANGE PASSWORD ──────────────────────────────────
+# CHANGE PASSWORD ──────────────────────────────────
 @app.route('/api/change_password', methods=['POST'])
 @login_required
 def change_password():
@@ -408,6 +408,110 @@ def save_salary():
 
 
 
-# ─────────────────────────────────────────────────────────
+# ── ALL SALARY RECORDS (admin) 
+@app.route('/api/all_salaries')
+@login_required
+def api_all_salaries():
+    conn = get_db()
+    rows = []
+    if conn:
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT * FROM salary
+            ORDER BY pay_period DESC
+        """)
+        rows = cursor.fetchall()
+        cursor.close()
+        conn.close()
+
+    result = []
+    for r in rows:
+        result.append({
+            'id':                   r['id'],
+            'emp_no':               r['emp_no'],
+            'name':                 r['name'],
+            'designation':          r['designation'],
+            'pay_period':           str(r['pay_period']) if r['pay_period'] else '',
+            'status':               r['status'],
+            'basic_salary':         float(r['basic_salary']          or 0),
+            'language_allowance':   float(r['language_allowance']    or 0),
+            'coliving':             float(r['coliving']              or 0),
+            'telephone_allowance':  float(r['telephone_allowance']   or 0),
+            'fuel_allowance':       float(r['fuel_allowance']        or 0),
+            'executive_allowance':  float(r['executive_allowance']   or 0),
+            'extra_duty_ot':        float(r['extra_duty_ot']         or 0),
+            'basic_arrears':        float(r['basic_arrears']         or 0),
+            'total_earnings':       float(r['total_earnings']        or 0),
+            'wop':                  float(r['wop']                   or 0),
+            'agrahara':             float(r['agrahara']              or 0),
+            'apit_tax':             float(r['apit_tax']              or 0),
+            'stamp_duty':           float(r['stamp_duty']            or 0),
+            'union_fee':            float(r['union_fee']             or 0),
+            'news_payment':         float(r['news_payment']          or 0),
+            'mileage':              float(r['mileage']               or 0),
+            'wop_arrears':          float(r['wop_arrears']           or 0),
+            'distress_loan':        float(r['distress_loan']         or 0),
+            'total_deductions':     float(r['total_deductions']      or 0),
+            'net_salary':           float(r['net_salary']            or 0),
+            'remarks':              r['remarks'] or '',
+        })
+    return jsonify(result)
+
+
+# ─ UPDATE SALARY RECORD ────
+@app.route('/api/update_salary/<int:record_id>', methods=['POST'])
+@login_required
+def update_salary(record_id):
+    data = request.get_json()
+
+    fields = [
+        'name', 'designation', 'pay_period', 'status', 'remarks',
+        'basic_salary', 'language_allowance', 'coliving',
+        'telephone_allowance', 'fuel_allowance', 'executive_allowance',
+        'extra_duty_ot', 'basic_arrears', 'total_earnings',
+        'wop', 'agrahara', 'apit_tax', 'stamp_duty', 'union_fee',
+        'news_payment', 'mileage', 'wop_arrears', 'distress_loan',
+        'total_deductions', 'net_salary'
+    ]
+
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error.'})
+
+    try:
+        cursor = conn.cursor()
+        set_clause = ', '.join(f"`{f}` = %s" for f in fields)
+        values = [data.get(f) for f in fields] + [record_id]
+        cursor.execute(
+            f"UPDATE salary SET {set_clause} WHERE id = %s", values
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'success': True, 'message': 'Record updated.'})
+    except Error as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+# DELETE SALARY RECORD ─────
+@app.route('/api/delete_salary/<int:record_id>', methods=['DELETE'])
+@login_required
+def delete_salary(record_id):
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error.'})
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM salary WHERE id = %s", (record_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'success': True, 'message': 'Record deleted.'})
+    except Error as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
