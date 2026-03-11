@@ -328,13 +328,13 @@ body{
       <div class="logo-emblem">🏥</div>
       <div class="logo-text">
         <h1>Ministry of Health<br>Sri Lanka</h1>
-        <p>Employee Portal</p>
+        <p style="font-size:12px;">Employee Portal</p>
       </div>
     </div>
     <div class="profile-mini">
       <div class="avatar-ring" id="sb-avatar">{{ session.name[:2].upper() }}</div>
       <div>
-        <div class="pmi-name" style="color: var(--green-lite);" id="sb-name">{{ session.name.split()[-1] if session.name else '' }}</div>
+        <div class="pmi-name" style="color: var(--green-lite); font-family: 'Courier New', Courier, monospace; font-size: medium;" id="sb-name">{{ session.name.split()[-1] if session.name else '' }}</div>
         <div class="pmi-desig">{{ session.designation }}</div>
       </div>
       <div class="online-dot"></div>
@@ -368,7 +368,7 @@ body{
   <div class="topbar">
     <div>
       <div class="tb-page" id="page-title"><span>Overview</span></div>
-      <div class="tb-sub">Ministry of Health Sri Lanka — Salary Management System</div>
+      <div class="tb-sub" style="font-size: medium;">Ministry of Health Sri Lanka — Salary Management System</div>
     </div>
     <div class="tb-right">
       <div class="clock" id="clock"></div>
