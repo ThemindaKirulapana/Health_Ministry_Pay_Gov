@@ -355,20 +355,46 @@ body::before{
         <span class="f-error" id="err-fullname">Full name is required.</span>
       </div>
 
-      <!-- Designation -->
-      <div class="f-grp">
-        <label class="f-lbl">Designation</label>
-        <input class="f-inp" type="text" name="designation" id="designation" placeholder="e.g. Doctor" required>
-        <span class="f-error" id="err-designation">Designation is required.</span>
-      </div>
+     <!-- Designation -->
+<div class="f-grp">
+  <label class="f-lbl">Designation</label>
+  <div class="select-wrap">
+    <select class="f-select" name="designation" id="designation" required>
+      <option value="">Select designation</option>
+      <option>Director</option>
+      <option>Ass.Director</option>
+      <option>Accountant</option>
+      <option>Doctor</option>
+      <option>Medical Officer</option>
+      <option>Nurse</option>
+      <option>Lab Technician</option>
+      <option>Administrative Officer</option>
+      <option>Clerk</option>
+    </select>
+  </div>
+  <span class="f-error" id="err-designation">Designation is required.</span>
+</div>
 
-      <!-- Department -->
-      <div class="f-grp">
-        <label class="f-lbl">Department</label>
-        <input class="f-inp" type="text" name="department" id="department" placeholder="e.g. Cardiology" required>
-        <span class="f-error" id="err-department">Department is required.</span>
-      </div>
-
+<!-- Department -->
+<div class="f-grp">
+  <label class="f-lbl">Department</label>
+  <div class="select-wrap">
+    <select class="f-select" name="department" id="department" required>
+      <option value="">Select department</option>
+      <option>Cardiology</option>
+      <option>Neurology</option>
+      <option>Pediatrics</option>
+      <option>Oncology</option>
+      <option>Radiology</option>
+      <option>Pathology</option>
+      <option>Surgery</option>
+      <option>Administration</option>
+      <option>Finance</option>
+      <option>Laboratory</option>
+    </select>
+  </div>
+  <span class="f-error" id="err-department">Department is required.</span>
+</div>
       <!-- Email -->
       <div class="f-grp f-full">
         <label class="f-lbl">Email Address</label>
@@ -399,7 +425,7 @@ body::before{
           <div class="pw-rule" id="rule-upper">
             <span class="dot"></span> At least one Capital letter (A–Z)
           </div>
-          <div class="pw-rule" id="rule-upper">
+          <div class="pw-rule" id="rule-sim">
             <span class="dot"></span> At least one Simple letter (a–z)
           </div>
           <div class="pw-rule" id="rule-at">
@@ -472,17 +498,18 @@ function checkPassword(val) {
   setRule('rule-len',   hasLen);
   setRule('rule-upper', hasUpper);
   setRule('rule-at',    hasAt);
+  setRule('rule-sim',    hasSim);
 
   // Strength bar
   const score = [hasLen, hasUpper, hasAt ,hasSim].filter(Boolean).length;
   const fill  = document.getElementById('pw-fill');
-  const pcts  = ['0%', '33%', '66%', '100%'];
-  const cols  = ['transparent', '#e08070', '#e8c97a', '#52b788'];
+  const pcts  = ['0%','25%', '50%', '75%', '100%'];
+  const cols  = ['transparent', '#e08070', '#e8c97a', '#52b788' ,'#2d6a4f'];
   fill.style.width      = pcts[score];
   fill.style.background = cols[score];
 
   // Hide error once valid
-  if (hasLen && hasUpper && hasAt) {
+  if (hasLen && hasUpper && hasAt && hasSim) {
     document.getElementById('err-password').classList.remove('show');
     document.getElementById('password').classList.remove('input-error');
     document.getElementById('password').classList.add('input-ok');
@@ -505,8 +532,8 @@ document.getElementById('registerForm').addEventListener('submit', function(e) {
   const required = [
     { id: 'emp_no',      errId: 'err-emp_no',      msg: 'Employee number is required.' },
     { id: 'fullname',    errId: 'err-fullname',    msg: 'Full name is required.' },
-    { id: 'designation', errId: 'err-designation', msg: 'Designation is required.' },
-    { id: 'department',  errId: 'err-department',  msg: 'Department is required.' },
+    { id: 'designation', errId: 'err-designation', msg: 'Please select a designation.' },
+    { id: 'department',  errId: 'err-department',  msg: 'Please select a depatement.' },
   ];
 
   required.forEach(function(f) {
