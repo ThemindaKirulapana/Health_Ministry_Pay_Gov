@@ -104,6 +104,20 @@ body::before{
   color:var(--muted);letter-spacing:.5px;line-height:1.7;
 }
 
+  .pw-wrapper {
+    position: relative;
+  }
+  .pw-toggle {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+    color: wheat;
+  }
+
 </style>
 </head>
 <body>
@@ -132,7 +146,11 @@ body::before{
     </div>
     <div class="form-group">
       <label class="form-label">Password</label>
-      <input class="form-input" type="password" name="password" placeholder="••••••••" required>
+      <div class="pw-wrapper">
+        <input class="form-input" type="password" name="password" id="password" 
+               placeholder="••••••••" required style="padding-right: 40px;">
+        <span class="pw-toggle" onclick="togglePw()" id="pw-eye" >👁</span>
+      </div>
     </div>
     <button class="btn-login" type="submit">Sign In →</button>
     <p style=" margin-top:12px; font-family:'IBM Plex Mono',monospace;font-size:13px; color:var(--muted); text-align:center;">
@@ -147,4 +165,18 @@ body::before{
   </div>
 </div>
 </body>
+<script>
+  // ── PASSWORD SHOW / HIDE ──
+function togglePw() {
+  const inp = document.getElementById('password');
+  const eye = document.getElementById('pw-eye');
+  if (inp.type === 'password') {
+    inp.type = 'text';
+    eye.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    eye.textContent = '👁';
+  }
+}
+</script>
 </html>
