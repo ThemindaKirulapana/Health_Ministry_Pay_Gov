@@ -1,79 +1,345 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <title>Ministry Pay System</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sri Lanka Health Ministry Pay System</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #1e3c72, #2a5298);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: white;
-            text-align: center;
-        }
+    :root {
+      --gold: #C9A84C;
+      --gold-light: #E8C96D;
+      --gold-dim: rgba(201,168,76,0.15);
+      --navy: #0A1628;
+      --navy-mid: #112240;
+      --navy-light: #1A3560;
+      --white: #F4F1EB;
+      --muted: rgba(244,241,235,0.55);
+    }
 
-        .container {
-            background: rgba(0, 0, 0, 0.4);
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.3);
-            width: 400px;
-        }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--navy);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      color: var(--white);
+    }
 
-        h1 {
-            margin-bottom: 20px;
-        }
+    /* Animated background */
+    .bg-layer {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(26,53,96,0.9) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 70%, rgba(17,34,64,0.95) 0%, transparent 60%),
+        linear-gradient(160deg, #0A1628 0%, #0E1E3D 50%, #0A1628 100%);
+    }
 
-        p {
-            font-size: 18px;
-        }
+    .bg-grid {
+      position: fixed; inset: 0; z-index: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+    }
 
-        .logo {
-            margin-top: 10px;
-            width: 100px;
-            margin: 20px 0;   /* space above and below image */
-        }
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(80px); z-index: 0; pointer-events: none;
+      animation: float 12s ease-in-out infinite alternate;
+    }
+    .orb-1 { width: 400px; height: 400px; top: -100px; left: -100px; background: rgba(201,168,76,0.06); animation-delay: 0s; }
+    .orb-2 { width: 500px; height: 500px; bottom: -150px; right: -100px; background: rgba(26,53,96,0.5); animation-delay: -4s; }
+    .orb-3 { width: 300px; height: 300px; top: 50%; left: 50%; background: rgba(201,168,76,0.04); animation-delay: -8s; }
 
-        .login-btn {
-            display: inline-block;
-            margin-top: logo ? 200px : 0; /* Add margin if logo is present */
-            padding: 10px 20px;
-            background-color:rgb(17, 96, 36);
-            width: 75%;
-            padding: 10px;
-           
-            color: white;
-            border: none;
-        
-            text-decoration: none;
-            border-radius: 5px;
-            margin-left: 20px;
+    @keyframes float {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, 20px) scale(1.1); }
+    }
 
-        }
+    /* Main card */
+    .card {
+      position: relative; z-index: 10;
+      width: min(460px, 92vw);
+      background: rgba(17,34,64,0.6);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 4px;
+      padding: 52px 48px 44px;
+      backdrop-filter: blur(20px);
+      box-shadow:
+        0 0 0 1px rgba(201,168,76,0.08),
+        0 40px 80px rgba(0,0,0,0.5),
+        inset 0 1px 0 rgba(201,168,76,0.15);
+      animation: cardIn 1s cubic-bezier(0.16,1,0.3,1) both;
+    }
 
-        .login-btn:hover {
-            background-color: rgb(59, 168, 83);
-        }
-    </style>
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
 
+    /* Top emblem bar */
+    .emblem-bar {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 36px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      animation: fadeUp 0.8s 0.2s both;
+    }
+
+    .emblem-circle {
+      width: 56px; height: 56px; border-radius: 50%;
+      border: 1.5px solid rgba(201,168,76,0.4);
+      background: var(--gold-dim);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .emblem-circle::before {
+      content: '';
+      position: absolute; inset: 4px; border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+    .emblem-circle img {
+      width: 38px; height: 38px; object-fit: contain;
+    }
+    .emblem-placeholder {
+      font-size: 22px;
+    }
+
+    .emblem-text {}
+    .emblem-text .country {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: 1;
+    }
+    .emblem-text .ministry {
+      font-size: 13px; font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 4px;
+    }
+
+    /* Heading */
+    .heading-block {
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s 0.35s both;
+    }
+    .heading-block h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px; font-weight: 300;
+      line-height: 1.25;
+      color: var(--white);
+      letter-spacing: 0.01em;
+    }
+    .heading-block h1 span {
+      color: var(--gold);
+      font-weight: 600;
+    }
+    .heading-block p {
+      margin-top: 10px;
+      font-size: 13.5px; font-weight: 300;
+      color: var(--muted);
+      line-height: 1.6;
+      letter-spacing: 0.02em;
+    }
+
+    /* Divider */
+    .divider {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 28px;
+      animation: fadeUp 0.8s 0.45s both;
+    }
+    .divider-line { flex: 1; height: 1px; background: rgba(201,168,76,0.15); }
+    .divider-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); opacity: 0.6; }
+
+    /* Info pills */
+    .info-pills {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 32px;
+      animation: fadeUp 0.8s 0.5s both;
+    }
+    .pill {
+      display: flex; align-items: center; gap: 6px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 2px;
+      padding: 5px 12px;
+      font-size: 11px; font-weight: 400;
+      color: rgba(201,168,76,0.9);
+      letter-spacing: 0.05em;
+    }
+    .pill-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--gold); opacity: 0.7; }
+
+    /* Login button */
+    .btn-wrap {
+      animation: fadeUp 0.8s 0.6s both;
+    }
+    .login-btn {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%;
+      padding: 15px 24px;
+      background: linear-gradient(135deg, #1A6B3A 0%, #145C30 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px;
+      color: var(--white);
+      font-family: 'Outfit', sans-serif;
+      font-size: 14px; font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+    .login-btn::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+      transition: opacity 0.3s;
+    }
+    .login-btn::after {
+      content: '';
+      position: absolute; top: 0; left: -100%;
+      width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.06), transparent);
+      transition: left 0.6s ease;
+    }
+    .login-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.15); background: linear-gradient(135deg, #1F7D44 0%, #176B38 100%); }
+    .login-btn:hover::after { left: 100%; }
+    .login-btn:active { transform: translateY(0); }
+
+    .btn-icon {
+      width: 18px; height: 18px; opacity: 0.9;
+      flex-shrink: 0;
+    }
+
+    /* Version badge */
+    .version-badge {
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 20px;
+      gap: 6px;
+      animation: fadeUp 0.8s 0.7s both;
+    }
+    .version-badge span {
+      font-size: 11px; color: rgba(244,241,235,0.3);
+      letter-spacing: 0.08em;
+    }
+    .version-badge .v-tag {
+      background: rgba(201,168,76,0.12);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 2px;
+      padding: 2px 7px;
+      font-size: 10px;
+      color: rgba(201,168,76,0.7);
+      letter-spacing: 0.1em;
+    }
+
+    /* Footer */
+    .footer {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 10;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: center; gap: 16px;
+      border-top: 1px solid rgba(201,168,76,0.08);
+      background: rgba(10,22,40,0.7);
+      backdrop-filter: blur(10px);
+      animation: fadeUp 0.8s 0.8s both;
+    }
+    .footer-cross {
+      width: 16px; height: 16px; opacity: 0.5;
+      flex-shrink: 0;
+    }
+    .footer-text {
+      font-size: 11px; color: rgba(244,241,235,0.35);
+      letter-spacing: 0.04em;
+    }
+    .footer-text strong { color: rgba(244,241,235,0.5); font-weight: 500; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Scanline subtle overlay */
+    .scanlines {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent, transparent 2px,
+        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+    }
+  </style>
 </head>
-
 <body>
 
-    <div class="container">
-        <h1>Welcome to the Health Ministry Sri Lanka Pay System</h1>
-        <p>Please log in to access your account.</p>
+  <div class="bg-layer"></div>
+  <div class="bg-grid"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="scanlines"></div>
 
-        <!-- Image placed above button -->
-        <img src="static/images/governmentlogo.jpg" 
-             alt="Ministry of Health Sri Lanka Logo" 
-             class="logo">
+  <div class="card">
 
-        <a href="/login" class="login-btn">Login to the system</a>
+    <div class="emblem-bar">
+      <div class="emblem-circle">
+       
+        <img src="static/images/governmentlogo.jpg" style="height: 40px ; width: 40px; border-radius: 50%;" alt="Ministry Logo">
+      </div>
+      <div class="emblem-text">
+        <div class="country" style="font-size: medium;">Democratic Socialist Republic of Sri Lanka</div>
+        <div class="ministry">Ministry of Health</div>
+      </div>
     </div>
+
+    <div class="heading-block">
+      <h1>STAFF <span>PAYROLL</span><br>MANAGEMENT SYSTEM *</h1>
+      <p>Secure access for authorized ministry personnel. Please authenticate to continue.</p>
+    </div>
+
+    <div class="divider">
+      <div class="divider-line"></div>
+      <div class="divider-dot"></div>
+      <div class="divider-line"></div>
+    </div>
+
+    
+
+    <div class="btn-wrap">
+      <a href="/login" class="login-btn">
+        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+        Login to the System
+      </a>
+    </div>
+
+    <div class="version-badge" style="animation: fadeUp 0.8s 0.75s both; ">
+      <span style="font-size: medium;">System Version</span>
+      <div class="v-tag">v2.0</div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <img src="static/images/cross.jpeg" class="footer-cross" alt="">
+    <span class="footer-text">&copy; 2026 <strong>Ministry of Health, Sri Lanka</strong> — Internal Use Only. All rights reserved.</span>
+  </footer>
 
 </body>
 </html>
