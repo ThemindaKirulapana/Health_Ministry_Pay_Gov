@@ -513,5 +513,151 @@ def delete_salary(record_id):
 
 
 
+# ── USER MANAGEMENT PAGE (admin only) ─────────────────────────
+@app.route('/user_management')
+@login_required
+def user_management():
+    # Only admins may access this page
+    if session.get('role') != 'admin':
+        flash('Access denied. Admins only.', 'danger')
+        return redirect(url_for('dashboard'))
+    return render_template('user_management.html')
+
+
+# ── GET ALL USERS (admin only) ─────────────────────────────────
+@app.route('/api/all_users')
+@login_required
+def api_all_users():
+    if session.get('role') != 'admin':
+        return jsonify({'error': 'Forbidden'}), 403
+
+    conn = get_db()
+    if not conn:
+        return jsonify([])
+
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("""
+        SELECT emp_no, name, designation, department, email, role
+        FROM users
+        ORDER BY role DESC, name ASC
+    """)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify(rows)
+
+
+# ── UPDATE ANY USER'S DETAILS (admin only) ─────────────────────
+@app.route('/api/admin/update_user/<emp_no>', methods=['POST'])
+@login_required
+def admin_update_user(emp_no):
+    if session.get('role') != 'admin':
+        return jsonify({'success': False, 'message': 'Forbidden'}), 403
+
+    data = request.get_json()
+
+    allowed_fields = ['name', 'email', 'designation', 'department', 'role']
+    updates = {k: v for k, v in data.items() if k in allowed_fields}
+
+    if not updates:
+        return jsonify({'success': False, 'message': 'No valid fields provided.'})
+
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error.'})
+
+    try:
+        cursor = conn.cursor()
+        set_clause = ', '.join(f"`{k}` = %s" for k in updates)
+        values     = list(updates.values()) + [emp_no]
+        cursor.execute(
+            f"UPDATE users SET {set_clause} WHERE emp_no = %s",
+            values
+        )
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        # If admin edits their own record, refresh session too
+        if emp_no == session.get('emp_no'):
+            for k, v in updates.items():
+                session[k] = v
+
+        return jsonify({'success': True, 'message': 'User updated successfully.'})
+    except Error as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+# ── RESET ANY USER'S PASSWORD (admin only) ─────────────────────
+@app.route('/api/admin/reset_password', methods=['POST'])
+@login_required
+def admin_reset_password():
+    if session.get('role') != 'admin':
+        return jsonify({'success': False, 'message': 'Forbidden'}), 403
+
+    data     = request.get_json()
+    emp_no   = data.get('emp_no', '').strip()
+    new_pw   = data.get('new_password', '').strip()
+
+    if not emp_no or not new_pw:
+        return jsonify({'success': False, 'message': 'Employee ID and new password are required.'})
+
+    if len(new_pw) < 6:
+        return jsonify({'success': False, 'message': 'Password must be at least 6 characters.'})
+
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error.'})
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute(
+            "UPDATE users SET password = %s WHERE emp_no = %s",
+            (new_pw, emp_no)
+        )
+        if cursor.rowcount == 0:
+            cursor.close()
+            conn.close()
+            return jsonify({'success': False, 'message': 'User not found.'})
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'success': True, 'message': 'Password reset successfully.'})
+    except Error as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
+# ── DELETE ANY USER (admin only) ──────────────────────────────
+@app.route('/api/admin/delete_user/<emp_no>', methods=['DELETE'])
+@login_required
+def admin_delete_user(emp_no):
+    if session.get('role') != 'admin':
+        return jsonify({'success': False, 'message': 'Forbidden'}), 403
+
+    # Prevent admin from deleting themselves
+    if emp_no == session.get('emp_no'):
+        return jsonify({'success': False, 'message': 'You cannot delete your own account.'})
+
+    conn = get_db()
+    if not conn:
+        return jsonify({'success': False, 'message': 'Database error.'})
+
+    try:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM users WHERE emp_no = %s", (emp_no,))
+        if cursor.rowcount == 0:
+            cursor.close()
+            conn.close()
+            return jsonify({'success': False, 'message': 'User not found.'})
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return jsonify({'success': True, 'message': 'User deleted.'})
+    except Error as e:
+        return jsonify({'success': False, 'message': str(e)})
+
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
