@@ -22,177 +22,77 @@
     --success: #1a7a4a;
     --success-light: #27ae60;
   }
-
   * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--navy); color: var(--cream); font-family: 'Crimson Pro', serif; min-height: 100vh; display: flex; overflow-x: hidden; }
 
-  body {
-    background: var(--navy);
-    color: var(--cream);
-    font-family: 'Crimson Pro', serif;
-    min-height: 100vh;
-    display: flex;
-    overflow-x: hidden;
-  }
-
-  /* ── SIDEBAR ── */
-  .sidebar {
-    width: 260px;
-    min-height: 100vh;
-    background: var(--navy-mid);
-    border-right: 1px solid var(--navy-border);
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0; left: 0; bottom: 0;
-    z-index: 100;
-  }
-  .sidebar-logo {
-    padding: 28px 24px 20px;
-    border-bottom: 1px solid var(--navy-border);
-  }
-  .sidebar-logo .emblem {
-    width: 48px; height: 48px;
-    background: linear-gradient(135deg, var(--gold), var(--gold-dim));
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px;
-    margin-bottom: 12px;
-    box-shadow: 0 0 24px rgba(201,168,76,0.3);
-  }
-  .sidebar-logo h1 {
-    font-family: 'Playfair Display', serif;
-    font-size: 14px; font-weight: 700;
-    color: var(--gold-light);
-    line-height: 1.4; letter-spacing: 0.5px;
-  }
-  .sidebar-logo p {
-    font-size: 11px; color: var(--text-muted);
-    font-family: 'DM Mono', monospace;
-    margin-top: 3px; letter-spacing: 1px; text-transform: uppercase;
-  }
+  /* SIDEBAR */
+  .sidebar { width: 260px; min-height: 100vh; background: var(--navy-mid); border-right: 1px solid var(--navy-border); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; bottom: 0; z-index: 100; }
+  .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--navy-border); }
+  .sidebar-logo .emblem { width: 48px; height: 48px; background: linear-gradient(135deg, var(--gold), var(--gold-dim)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 12px; box-shadow: 0 0 24px rgba(201,168,76,0.3); }
+  .sidebar-logo h1 { font-family: 'Playfair Display', serif; font-size: 14px; font-weight: 700; color: var(--gold-light); line-height: 1.4; letter-spacing: 0.5px; }
+  .sidebar-logo p { font-size: 11px; color: var(--text-muted); font-family: 'DM Mono', monospace; margin-top: 3px; letter-spacing: 1px; text-transform: uppercase; }
   .nav-section { padding: 20px 0; flex: 1; }
-  .nav-label {
-    font-family: 'DM Mono', monospace; font-size: 9px;
-    letter-spacing: 2px; text-transform: uppercase;
-    color: var(--text-muted); padding: 0 24px;
-    margin-bottom: 8px; margin-top: 16px;
-  }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 11px 24px; cursor: pointer; transition: all 0.2s;
-    border-left: 3px solid transparent; font-size: 15px; color: #8da3bb;
-  }
+  .nav-label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 0 24px; margin-bottom: 8px; margin-top: 16px; }
+  .nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 24px; cursor: pointer; transition: all 0.2s; border-left: 3px solid transparent; font-size: 15px; color: #8da3bb; }
   .nav-item:hover { background: rgba(201,168,76,0.06); color: var(--cream); border-left-color: rgba(201,168,76,0.3); }
   .nav-item.active { background: rgba(201,168,76,0.1); color: var(--gold-light); border-left-color: var(--gold); }
   .nav-item .icon { font-size: 17px; width: 22px; text-align: center; }
   .sidebar-footer { padding: 20px 24px; border-top: 1px solid var(--navy-border); }
   .admin-card { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .admin-avatar {
-    width: 36px; height: 36px;
-    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-    border-radius: 50%; display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 600; color: var(--navy); font-family: 'DM Mono', monospace;
-  }
+  .admin-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, var(--gold-dim), var(--gold)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: var(--navy); font-family: 'DM Mono', monospace; }
   .admin-info .name { font-size: 14px; color: var(--cream); font-weight: 600; }
-  .admin-info .role {
-    font-family: 'DM Mono', monospace; font-size: 10px;
-    color: var(--gold); letter-spacing: 1px; text-transform: uppercase;
-  }
-  .logout-btn {
-    width: 100%; padding: 10px;
-    background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3);
-    color: #e07060; border-radius: 6px; cursor: pointer;
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 1.5px; text-transform: uppercase;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    transition: all 0.2s;
-  }
+  .admin-info .role { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; }
+  .logout-btn { width: 100%; padding: 10px; background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.3); color: #e07060; border-radius: 6px; cursor: pointer; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s; }
   .logout-btn:hover { background: rgba(192,57,43,0.25); border-color: rgba(192,57,43,0.6); color: #ff8070; }
 
-  /* ── MAIN ── */
+  /* MAIN */
   .main { margin-left: 260px; flex: 1; min-height: 100vh; display: flex; flex-direction: column; }
-  .topbar {
-    background: var(--navy-mid); border-bottom: 1px solid var(--navy-border);
-    padding: 16px 36px; display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; z-index: 50;
-  }
+  .topbar { background: var(--navy-mid); border-bottom: 1px solid var(--navy-border); padding: 16px 36px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
   .topbar-title { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); }
   .topbar-title span { color: var(--gold); }
   .topbar-right { display: flex; align-items: center; gap: 20px; }
   .badge-time { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); letter-spacing: 1px; }
-  .badge-super {
-    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-    color: var(--navy); font-family: 'DM Mono', monospace; font-size: 9px;
-    padding: 4px 10px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500;
-  }
+  .badge-super { background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: var(--navy); font-family: 'DM Mono', monospace; font-size: 9px; padding: 4px 10px; border-radius: 20px; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 500; }
   .content { padding: 36px; flex: 1; }
 
-  /* ── STAT CARDS ── */
+  /* STAT CARDS */
   .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 36px; }
-  .stat-card {
-    background: var(--navy-mid); border: 1px solid var(--navy-border);
-    border-radius: 12px; padding: 22px 24px; position: relative; overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
+  .stat-card { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 12px; padding: 22px 24px; position: relative; overflow: hidden; transition: transform 0.2s, box-shadow 0.2s; }
   .stat-card:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
-  .stat-card::before {
-    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
-  }
+  .stat-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--gold-dim), var(--gold)); }
   .stat-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
   .stat-value { font-family: 'Playfair Display', serif; font-size: 30px; color: var(--white); line-height: 1; margin-bottom: 6px; }
   .stat-sub { font-size: 12px; color: var(--gold); }
   .stat-icon { position: absolute; top: 18px; right: 20px; font-size: 28px; opacity: 0.15; }
 
-  /* ── PANELS ── */
+  /* PANELS */
   .panel { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 12px; overflow: hidden; }
   .panel-header { padding: 18px 24px; border-bottom: 1px solid var(--navy-border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .panel-title { font-family: 'Playfair Display', serif; font-size: 17px; color: var(--gold-light); display: flex; align-items: center; gap: 10px; }
   .panel-body { padding: 24px; }
   .panel-full { margin-bottom: 28px; }
 
-  /* ── FORM ── */
+  /* FORM */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   .form-group { display: flex; flex-direction: column; gap: 6px; }
   .form-group.full { grid-column: 1 / -1; }
   .form-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); }
-  .form-input, .form-select {
-    background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px;
-    padding: 10px 14px; color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 15px;
-    outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; appearance: none;
-  }
+  .form-input, .form-select { background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px; padding: 10px 14px; color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 15px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; appearance: none; }
   .form-input:focus, .form-select:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,168,76,0.1); }
   .form-input::placeholder { color: var(--text-muted); font-size: 14px; }
+  .form-input[readonly] { opacity: 0.6; cursor: not-allowed; }
   .form-select option { background: var(--navy-mid); }
-
-  .btn-primary {
-    background: linear-gradient(135deg, var(--gold-dim), var(--gold));
-    color: var(--navy); border: none; border-radius: 8px; padding: 12px 28px;
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
-    cursor: pointer; font-weight: 500; transition: all 0.2s; margin-top: 6px;
-  }
+  .btn-primary { background: linear-gradient(135deg, var(--gold-dim), var(--gold)); color: var(--navy); border: none; border-radius: 8px; padding: 12px 28px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; cursor: pointer; font-weight: 500; transition: all 0.2s; margin-top: 6px; }
   .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 4px 16px rgba(201,168,76,0.3); }
-  .btn-ghost {
-    background: transparent; color: var(--text-muted); border: 1px solid var(--navy-border);
-    border-radius: 8px; padding: 12px 20px; font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 6px;
-  }
+  .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--navy-border); border-radius: 8px; padding: 12px 20px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; margin-top: 6px; }
   .btn-ghost:hover { border-color: var(--text-muted); color: var(--cream); }
   .form-actions { display: flex; gap: 10px; margin-top: 6px; }
 
-  /* ── SALARY TABLE ── */
+  /* SALARY TABLE */
   .table-wrap { overflow-x: auto; }
   .salary-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px; }
-  .salary-table th {
-    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px;
-    text-transform: uppercase; color: var(--text-muted); padding: 12px 14px;
-    text-align: left; border-bottom: 1px solid var(--navy-border);
-    background: rgba(11,30,61,0.6); white-space: nowrap;
-  }
-  .salary-table td {
-    padding: 13px 14px; border-bottom: 1px solid rgba(31,63,110,0.4);
-    color: var(--cream); vertical-align: middle; white-space: nowrap;
-  }
+  .salary-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 12px 14px; text-align: left; border-bottom: 1px solid var(--navy-border); background: rgba(11,30,61,0.6); white-space: nowrap; }
+  .salary-table td { padding: 13px 14px; border-bottom: 1px solid rgba(31,63,110,0.4); color: var(--cream); vertical-align: middle; white-space: nowrap; }
   .salary-table tr:last-child td { border-bottom: none; }
   .salary-table tbody tr:hover td { background: rgba(201,168,76,0.04); }
   .emp-id { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--gold); letter-spacing: 1px; }
@@ -201,117 +101,66 @@
   .status-pending { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.25); }
   .amount-cell { font-family: 'DM Mono', monospace; font-size: 13px; }
 
-  /* ── ACTION BUTTONS ── */
+  /* ACTION BUTTONS */
   .action-btns { display: flex; gap: 6px; align-items: center; }
-  .btn-view {
-    background: rgba(52,100,180,0.18); color: #7aafff;
-    border: 1px solid rgba(52,100,180,0.35); border-radius: 6px;
-    padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
+  .btn-view { background: rgba(52,100,180,0.18); color: #7aafff; border: 1px solid rgba(52,100,180,0.35); border-radius: 6px; padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .btn-view:hover { background: rgba(52,100,180,0.35); }
-  .btn-edit {
-    background: rgba(201,168,76,0.12); color: var(--gold-light);
-    border: 1px solid rgba(201,168,76,0.3); border-radius: 6px;
-    padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
+  .btn-edit { background: rgba(201,168,76,0.12); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); border-radius: 6px; padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .btn-edit:hover { background: rgba(201,168,76,0.25); }
-  .btn-del {
-    background: rgba(192,57,43,0.12); color: #e07060;
-    border: 1px solid rgba(192,57,43,0.3); border-radius: 6px;
-    padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px;
-    letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
+  .btn-pw { background: rgba(130,60,180,0.15); color: #c08ee0; border: 1px solid rgba(130,60,180,0.35); border-radius: 6px; padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
+  .btn-pw:hover { background: rgba(130,60,180,0.3); }
+  .btn-del { background: rgba(192,57,43,0.12); color: #e07060; border: 1px solid rgba(192,57,43,0.3); border-radius: 6px; padding: 5px 11px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .btn-del:hover { background: rgba(192,57,43,0.3); }
 
-  /* ── TABLE CONTROLS ── */
+  /* TABLE CONTROLS */
   .table-controls { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
   .search-wrap { position: relative; display: flex; align-items: center; }
   .search-icon { position: absolute; left: 12px; color: var(--text-muted); font-size: 14px; }
-  .search-input {
-    background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px;
-    padding: 8px 14px 8px 34px; color: var(--cream); font-family: 'Crimson Pro', serif;
-    font-size: 14px; outline: none; width: 220px; transition: border-color 0.2s;
-  }
+  .search-input { background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px; padding: 8px 14px 8px 34px; color: var(--cream); font-family: 'Crimson Pro', serif; font-size: 14px; outline: none; width: 220px; transition: border-color 0.2s; }
   .search-input:focus { border-color: var(--gold-dim); }
   .search-input::placeholder { color: var(--text-muted); }
-  .filter-select {
-    background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px;
-    padding: 8px 14px; color: var(--cream); font-family: 'DM Mono', monospace; font-size: 11px;
-    outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none;
-  }
+  .filter-select { background: var(--navy); border: 1px solid var(--navy-border); border-radius: 7px; padding: 8px 14px; color: var(--cream); font-family: 'DM Mono', monospace; font-size: 11px; outline: none; cursor: pointer; transition: border-color 0.2s; appearance: none; }
   .filter-select:focus { border-color: var(--gold-dim); }
   .filter-select option { background: var(--navy-mid); }
   .record-count { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 1px; margin-left: auto; }
 
-  /* ── EMPTY STATE ── */
+  /* EMPTY STATE */
   .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
   .empty-state .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.4; }
   .empty-state p { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 1px; }
 
-  /* ── EMPLOYEE GRID ── */
-  .emp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .emp-card {
-    background: var(--navy); border: 1px solid var(--navy-border);
-    border-radius: 10px; padding: 16px; display: flex; align-items: center; gap: 12px;
-    transition: border-color 0.2s; cursor: default;
-  }
-  .emp-card:hover { border-color: var(--gold-dim); }
-  .emp-avatar {
-    width: 42px; height: 42px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 600; font-family: 'DM Mono', monospace; flex-shrink: 0;
-  }
-  .emp-avatar.a { background: rgba(201,168,76,0.15); color: var(--gold-light); }
-  .emp-avatar.b { background: rgba(26,122,74,0.15); color: #4dd88a; }
-  .emp-avatar.c { background: rgba(52,100,180,0.2); color: #7aafff; }
-  .emp-name { font-size: 14px; font-weight: 600; color: var(--white); line-height: 1.3; }
-  .emp-dept { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px; margin-top: 2px; }
-  .emp-grade { margin-left: auto; font-family: 'DM Mono', monospace; font-size: 10px; color: var(--gold); border: 1px solid rgba(201,168,76,0.2); padding: 2px 7px; border-radius: 4px; letter-spacing: 0.5px; flex-shrink: 0; }
+  /* USER TABLE */
+  .user-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 900px; }
+  .user-table th { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; text-align: left; border-bottom: 1px solid var(--navy-border); background: rgba(11,30,61,0.6); white-space: nowrap; }
+  .user-table td { padding: 13px 16px; border-bottom: 1px solid rgba(31,63,110,0.4); color: var(--cream); vertical-align: middle; white-space: nowrap; }
+  .user-table tr:last-child td { border-bottom: none; }
+  .user-table tbody tr:hover td { background: rgba(201,168,76,0.04); }
+  .role-badge { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1px; padding: 3px 9px; border-radius: 20px; text-transform: uppercase; }
+  .role-admin { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+  .role-user { background: rgba(52,100,180,0.18); color: #7aafff; border: 1px solid rgba(52,100,180,0.3); }
+  .user-avatar-sm { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+  .ua-admin { background: rgba(201,168,76,0.15); color: var(--gold-light); }
+  .ua-user  { background: rgba(52,100,180,0.2);  color: #7aafff; }
+  .name-cell { display: flex; align-items: center; gap: 10px; }
 
-  /* ── MODALS ── */
-  .modal-overlay {
-    display: none; position: fixed; inset: 0;
-    background: rgba(7,14,28,0.88); z-index: 200;
-    align-items: center; justify-content: center; backdrop-filter: blur(4px);
-  }
+  /* MODALS */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(7,14,28,0.88); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
   .modal-overlay.open { display: flex; }
-
-  /* View Modal */
-  .modal-view {
-    background: var(--navy-mid); border: 1px solid var(--navy-border);
-    border-radius: 14px; width: 680px; max-width: 95vw; max-height: 90vh;
-    overflow-y: auto; padding: 0; position: relative;
-  }
-  .modal-view-header {
-    padding: 24px 28px; border-bottom: 1px solid var(--navy-border);
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; background: var(--navy-mid); z-index: 2;
-  }
-  .modal-view-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold-light); }
-  .modal-close {
-    background: none; border: none; color: var(--text-muted); cursor: pointer;
-    font-size: 22px; line-height: 1; padding: 4px 8px; border-radius: 4px; transition: color 0.2s;
-  }
+  .modal-header { padding: 22px 28px; border-bottom: 1px solid var(--navy-border); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; background: var(--navy-mid); z-index: 2; }
+  .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--gold-light); }
+  .modal-close { background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 22px; line-height: 1; padding: 4px 8px; border-radius: 4px; transition: color 0.2s; }
   .modal-close:hover { color: var(--cream); }
-  .modal-view-body { padding: 28px; }
+  .modal-body { padding: 28px; }
 
-  .payslip-header {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--navy-border);
-  }
+  /* VIEW PAYSLIP MODAL */
+  .modal-payslip-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 680px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .payslip-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--navy-border); }
   .payslip-emp-name { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--white); }
   .payslip-emp-meta { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 4px; letter-spacing: 0.5px; }
   .payslip-id { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--gold); }
   .payslip-period { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
-
   .payslip-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 20px; }
-  .payslip-section h3 {
-    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
-    text-transform: uppercase; padding: 6px 0; margin-bottom: 10px;
-    border-bottom: 1px solid var(--navy-border);
-  }
+  .payslip-section h3 { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; padding: 6px 0; margin-bottom: 10px; border-bottom: 1px solid var(--navy-border); }
   .payslip-section.earn h3 { color: #4dd88a; }
   .payslip-section.deduct h3 { color: #c07080; }
   .payslip-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: 13px; }
@@ -321,121 +170,90 @@
   .payslip-total span:first-child { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; }
   .payslip-total.earn span { color: #4dd88a; }
   .payslip-total.deduct span { color: #c07080; }
-  .net-box {
-    background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25);
-    border-radius: 10px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 16px;
-  }
+  .net-box { background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25); border-radius: 10px; padding: 18px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
   .net-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
   .net-amount { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold-light); }
   .remarks-row { font-size: 13px; color: var(--text-muted); font-style: italic; }
 
-  /* Edit Modal */
-  .modal-edit {
-    background: var(--navy-mid); border: 1px solid var(--navy-border);
-    border-radius: 14px; width: 720px; max-width: 95vw; max-height: 92vh;
-    overflow-y: auto; position: relative;
-  }
-  .modal-edit-header {
-    padding: 22px 28px; border-bottom: 1px solid var(--navy-border);
-    display: flex; align-items: center; justify-content: space-between;
-    position: sticky; top: 0; background: var(--navy-mid); z-index: 2;
-  }
-  .modal-edit-header h2 { font-family: 'Playfair Display', serif; font-size: 19px; color: var(--gold-light); }
-  .modal-edit-body { padding: 28px; }
-  .edit-section-title {
-    font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px;
-    text-transform: uppercase; color: var(--text-muted);
-    padding: 0 0 8px; margin-bottom: 14px; border-bottom: 1px solid var(--navy-border);
-  }
-  .edit-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
-  .edit-grid.two { grid-template-columns: 1fr 1fr; }
-  .edit-grid.full { grid-template-columns: 1fr; }
+  /* EDIT SALARY MODAL */
+  .modal-edit-salary-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 720px; max-width: 95vw; max-height: 92vh; overflow-y: auto; }
+  .edit-section-title { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 0 0 8px; margin-bottom: 14px; border-bottom: 1px solid var(--navy-border); }
+  .edit-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 22px; }
+  .edit-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 22px; }
 
-  /* Delete Modal */
-  .modal-del {
-    background: var(--navy-mid); border: 1px solid var(--navy-border);
-    border-radius: 14px; width: 400px; max-width: 95vw;
-    padding: 36px; text-align: center;
-  }
-  .modal-del .del-icon { font-size: 42px; margin-bottom: 14px; }
-  .modal-del h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: #e07060; margin-bottom: 10px; }
-  .modal-del p { color: var(--text-muted); font-size: 15px; margin-bottom: 8px; }
-  .modal-del .del-name { color: var(--cream); font-weight: 600; }
-  .modal-del .modal-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; }
-  .btn-danger {
-    background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.5);
-    color: #e07060; border-radius: 8px; padding: 11px 24px;
-    font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px;
-    text-transform: uppercase; cursor: pointer; transition: all 0.2s;
-  }
+  /* VIEW USER MODAL */
+  .modal-view-user-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 560px; max-width: 95vw; overflow: hidden; }
+  .profile-card { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--navy-border); }
+  .profile-avatar { width: 72px; height: 72px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 700; font-family: 'DM Mono', monospace; flex-shrink: 0; }
+  .profile-avatar.pa-admin { background: rgba(201,168,76,0.2); color: var(--gold-light); border: 2px solid rgba(201,168,76,0.4); }
+  .profile-avatar.pa-user  { background: rgba(52,100,180,0.2); color: #7aafff; border: 2px solid rgba(52,100,180,0.3); }
+  .profile-info h3 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--white); margin-bottom: 4px; }
+  .profile-info .pid { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); margin-bottom: 8px; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .detail-item label { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); display: block; margin-bottom: 4px; }
+  .detail-item span { font-size: 14px; color: var(--cream); }
+  .detail-item.full { grid-column: 1 / -1; }
+
+  /* EDIT USER MODAL */
+  .modal-edit-user-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 640px; max-width: 95vw; max-height: 90vh; overflow-y: auto; }
+  .section-divider { font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); padding: 0 0 8px; margin: 20px 0 14px; border-bottom: 1px solid var(--navy-border); }
+  .edit-grid-user { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+  /* PASSWORD MODAL */
+  .modal-pw-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 460px; max-width: 95vw; }
+  .pw-hint { font-size: 13px; color: var(--text-muted); margin-bottom: 16px; font-style: italic; }
+  .pw-strength { height: 4px; border-radius: 2px; margin-top: 6px; background: var(--navy-border); overflow: hidden; }
+  .pw-strength-bar { height: 100%; border-radius: 2px; transition: width 0.3s, background 0.3s; width: 0%; }
+  .pw-toggle { position: relative; }
+  .pw-toggle input { padding-right: 42px; }
+  .pw-eye { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 16px; user-select: none; transition: color 0.2s; }
+  .pw-eye:hover { color: var(--cream); }
+
+  /* DELETE MODAL */
+  .modal-del-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 400px; max-width: 95vw; padding: 36px; text-align: center; }
+  .modal-del-box .del-icon { font-size: 42px; margin-bottom: 14px; }
+  .modal-del-box h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: #e07060; margin-bottom: 10px; }
+  .modal-del-box p { color: var(--text-muted); font-size: 15px; margin-bottom: 8px; }
+  .modal-del-box .del-name { color: var(--cream); font-weight: 600; }
+  .modal-actions { display: flex; gap: 12px; justify-content: center; margin-top: 24px; }
+  .btn-danger { background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.5); color: #e07060; border-radius: 8px; padding: 11px 24px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; cursor: pointer; transition: all 0.2s; }
   .btn-danger:hover { background: rgba(192,57,43,0.3); }
 
-  /* Logout Modal */
-  .modal-logout { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 400px; padding: 36px; text-align: center; }
-  .modal-logout h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold-light); margin-bottom: 10px; }
-  .modal-logout p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
-  .modal-logout .modal-actions { display: flex; gap: 12px; justify-content: center; }
+  /* LOGOUT MODAL */
+  .modal-logout-box { background: var(--navy-mid); border: 1px solid var(--navy-border); border-radius: 14px; width: 400px; padding: 36px; text-align: center; }
+  .modal-logout-box h2 { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold-light); margin-bottom: 10px; }
+  .modal-logout-box p { color: var(--text-muted); font-size: 15px; margin-bottom: 24px; }
 
-  /* ── TOAST ── */
-  .toast {
-    position: fixed; bottom: 28px; right: 28px;
-    background: var(--navy-mid); border: 1px solid var(--success-light);
-    border-radius: 10px; padding: 14px 20px;
-    display: flex; align-items: center; gap: 12px;
-    font-size: 14px; color: var(--cream); z-index: 400;
-    transform: translateY(80px); opacity: 0;
-    transition: all 0.35s cubic-bezier(.4,0,.2,1);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-  .toast.show { transform: translateY(0); opacity: 1; }
-  .toast-icon { font-size: 18px; }
-
-  /* ── FLASH ── */
-  .flash-box {
-    border-radius: 8px; padding: 10px 14px;
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    letter-spacing: .3px; margin-bottom: 18px;
-    display: flex; align-items: center; gap: 8px;
-  }
+  /* FLASH */
+  .flash-box { border-radius: 8px; padding: 10px 14px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: .3px; margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
   .flash-success { background: rgba(82,183,136,0.1); border: 1px solid rgba(82,183,136,0.28); color: #52b788; }
   .flash-danger  { background: rgba(176,80,64,0.1);  border: 1px solid rgba(176,80,64,0.28);  color: #e08070; }
 
-  /* scrollbar */
+  /* TOAST */
+  .toast { position: fixed; bottom: 28px; right: 28px; background: var(--navy-mid); border: 1px solid var(--success-light); border-radius: 10px; padding: 14px 20px; display: flex; align-items: center; gap: 12px; font-size: 14px; color: var(--cream); z-index: 400; transform: translateY(80px); opacity: 0; transition: all 0.35s cubic-bezier(.4,0,.2,1); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+  .toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 18px; }
+
+  /* SPINNER */
+  .spinner { display: block; width: 24px; height: 24px; border: 2px solid rgba(201,168,76,0.2); border-top-color: var(--gold); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 40px auto; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
   ::-webkit-scrollbar { width: 5px; height: 5px; }
   ::-webkit-scrollbar-track { background: var(--navy); }
   ::-webkit-scrollbar-thumb { background: var(--navy-border); border-radius: 4px; }
-
   @keyframes fadeSlideIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
   .content > * { animation: fadeSlideIn 0.4s ease both; }
-  .content > *:nth-child(2) { animation-delay: 0.06s; }
-  .content > *:nth-child(3) { animation-delay: 0.12s; }
-
-  /* loading spinner */
-  .spinner {
-    display: inline-block; width: 20px; height: 20px;
-    border: 2px solid rgba(201,168,76,0.2); border-top-color: var(--gold);
-    border-radius: 50%; animation: spin 0.8s linear infinite; margin: 40px auto; display: block;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-  // Auto-calc on salary form
   function recalculate() {
     var earningFields = ['basic_salary','language_allowance','coliving','telephone_allowance','fuel_allowance','executive_allowance','extra_duty_ot','basic_arrears'];
     var deductionFields = ['wop','agrahara','apit_tax','stamp_duty','union_fee','news_payment','mileage','wop_arrears','distress_loan'];
     var totalEarnings = 0;
-    earningFields.forEach(function(name) {
-      var el = document.querySelector('[name="' + name + '"]');
-      totalEarnings += el ? (parseFloat(el.value) || 0) : 0;
-    });
+    earningFields.forEach(function(name) { var el = document.querySelector('[name="' + name + '"]'); totalEarnings += el ? (parseFloat(el.value) || 0) : 0; });
     var totalDeductions = 0;
-    deductionFields.forEach(function(name) {
-      var el = document.querySelector('[name="' + name + '"]');
-      totalDeductions += el ? (parseFloat(el.value) || 0) : 0;
-    });
+    deductionFields.forEach(function(name) { var el = document.querySelector('[name="' + name + '"]'); totalDeductions += el ? (parseFloat(el.value) || 0) : 0; });
     document.getElementById('total_earnings').value = totalEarnings.toFixed(2);
     document.getElementById('total_deductions').value = totalDeductions.toFixed(2);
     document.getElementById('net_salary').value = (totalEarnings - totalDeductions).toFixed(2);
@@ -447,31 +265,23 @@ document.addEventListener("DOMContentLoaded", function () {
 </head>
 <body>
 
-<!-- ══ SIDEBAR ══ -->
+<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-logo">
     <div class="emblem">
-      <img src="static/images/governmentlogo.jpg" style="height: 40px ; width: 40px; border-radius: 50%;" alt="Ministry Logo">
+      <img src="static/images/governmentlogo.jpg" style="height:40px;width:40px;border-radius:50%;" alt="Ministry Logo">
     </div>
     <h1>Ministry of Health<br>Sri Lanka</h1>
     <p>Salary Management System</p>
   </div>
   <nav class="nav-section">
     <div class="nav-label">Overview</div>
-    <div class="nav-item active" onclick="showSection('dashboard')">
-      <span class="icon">⬛</span> Dashboard
-    </div>
+    <div class="nav-item active" onclick="showSection('dashboard')"><span class="icon">⬛</span> Dashboard</div>
     <div class="nav-label">Salary</div>
-    <div class="nav-item" onclick="showSection('enter-salary')">
-      <span class="icon">✏️</span> Enter Salary
-    </div>
-    <div class="nav-item" onclick="showSection('view-salary')">
-      <span class="icon">📋</span> View Salary Details
-    </div>
+    <div class="nav-item" onclick="showSection('enter-salary')"><span class="icon">✏️</span> Enter Salary</div>
+    <div class="nav-item" onclick="showSection('view-salary')"><span class="icon">📋</span> View Salary Details</div>
     <div class="nav-label">Employees</div>
-    <div class="nav-item" onclick="showSection('employees')">
-      <span class="icon">👥</span> All Employees
-    </div>
+    <div class="nav-item" onclick="showSection('employees')"><span class="icon">👥</span> All Employees</div>
   </nav>
   <div class="sidebar-footer">
     <div class="admin-card">
@@ -486,49 +296,29 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </aside>
 
-<!-- ══ MAIN ══ -->
+<!-- MAIN -->
 <main class="main">
   <div class="topbar">
     <div class="topbar-title" id="page-title"><span>Salary Management</span> Information System</div>
     <div class="topbar-right">
-      <div class="badge-time" style="font-size: medium;" id="clock"></div>
-      <div class="badge-super" style="font-size: smaller;">Super Admin</div>
+      <div class="badge-time" style="font-size:medium;" id="clock"></div>
+      <div class="badge-super" style="font-size:smaller;">Super Admin</div>
     </div>
   </div>
 
   <div class="content" id="main-content">
 
-    <!-- ── DASHBOARD ── -->
+    <!-- DASHBOARD -->
     <div id="section-dashboard">
       <div class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon">👥</div>
-          <div class="stat-label">Total Employees</div>
-          <div class="stat-value">1,248</div>
-          <div class="stat-sub">↑ 12 this month</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">💰</div>
-          <div class="stat-label">Total Payroll (LKR)</div>
-          <div class="stat-value">142M</div>
-          <div class="stat-sub">March 2026</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">✅</div>
-          <div class="stat-label">Salaries Paid</div>
-          <div class="stat-value">1,190</div>
-          <div class="stat-sub">95.4% processed</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon">⏳</div>
-          <div class="stat-label">Pending</div>
-          <div class="stat-value">58</div>
-          <div class="stat-sub">Requires action</div>
-        </div>
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Employees</div><div class="stat-value">1,248</div><div class="stat-sub">↑ 12 this month</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-label">Total Payroll (LKR)</div><div class="stat-value">142M</div><div class="stat-sub">March 2026</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-label">Salaries Paid</div><div class="stat-value">1,190</div><div class="stat-sub">95.4% processed</div></div>
+        <div class="stat-card"><div class="stat-icon">⏳</div><div class="stat-label">Pending</div><div class="stat-value">58</div><div class="stat-sub">Requires action</div></div>
       </div>
     </div>
 
-    <!-- ── ENTER SALARY ── -->
+    <!-- ENTER SALARY -->
     <div id="section-enter-salary" style="display:none">
       <div class="panel panel-full" style="max-width:700px">
         <div class="panel-header">
@@ -537,9 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {% with messages = get_flashed_messages(with_categories=true) %}
         {% if messages %}
           {% for category, message in messages %}
-            <div class="flash-box flash-{{ category }}">
-              {{ '✓' if category == 'success' else '⚠' }} {{ message }}
-            </div>
+            <div class="flash-box flash-{{ category }}">{{ '✓' if category == 'success' else '⚠' }} {{ message }}</div>
           {% endfor %}
         {% endif %}
         {% endwith %}
@@ -547,23 +335,15 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="panel-body">
             <div class="form-grid">
               <div class="card-section" style="grid-column:1/-1;margin-bottom:24px;border-bottom:1px solid var(--navy-border);padding-bottom:12px;">
-                <div class="form-group">
-                  <label class="form-label">Employee ID</label>
-                  <input class="form-input" name="emp_no" type="text" placeholder="EMP-1002">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Name</label>
-                  <input class="form-input" name="name" type="text">
-                </div>
+                <div class="form-group"><label class="form-label">Employee ID</label><input class="form-input" name="emp_no" type="text" placeholder="EMP-1002"></div>
+                <div class="form-group"><label class="form-label">Name</label><input class="form-input" name="name" type="text"></div>
                 <div class="form-group">
                   <label class="form-label">Designation</label>
                   <select class="form-select" name="designation">
                     <option value="">Select designation</option>
-                    <option>Director</option><option>Ass.Director</option>
-                    <option>Accountant</option><option>Doctor</option>
-                    <option>Medical Officer</option><option>Nurse</option>
-                    <option>Lab Technician</option><option>Administrative Officer</option>
-                    <option>Clerk</option>
+                    <option>Director</option><option>Ass.Director</option><option>Accountant</option>
+                    <option>Doctor</option><option>Medical Officer</option><option>Nurse</option>
+                    <option>Lab Technician</option><option>Administrative Officer</option><option>Clerk</option>
                   </select>
                 </div>
               </div>
@@ -599,7 +379,8 @@ document.addEventListener("DOMContentLoaded", function () {
               <div class="card-section" style="grid-column:1/-1;">
                 <p style="color:rgb(232,76,118);margin-bottom:12px;">OTHER DETAILS</p>
                 <div class="form-group"><label class="form-label">Pay Period</label><input class="form-input" name="pay_period" type="month"></div>
-                <div class="form-group"><label class="form-label">Status</label>
+                <div class="form-group">
+                  <label class="form-label">Status</label>
                   <select class="form-select" name="status"><option value="pending">Pending</option><option value="paid">Paid</option></select>
                 </div>
                 <div class="form-group full"><label class="form-label">Remarks</label><input class="form-input" name="remarks" type="text"></div>
@@ -614,7 +395,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
     </div>
 
-    <!-- ── VIEW SALARY ── -->
+    <!-- VIEW SALARY -->
     <div id="section-view-salary" style="display:none">
       <div class="panel panel-full">
         <div class="panel-header">
@@ -632,31 +413,48 @@ document.addEventListener("DOMContentLoaded", function () {
             <select class="filter-select" id="period-filter" onchange="filterSalaryTable()">
               <option value="">All Periods</option>
             </select>
-            <div class="record-count" id="record-count">— records</div>
+            <div class="record-count" id="salary-record-count">— records</div>
           </div>
         </div>
         <div class="panel-body" style="padding:0">
           <div id="salary-table-wrap" class="table-wrap">
-            <div class="empty-state" id="salary-loading">
-              <div class="spinner"></div>
-            </div>
+            <div class="empty-state"><div class="spinner"></div></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── EMPLOYEES ── -->
+    <!-- EMPLOYEES -->
     <div id="section-employees" style="display:none">
-      <div class="panel panel-full">
+      <div class="stats-row">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-label">Total Users</div><div class="stat-value" id="stat-total">—</div><div class="stat-sub">All accounts</div></div>
+        <div class="stat-card"><div class="stat-icon">🔑</div><div class="stat-label">Admins</div><div class="stat-value" id="stat-admins">—</div><div class="stat-sub">System administrators</div></div>
+        <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-label">Regular Users</div><div class="stat-value" id="stat-users">—</div><div class="stat-sub">Standard accounts</div></div>
+        <div class="stat-card"><div class="stat-icon">🏢</div><div class="stat-label">Departments</div><div class="stat-value" id="stat-depts">—</div><div class="stat-sub">Active departments</div></div>
+      </div>
+      <div class="panel">
         <div class="panel-header">
-          <div class="panel-title">👥 All Employee Details</div>
-          <div class="search-wrap">
-            <span class="search-icon">🔍</span>
-            <input class="search-input" type="text" placeholder="Search…" oninput="filterEmp(this.value)">
+          <div class="panel-title">🔐 All Users &amp; Administrators</div>
+          <div class="table-controls">
+            <div class="search-wrap">
+              <span class="search-icon">🔍</span>
+              <input class="search-input" id="user-search" type="text" placeholder="Search name, ID…" oninput="filterUsers(this.value)">
+            </div>
+            <select class="filter-select" id="role-filter" onchange="filterUsers()">
+              <option value="">All Roles</option>
+              <option value="admin">Admin</option>
+              <option value="user">User</option>
+            </select>
+            <select class="filter-select" id="dept-filter" onchange="filterUsers()">
+              <option value="">All Departments</option>
+            </select>
+            <div class="record-count" id="user-record-count">— records</div>
           </div>
         </div>
-        <div class="panel-body">
-          <div class="emp-grid" id="emp-grid"></div>
+        <div class="panel-body" style="padding:0;">
+          <div id="user-table-wrap" class="table-wrap">
+            <div class="empty-state"><div class="spinner"></div></div>
+          </div>
         </div>
       </div>
     </div>
@@ -664,35 +462,35 @@ document.addEventListener("DOMContentLoaded", function () {
   </div><!-- /content -->
 </main>
 
+
 <!-- ══ VIEW PAYSLIP MODAL ══ -->
-<div class="modal-overlay" id="modal-view">
-  <div class="modal-view">
-    <div class="modal-view-header">
+<div class="modal-overlay" id="modal-salary-view">
+  <div class="modal-payslip-box">
+    <div class="modal-header">
       <h2>📄 Salary Details</h2>
-      <button class="modal-close" onclick="closeModal('modal-view')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-salary-view')">✕</button>
     </div>
-    <div class="modal-view-body" id="modal-view-body"><!-- filled by JS --></div>
+    <div class="modal-body" id="modal-salary-view-body"></div>
   </div>
 </div>
 
 <!-- ══ EDIT SALARY MODAL ══ -->
-<div class="modal-overlay" id="modal-edit">
-  <div class="modal-edit">
-    <div class="modal-edit-header">
+<div class="modal-overlay" id="modal-salary-edit">
+  <div class="modal-edit-salary-box">
+    <div class="modal-header">
       <h2>✏️ Update Salary Record</h2>
-      <button class="modal-close" onclick="closeModal('modal-edit')">✕</button>
+      <button class="modal-close" onclick="closeModal('modal-salary-edit')">✕</button>
     </div>
-    <div class="modal-edit-body">
-      <form id="edit-form" onsubmit="submitEdit(event)">
-        <input type="hidden" id="edit-id">
-
+    <div class="modal-body">
+      <form id="salary-edit-form" onsubmit="submitSalaryEdit(event)">
+        <input type="hidden" id="sedit-id">
         <div class="edit-section-title">Employee Information</div>
-        <div class="edit-grid two" style="margin-bottom:20px">
-          <div class="form-group"><label class="form-label">Employee ID</label><input class="form-input" id="edit-emp_no" type="text" readonly style="opacity:0.6;"></div>
-          <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="edit-name" type="text"></div>
+        <div class="edit-grid-2">
+          <div class="form-group"><label class="form-label">Employee ID</label><input class="form-input" id="sedit-emp_no" type="text" readonly style="opacity:0.6;"></div>
+          <div class="form-group"><label class="form-label">Name</label><input class="form-input" id="sedit-name" type="text"></div>
           <div class="form-group">
             <label class="form-label">Designation</label>
-            <select class="form-select" id="edit-designation">
+            <select class="form-select" id="sedit-designation">
               <option>Director</option><option>Ass.Director</option><option>Accountant</option>
               <option>Doctor</option><option>Medical Officer</option><option>Nurse</option>
               <option>Lab Technician</option><option>Administrative Officer</option><option>Clerk</option>
@@ -700,74 +498,195 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
           <div class="form-group">
             <label class="form-label">Status</label>
-            <select class="form-select" id="edit-status">
+            <select class="form-select" id="sedit-status">
               <option value="pending">Pending</option>
               <option value="paid">Paid</option>
             </select>
           </div>
-          <div class="form-group"><label class="form-label">Pay Period</label><input class="form-input" id="edit-pay_period" type="month"></div>
-          <div class="form-group"><label class="form-label">Remarks</label><input class="form-input" id="edit-remarks" type="text"></div>
+          <div class="form-group"><label class="form-label">Pay Period</label><input class="form-input" id="sedit-pay_period" type="month"></div>
+          <div class="form-group"><label class="form-label">Remarks</label><input class="form-input" id="sedit-remarks" type="text"></div>
         </div>
 
         <div class="edit-section-title" style="color:#4dd88a;">Earnings</div>
-        <div class="edit-grid" style="margin-bottom:20px">
-          <div class="form-group"><label class="form-label">Basic Salary</label><input class="form-input edit-earn" id="edit-basic_salary" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Language Allow.</label><input class="form-input edit-earn" id="edit-language_allowance" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">COL Living</label><input class="form-input edit-earn" id="edit-coliving" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Telephone Allow.</label><input class="form-input edit-earn" id="edit-telephone_allowance" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Fuel Allow.</label><input class="form-input edit-earn" id="edit-fuel_allowance" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Executive Allow.</label><input class="form-input edit-earn" id="edit-executive_allowance" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Extra Duty OT</label><input class="form-input edit-earn" id="edit-extra_duty_ot" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Basic Arrears</label><input class="form-input edit-earn" id="edit-basic_arrears" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label" style="color:#4dd88a;">Total Earnings</label><input class="form-input" id="edit-total_earnings" type="number" step="0.01" readonly style="opacity:0.7;"></div>
+        <div class="edit-grid-3">
+          <div class="form-group"><label class="form-label">Basic Salary</label><input class="form-input sedit-earn" id="sedit-basic_salary" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Language Allow.</label><input class="form-input sedit-earn" id="sedit-language_allowance" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">COL Living</label><input class="form-input sedit-earn" id="sedit-coliving" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Telephone Allow.</label><input class="form-input sedit-earn" id="sedit-telephone_allowance" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Fuel Allow.</label><input class="form-input sedit-earn" id="sedit-fuel_allowance" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Executive Allow.</label><input class="form-input sedit-earn" id="sedit-executive_allowance" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Extra Duty OT</label><input class="form-input sedit-earn" id="sedit-extra_duty_ot" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Basic Arrears</label><input class="form-input sedit-earn" id="sedit-basic_arrears" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label" style="color:#4dd88a;">Total Earnings</label><input class="form-input" id="sedit-total_earnings" type="number" step="0.01" readonly style="opacity:0.7;"></div>
         </div>
 
         <div class="edit-section-title" style="color:#c07080;">Deductions</div>
-        <div class="edit-grid" style="margin-bottom:20px">
-          <div class="form-group"><label class="form-label">WOP</label><input class="form-input edit-deduct" id="edit-wop" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Agrahara</label><input class="form-input edit-deduct" id="edit-agrahara" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">APIT Tax</label><input class="form-input edit-deduct" id="edit-apit_tax" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Stamp Duty</label><input class="form-input edit-deduct" id="edit-stamp_duty" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Union Fee</label><input class="form-input edit-deduct" id="edit-union_fee" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">News Payment</label><input class="form-input edit-deduct" id="edit-news_payment" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Mileage</label><input class="form-input edit-deduct" id="edit-mileage" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">WOP Arrears</label><input class="form-input edit-deduct" id="edit-wop_arrears" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label">Distress Loan</label><input class="form-input edit-deduct" id="edit-distress_loan" type="number" step="0.01"></div>
-          <div class="form-group"><label class="form-label" style="color:#c07080;">Total Deductions</label><input class="form-input" id="edit-total_deductions" type="number" step="0.01" readonly style="opacity:0.7;"></div>
+        <div class="edit-grid-3">
+          <div class="form-group"><label class="form-label">WOP</label><input class="form-input sedit-deduct" id="sedit-wop" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Agrahara</label><input class="form-input sedit-deduct" id="sedit-agrahara" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">APIT Tax</label><input class="form-input sedit-deduct" id="sedit-apit_tax" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Stamp Duty</label><input class="form-input sedit-deduct" id="sedit-stamp_duty" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Union Fee</label><input class="form-input sedit-deduct" id="sedit-union_fee" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">News Payment</label><input class="form-input sedit-deduct" id="sedit-news_payment" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Mileage</label><input class="form-input sedit-deduct" id="sedit-mileage" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">WOP Arrears</label><input class="form-input sedit-deduct" id="sedit-wop_arrears" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label">Distress Loan</label><input class="form-input sedit-deduct" id="sedit-distress_loan" type="number" step="0.01"></div>
+          <div class="form-group"><label class="form-label" style="color:#c07080;">Total Deductions</label><input class="form-input" id="sedit-total_deductions" type="number" step="0.01" readonly style="opacity:0.7;"></div>
         </div>
 
         <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:8px;padding:14px 16px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;">
           <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--gold);">Net Salary</span>
-          <input class="form-input" id="edit-net_salary" type="number" step="0.01" readonly style="width:200px;text-align:right;font-family:'DM Mono',monospace;font-size:16px;color:var(--gold-light);background:transparent;border:none;box-shadow:none;">
+          <input class="form-input" id="sedit-net_salary" type="number" step="0.01" readonly style="width:200px;text-align:right;font-family:'DM Mono',monospace;font-size:16px;color:var(--gold-light);background:transparent;border:none;box-shadow:none;">
         </div>
 
         <div class="form-actions">
           <button type="submit" class="btn-primary">💾 &nbsp;Save Changes</button>
-          <button type="button" class="btn-ghost" onclick="closeModal('modal-edit')">Cancel</button>
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-salary-edit')">Cancel</button>
         </div>
       </form>
     </div>
   </div>
 </div>
 
-<!-- ══ DELETE CONFIRM MODAL ══ -->
-<div class="modal-overlay" id="modal-delete">
-  <div class="modal-del">
+<!-- ══ DELETE SALARY MODAL ══ -->
+<div class="modal-overlay" id="modal-salary-delete">
+  <div class="modal-del-box">
     <div class="del-icon">🗑️</div>
     <h2>Delete Record?</h2>
     <p>You are about to permanently delete the salary record for</p>
-    <p class="del-name" id="del-name-display">—</p>
+    <p class="del-name" id="salary-del-name-display">—</p>
     <p style="margin-top:8px;font-size:13px;">This action cannot be undone.</p>
     <div class="modal-actions">
-      <button class="btn-ghost" onclick="closeModal('modal-delete')">Cancel</button>
-      <button class="btn-danger" onclick="confirmDelete()">Delete</button>
+      <button class="btn-ghost" onclick="closeModal('modal-salary-delete')">Cancel</button>
+      <button class="btn-danger" onclick="confirmSalaryDelete()">Delete</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ VIEW USER MODAL ══ -->
+<div class="modal-overlay" id="modal-user-view">
+  <div class="modal-view-user-box">
+    <div class="modal-header">
+      <h2>👤 User Profile</h2>
+      <button class="modal-close" onclick="closeModal('modal-user-view')">✕</button>
+    </div>
+    <div class="modal-body" id="modal-user-view-body"></div>
+  </div>
+</div>
+
+<!-- ══ EDIT USER MODAL ══ -->
+<div class="modal-overlay" id="modal-user-edit">
+  <div class="modal-edit-user-box">
+    <div class="modal-header">
+      <h2>✏️ Edit User Details</h2>
+      <button class="modal-close" onclick="closeModal('modal-user-edit')">✕</button>
+    </div>
+    <div class="modal-body">
+      <form id="user-edit-form" onsubmit="submitUserEdit(event)">
+        <input type="hidden" id="uedit-emp_no-hidden">
+        <div class="section-divider">Account Information</div>
+        <div class="edit-grid-user">
+          <div class="form-group">
+            <label class="form-label">Employee ID</label>
+            <input class="form-input" id="uedit-emp_no" type="text" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-select" id="uedit-role">
+              <option value="user">Employee</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Full Name</label>
+            <input class="form-input" id="uedit-name" type="text" placeholder="Full name" required>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Email</label>
+            <input class="form-input" id="uedit-email" type="email" placeholder="email@health.gov.lk">
+          </div>
+        </div>
+        <div class="section-divider">Job Details</div>
+        <div class="edit-grid-user">
+          <div class="form-group">
+            <label class="form-label">Designation</label>
+            <select class="form-select" id="uedit-designation">
+              <option value="">Select…</option>
+              <option>Director</option><option>Ass.Director</option><option>Accountant</option>
+              <option>Doctor</option><option>Medical Officer</option><option>Nurse</option>
+              <option>Lab Technician</option><option>Administrative Officer</option><option>Clerk</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department</label>
+            <input class="form-input" id="uedit-department" type="text" placeholder="e.g. Finance">
+          </div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">💾 &nbsp;Save Changes</button>
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-user-edit')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══ RESET PASSWORD MODAL ══ -->
+<div class="modal-overlay" id="modal-pw">
+  <div class="modal-pw-box">
+    <div class="modal-header">
+      <h2>🔑 Reset Password</h2>
+      <button class="modal-close" onclick="closeModal('modal-pw')">✕</button>
+    </div>
+    <div class="modal-body">
+      <p class="pw-hint" id="pw-target-name">Resetting password for —</p>
+      <form id="pw-form" onsubmit="submitPwReset(event)">
+        <input type="hidden" id="pw-emp_no">
+        <div class="form-group" style="margin-bottom:14px;">
+          <label class="form-label">New Password</label>
+          <div class="pw-toggle">
+            <input class="form-input" id="pw-new" type="password" placeholder="Enter new password" oninput="checkPwStrength(this.value)" required>
+            <span class="pw-eye" onclick="togglePw('pw-new', this)">👁</span>
+          </div>
+          <div class="pw-strength"><div class="pw-strength-bar" id="pw-bar"></div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--text-muted);margin-top:4px;" id="pw-label"></div>
+        </div>
+        <div class="form-group" style="margin-bottom:20px;">
+          <label class="form-label">Confirm New Password</label>
+          <div class="pw-toggle">
+            <input class="form-input" id="pw-confirm" type="password" placeholder="Repeat new password" required>
+            <span class="pw-eye" onclick="togglePw('pw-confirm', this)">👁</span>
+          </div>
+          <div style="font-family:'DM Mono',monospace;font-size:9px;margin-top:4px;" id="pw-match-msg"></div>
+        </div>
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">🔑 &nbsp;Reset Password</button>
+          <button type="button" class="btn-ghost" onclick="closeModal('modal-pw')">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ══ DELETE USER MODAL ══ -->
+<div class="modal-overlay" id="modal-user-delete">
+  <div class="modal-del-box">
+    <div class="del-icon">🗑️</div>
+    <h2>Delete User?</h2>
+    <p>You are about to permanently delete the account for</p>
+    <p class="del-name" id="user-del-name-display">—</p>
+    <p style="margin-top:8px;font-size:13px;">This action cannot be undone.</p>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('modal-user-delete')">Cancel</button>
+      <button class="btn-danger" onclick="confirmUserDelete()">Delete</button>
     </div>
   </div>
 </div>
 
 <!-- ══ LOGOUT MODAL ══ -->
 <div class="modal-overlay" id="logout-modal">
-  <div class="modal-logout">
+  <div class="modal-logout-box">
     <div style="font-size:36px;margin-bottom:14px">⏻</div>
     <h2>Confirm Logout</h2>
     <p>You are about to end your session as Super Admin. All unsaved changes will be lost.</p>
@@ -780,7 +699,7 @@ document.addEventListener("DOMContentLoaded", function () {
   </div>
 </div>
 
-<!-- ══ TOAST ══ -->
+<!-- TOAST -->
 <div class="toast" id="toast">
   <span class="toast-icon" id="toast-icon">✅</span>
   <span id="toast-msg">Done</span>
@@ -794,32 +713,64 @@ function updateClock() {
 }
 updateClock(); setInterval(updateClock, 30000);
 
-// ── NAV ──
+// ── MODAL HELPERS ──
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+// Close on overlay click — use unique IDs now
+['modal-salary-view','modal-salary-edit','modal-salary-delete',
+ 'modal-user-view','modal-user-edit','modal-pw','modal-user-delete','logout-modal']
+.forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('click', function(e) { if (e.target === this) closeModal(id); });
+});
+
+// ── TOAST ──
+function showToast(msg, borderColor='#4dd88a') {
+  const t = document.getElementById('toast');
+  const parts = msg.split('  ');
+  const icon = parts.length > 1 ? parts[0] : '✅';
+  const text = parts.length > 1 ? parts.slice(1).join('  ') : msg;
+  document.getElementById('toast-icon').textContent = icon;
+  document.getElementById('toast-msg').textContent = text;
+  t.style.borderColor = borderColor;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+// ── LOGOUT ──
+function openLogout()  { openModal('logout-modal'); }
+function closeLogout() { closeModal('logout-modal'); }
+
+// ── NAVIGATION ──
 const sections = ['dashboard','enter-salary','view-salary','employees'];
 const titles = {
-  dashboard: ['Dashboard','Overview'],
-  'enter-salary': ['Salary','Enter Details'],
-  'view-salary': ['Salary','View Records'],
-  employees: ['Employees','All Staff']
+  'dashboard':     ['Dashboard','Overview'],
+  'enter-salary':  ['Salary','Enter Details'],
+  'view-salary':   ['Salary','View Records'],
+  'employees':     ['Employees','All Staff']
 };
 function showSection(id) {
-  sections.forEach(s => { document.getElementById('section-'+s).style.display = s===id?'':'none'; });
+  sections.forEach(s => {
+    document.getElementById('section-'+s).style.display = (s === id) ? '' : 'none';
+  });
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  const map = {dashboard:0,'enter-salary':1,'view-salary':2,employees:3};
+  const map = {'dashboard':0,'enter-salary':1,'view-salary':2,'employees':3};
   document.querySelectorAll('.nav-item')[map[id]]?.classList.add('active');
   const t = titles[id];
   document.getElementById('page-title').innerHTML = `<span>${t[0]}</span> ${t[1]}`;
-  if (id==='view-salary') loadSalaryTable();
-  if (id==='employees') renderEmp();
+  if (id === 'view-salary') loadSalaryTable();
+  if (id === 'employees')   loadUsers();
 }
 
-// ── SALARY DATA ──
+// ════════════════════════════════════════════════
+// SALARY SECTION
+// ════════════════════════════════════════════════
 let allSalaries = [];
 
 async function loadSalaryTable() {
   const wrap = document.getElementById('salary-table-wrap');
   wrap.innerHTML = '<div class="empty-state"><div class="spinner"></div></div>';
-
   try {
     const res = await fetch('/api/all_salaries');
     allSalaries = await res.json();
@@ -838,12 +789,11 @@ function populatePeriodFilter() {
 }
 
 function filterSalaryTable(searchVal) {
-  const q   = (searchVal ?? document.getElementById('salary-search').value).toLowerCase();
+  const q   = (searchVal !== undefined ? searchVal : document.getElementById('salary-search').value).toLowerCase();
   const st  = document.getElementById('status-filter').value;
   const per = document.getElementById('period-filter').value;
-
   const filtered = allSalaries.filter(r => {
-    const matchQ  = !q || r.name.toLowerCase().includes(q) || r.emp_no.toLowerCase().includes(q) || (r.designation||'').toLowerCase().includes(q);
+    const matchQ  = !q  || r.name.toLowerCase().includes(q) || r.emp_no.toLowerCase().includes(q) || (r.designation||'').toLowerCase().includes(q);
     const matchSt = !st  || r.status === st;
     const matchP  = !per || r.pay_period === per;
     return matchQ && matchSt && matchP;
@@ -851,17 +801,17 @@ function filterSalaryTable(searchVal) {
   renderSalaryTable(filtered);
 }
 
-function fmt(n) { return Number(n).toLocaleString('en-LK', {minimumFractionDigits:2, maximumFractionDigits:2}); }
+function fmt(n) {
+  return Number(n||0).toLocaleString('en-LK', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
 
 function renderSalaryTable(rows) {
   const wrap = document.getElementById('salary-table-wrap');
-  document.getElementById('record-count').textContent = `${rows.length} record${rows.length!==1?'s':''}`;
-
+  document.getElementById('salary-record-count').textContent = `${rows.length} record${rows.length!==1?'s':''}`;
   if (rows.length === 0) {
     wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div><p>No salary records found</p></div>`;
     return;
   }
-
   const tbody = rows.map(r => `
     <tr>
       <td><span class="emp-id">${r.emp_no}</span></td>
@@ -873,13 +823,12 @@ function renderSalaryTable(rows) {
       <td><span class="status-badge ${r.status==='paid'?'status-paid':'status-pending'}">${r.status}</span></td>
       <td>
         <div class="action-btns">
-          <button class="btn-view" onclick="openView(${r.id})">👁 View</button>
-          <button class="btn-edit" onclick="openEdit(${r.id})">✏️ Edit</button>
-          <button class="btn-del"  onclick="openDelete(${r.id}, '${r.name.replace(/'/g,"\\'")}')">🗑 Delete</button>
+          <button class="btn-view" onclick="openSalaryView(${r.id})">👁 View</button>
+          <button class="btn-edit" onclick="openSalaryEdit(${r.id})">✏️ Edit</button>
+          <button class="btn-del"  onclick="openSalaryDelete(${r.id}, '${(r.name||'').replace(/'/g,"\\'")}')">🗑 Delete</button>
         </div>
       </td>
     </tr>`).join('');
-
   wrap.innerHTML = `
     <table class="salary-table">
       <thead>
@@ -892,23 +841,15 @@ function renderSalaryTable(rows) {
     </table>`;
 }
 
-
-function openModal(id)  { document.getElementById(id).classList.add('open'); }
-function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-// Close on overlay click
-['modal-view','modal-edit','modal-delete','logout-modal'].forEach(id => {
-  document.getElementById(id).addEventListener('click', function(e) {
-    if (e.target === this) closeModal(id);
-  });
-});
-
-
-
-// ── VIEW MODAL ──
-function openView(id) {
+// ── SALARY VIEW MODAL ──
+function openSalaryView(id) {
   const r = allSalaries.find(x => x.id === id);
   if (!r) return;
-  document.getElementById('modal-view-body').innerHTML = `
+  function payslipRow(label, val) {
+    if (!val || val == 0) return '';
+    return `<div class="payslip-row"><span>${label}</span><span>${fmt(val)}</span></div>`;
+  }
+  document.getElementById('modal-salary-view-body').innerHTML = `
     <div class="payslip-header">
       <div>
         <div class="payslip-emp-name">${r.name}</div>
@@ -920,7 +861,6 @@ function openView(id) {
         <div style="margin-top:6px"><span class="status-badge ${r.status==='paid'?'status-paid':'status-pending'}">${r.status}</span></div>
       </div>
     </div>
-
     <div class="payslip-cols">
       <div class="payslip-section earn">
         <h3>Earnings</h3>
@@ -932,9 +872,7 @@ function openView(id) {
         ${payslipRow('Executive Allowance', r.executive_allowance)}
         ${payslipRow('Extra Duty OT', r.extra_duty_ot)}
         ${payslipRow('Basic Arrears', r.basic_arrears)}
-        <div class="payslip-total earn">
-          <span>Total Earnings</span><span>${fmt(r.total_earnings)}</span>
-        </div>
+        <div class="payslip-total earn"><span>Total Earnings</span><span>${fmt(r.total_earnings)}</span></div>
       </div>
       <div class="payslip-section deduct">
         <h3>Deductions</h3>
@@ -947,64 +885,52 @@ function openView(id) {
         ${payslipRow('Mileage', r.mileage)}
         ${payslipRow('WOP Arrears', r.wop_arrears)}
         ${payslipRow('Distress Loan', r.distress_loan)}
-        <div class="payslip-total deduct">
-          <span>Total Deductions</span><span>${fmt(r.total_deductions)}</span>
-        </div>
+        <div class="payslip-total deduct"><span>Total Deductions</span><span>${fmt(r.total_deductions)}</span></div>
       </div>
     </div>
-
     <div class="net-box">
       <div class="net-label">Net Salary</div>
       <div class="net-amount">LKR ${fmt(r.net_salary)}</div>
-      
     </div>
     ${r.remarks ? `<div class="remarks-row">📝 Remarks: ${r.remarks}</div>` : ''}
   `;
-  openModal('modal-view');
-}
-function payslipRow(label, val) {
-  if (!val || val == 0) return '';
-  return `<div class="payslip-row"><span>${label}</span><span>${fmt(val)}</span></div>`;
+  openModal('modal-salary-view');
 }
 
-// ── EDIT MODAL ──
-function openEdit(id) {
+// ── SALARY EDIT MODAL ──
+function openSalaryEdit(id) {
   const r = allSalaries.find(x => x.id === id);
   if (!r) return;
-
   const fields = ['emp_no','name','designation','pay_period','status','remarks',
     'basic_salary','language_allowance','coliving','telephone_allowance','fuel_allowance',
     'executive_allowance','extra_duty_ot','basic_arrears','total_earnings',
     'wop','agrahara','apit_tax','stamp_duty','union_fee','news_payment',
     'mileage','wop_arrears','distress_loan','total_deductions','net_salary'];
-
-  document.getElementById('edit-id').value = id;
+  document.getElementById('sedit-id').value = id;
   fields.forEach(f => {
-    const el = document.getElementById('edit-'+f);
-    if (el) el.value = r[f] ?? '';
+    const el = document.getElementById('sedit-' + f);
+    if (el) el.value = (r[f] !== null && r[f] !== undefined) ? r[f] : '';
   });
-
-  // Auto-recalc on change
-  document.querySelectorAll('.edit-earn,.edit-deduct').forEach(el => {
-    el.oninput = recalcEdit;
+  // Attach recalc listeners
+  document.querySelectorAll('.sedit-earn, .sedit-deduct').forEach(el => {
+    el.oninput = recalcSalaryEdit;
   });
-
-  openModal('modal-edit');
+  openModal('modal-salary-edit');
 }
 
-function recalcEdit() {
+function recalcSalaryEdit() {
   const earnIds   = ['basic_salary','language_allowance','coliving','telephone_allowance','fuel_allowance','executive_allowance','extra_duty_ot','basic_arrears'];
   const deductIds = ['wop','agrahara','apit_tax','stamp_duty','union_fee','news_payment','mileage','wop_arrears','distress_loan'];
-  const te = earnIds.reduce((s,f)   => s + (parseFloat(document.getElementById('edit-'+f)?.value)||0), 0);
-  const td = deductIds.reduce((s,f) => s + (parseFloat(document.getElementById('edit-'+f)?.value)||0), 0);
-  document.getElementById('edit-total_earnings').value   = te.toFixed(2);
-  document.getElementById('edit-total_deductions').value = td.toFixed(2);
-  document.getElementById('edit-net_salary').value       = (te - td).toFixed(2);
+  const te = earnIds.reduce((s,f)   => s + (parseFloat(document.getElementById('sedit-'+f)?.value)||0), 0);
+  const td = deductIds.reduce((s,f) => s + (parseFloat(document.getElementById('sedit-'+f)?.value)||0), 0);
+  document.getElementById('sedit-total_earnings').value   = te.toFixed(2);
+  document.getElementById('sedit-total_deductions').value = td.toFixed(2);
+  document.getElementById('sedit-net_salary').value       = (te - td).toFixed(2);
 }
 
-async function submitEdit(e) {
+async function submitSalaryEdit(e) {
   e.preventDefault();
-  const id = document.getElementById('edit-id').value;
+  const id = document.getElementById('sedit-id').value;
   const fields = ['name','designation','pay_period','status','remarks',
     'basic_salary','language_allowance','coliving','telephone_allowance','fuel_allowance',
     'executive_allowance','extra_duty_ot','basic_arrears','total_earnings',
@@ -1012,10 +938,9 @@ async function submitEdit(e) {
     'mileage','wop_arrears','distress_loan','total_deductions','net_salary'];
   const payload = {};
   fields.forEach(f => {
-    const el = document.getElementById('edit-'+f);
+    const el = document.getElementById('sedit-' + f);
     payload[f] = el ? el.value : '';
   });
-
   try {
     const res  = await fetch(`/api/update_salary/${id}`, {
       method: 'POST',
@@ -1024,85 +949,310 @@ async function submitEdit(e) {
     });
     const data = await res.json();
     if (data.success) {
-      closeModal('modal-edit');
+      closeModal('modal-salary-edit');
       showToast('✅  Record updated successfully.', '#4dd88a');
       loadSalaryTable();
     } else {
-      showToast('⚠️  ' + data.message, '#e07060');
+      showToast('⚠️  ' + (data.message||'Update failed'), '#e07060');
     }
   } catch(err) {
     showToast('⚠️  Network error.', '#e07060');
   }
 }
 
-// ── DELETE MODAL ──
-let _deleteId = null;
-function openDelete(id, name) {
-  _deleteId = id;
-  document.getElementById('del-name-display').textContent = name;
-  openModal('modal-delete');
+// ── SALARY DELETE ──
+let _deleteSalaryId = null;
+function openSalaryDelete(id, name) {
+  _deleteSalaryId = id;
+  document.getElementById('salary-del-name-display').textContent = name;
+  openModal('modal-salary-delete');
 }
-async function confirmDelete() {
-  if (!_deleteId) return;
+async function confirmSalaryDelete() {
+  if (!_deleteSalaryId) return;
   try {
-    const res  = await fetch(`/api/delete_salary/${_deleteId}`, { method: 'DELETE' });
+    const res  = await fetch(`/api/delete_salary/${_deleteSalaryId}`, { method: 'DELETE' });
     const data = await res.json();
     if (data.success) {
-      closeModal('modal-delete');
+      closeModal('modal-salary-delete');
       showToast('🗑️  Record deleted.', '#e07060');
       loadSalaryTable();
     } else {
-      showToast('⚠️  ' + data.message, '#e07060');
+      showToast('⚠️  ' + (data.message||'Delete failed'), '#e07060');
     }
   } catch(err) {
     showToast('⚠️  Network error.', '#e07060');
   }
 }
 
-// ── EMPLOYEE GRID ──
-const avatarClasses = ['a','b','c'];
-function renderEmp(filter='') {
-  const grid = document.getElementById('emp-grid');
-  const rows = allSalaries.filter(e =>
-    !filter || e.name.toLowerCase().includes(filter.toLowerCase()) ||
-    e.emp_no.toLowerCase().includes(filter.toLowerCase())
-  );
-  // Deduplicate by emp_no
-  const seen = new Set();
-  const unique = rows.filter(r => { if (seen.has(r.emp_no)) return false; seen.add(r.emp_no); return true; });
-  if (unique.length === 0) {
-    grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👥</div><p>No employees found</p></div>';
+// ════════════════════════════════════════════════
+// EMPLOYEES / USERS SECTION
+// ════════════════════════════════════════════════
+let allUsers = [];
+
+async function loadUsers() {
+  try {
+    const res = await fetch('/api/all_users');
+    allUsers = await res.json();
+    updateUserStats();
+    populateDeptFilter();
+    renderUserTable(allUsers);
+  } catch(e) {
+    document.getElementById('user-table-wrap').innerHTML =
+      '<div class="empty-state"><div class="empty-icon">⚠️</div><p>Failed to load users</p></div>';
+  }
+}
+
+function updateUserStats() {
+  const admins = allUsers.filter(u => u.role === 'admin').length;
+  const users  = allUsers.filter(u => u.role !== 'admin').length;
+  const depts  = new Set(allUsers.map(u => u.department).filter(Boolean)).size;
+  document.getElementById('stat-total').textContent  = allUsers.length;
+  document.getElementById('stat-admins').textContent = admins;
+  document.getElementById('stat-users').textContent  = users;
+  document.getElementById('stat-depts').textContent  = depts;
+}
+
+function populateDeptFilter() {
+  const sel   = document.getElementById('dept-filter');
+  const depts = [...new Set(allUsers.map(u => u.department).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All Departments</option>' +
+    depts.map(d => `<option value="${d}">${d}</option>`).join('');
+}
+
+function filterUsers(searchVal) {
+  const q    = (searchVal !== undefined ? searchVal : document.getElementById('user-search').value).toLowerCase();
+  const role = document.getElementById('role-filter').value;
+  const dept = document.getElementById('dept-filter').value;
+  const filtered = allUsers.filter(u => {
+    const mq = !q   || u.name.toLowerCase().includes(q) || u.emp_no.toLowerCase().includes(q) || (u.email||'').toLowerCase().includes(q);
+    const mr = !role || u.role === role;
+    const md = !dept || u.department === dept;
+    return mq && mr && md;
+  });
+  renderUserTable(filtered);
+}
+
+function initials(name) {
+  return (name||'').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase() || '?';
+}
+
+function renderUserTable(rows) {
+  document.getElementById('user-record-count').textContent = `${rows.length} record${rows.length!==1?'s':''}`;
+  const wrap = document.getElementById('user-table-wrap');
+  if (rows.length === 0) {
+    wrap.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><p>No users found</p></div>`;
     return;
   }
-  grid.innerHTML = unique.map((e,i) => `
-    <div class="emp-card">
-      <div class="emp-avatar ${avatarClasses[i%3]}">${e.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</div>
-      <div>
-        <div class="emp-name">${e.name}</div>
-        <div class="emp-dept">${e.designation||'—'}</div>
+  const tbody = rows.map(u => `
+    <tr>
+      <td><span class="emp-id">${u.emp_no}</span></td>
+      <td>
+        <div class="name-cell">
+          <div class="user-avatar-sm ${u.role==='admin'?'ua-admin':'ua-user'}">${initials(u.name)}</div>
+          <div>
+            <div style="font-weight:600;color:var(--white);">${u.name}</div>
+            <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--text-muted);">${u.email||'—'}</div>
+          </div>
+        </div>
+      </td>
+      <td>${u.designation||'—'}</td>
+      <td>${u.department||'—'}</td>
+      <td><span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-view" onclick="openUserView('${u.emp_no}')">👁 View</button>
+          <button class="btn-edit" onclick="openUserEdit('${u.emp_no}')">✏️ Edit</button>
+          <button class="btn-pw"   onclick="openPw('${u.emp_no}', '${(u.name||'').replace(/'/g,"\\'")}')">🔑 Password</button>
+          <button class="btn-del"  onclick="openUserDelete('${u.emp_no}', '${(u.name||'').replace(/'/g,"\\'")}')">🗑 Delete</button>
+        </div>
+      </td>
+    </tr>`).join('');
+  wrap.innerHTML = `
+    <table class="user-table">
+      <thead>
+        <tr>
+          <th>Emp ID</th><th>Name / Email</th><th>Designation</th>
+          <th>Department</th><th>Role</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>${tbody}</tbody>
+    </table>`;
+}
+
+// ── USER VIEW MODAL ──
+function openUserView(empNo) {
+  const u = allUsers.find(x => x.emp_no === empNo);
+  if (!u) return;
+  document.getElementById('modal-user-view-body').innerHTML = `
+    <div class="profile-card">
+      <div class="profile-avatar ${u.role==='admin'?'pa-admin':'pa-user'}">${initials(u.name)}</div>
+      <div class="profile-info">
+        <h3>${u.name}</h3>
+        <div class="pid">${u.emp_no}</div>
+        <span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role}</span>
       </div>
-      <div class="emp-grade">${e.emp_no}</div>
-    </div>`).join('');
-}
-function filterEmp(v) {
-  if (allSalaries.length > 0) { renderEmp(v); return; }
-  fetch('/api/all_salaries').then(r=>r.json()).then(d=>{ allSalaries=d; renderEmp(v); });
-}
-
-// ── TOAST ──
-function showToast(msg, borderColor='#4dd88a') {
-  const t = document.getElementById('toast');
-  const [icon, ...rest] = msg.split('  ');
-  document.getElementById('toast-icon').textContent = icon;
-  document.getElementById('toast-msg').textContent = rest.join('  ') || msg;
-  t.style.borderColor = borderColor;
-  t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 3200);
+    </div>
+    <div class="detail-grid">
+      <div class="detail-item"><label>Email</label><span>${u.email||'—'}</span></div>
+      <div class="detail-item"><label>Designation</label><span>${u.designation||'—'}</span></div>
+      <div class="detail-item"><label>Department</label><span>${u.department||'—'}</span></div>
+      <div class="detail-item"><label>Role</label><span>${u.role}</span></div>
+    </div>
+    <div class="form-actions" style="margin-top:20px;">
+      <button class="btn-edit" onclick="closeModal('modal-user-view');openUserEdit('${u.emp_no}')">✏️ Edit Details</button>
+      <button class="btn-pw"   onclick="closeModal('modal-user-view');openPw('${u.emp_no}','${(u.name||'').replace(/'/g,"\\'")}')">🔑 Reset Password</button>
+    </div>`;
+  openModal('modal-user-view');
 }
 
-// ── LOGOUT ──
-function openLogout()  { openModal('logout-modal'); }
-function closeLogout() { closeModal('logout-modal'); }
+// ── USER EDIT MODAL ──
+function openUserEdit(empNo) {
+  const u = allUsers.find(x => x.emp_no === empNo);
+  if (!u) return;
+  // FIX: populate ALL fields including department and designation correctly
+  document.getElementById('uedit-emp_no-hidden').value = empNo;
+  document.getElementById('uedit-emp_no').value        = empNo;
+  document.getElementById('uedit-name').value          = u.name || '';
+  document.getElementById('uedit-email').value         = u.email || '';
+  document.getElementById('uedit-role').value          = u.role || 'user';
+  document.getElementById('uedit-department').value    = u.department || '';
+  // Set designation select — find matching option
+  const desgEl = document.getElementById('uedit-designation');
+  desgEl.value = u.designation || '';
+  // If no matching option found, fallback to empty
+  if (!desgEl.value && u.designation) {
+    const opt = document.createElement('option');
+    opt.value = u.designation;
+    opt.textContent = u.designation;
+    desgEl.appendChild(opt);
+    desgEl.value = u.designation;
+  }
+  openModal('modal-user-edit');
+}
+
+async function submitUserEdit(e) {
+  e.preventDefault();
+  const empNo = document.getElementById('uedit-emp_no-hidden').value;
+  const payload = {
+    name:        document.getElementById('uedit-name').value,
+    email:       document.getElementById('uedit-email').value,
+    designation: document.getElementById('uedit-designation').value,
+    department:  document.getElementById('uedit-department').value,
+    role:        document.getElementById('uedit-role').value,
+  };
+  try {
+    const res  = await fetch(`/api/admin/update_user/${empNo}`, {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeModal('modal-user-edit');
+      showToast('✅  User updated successfully.', '#4dd88a');
+      loadUsers();
+    } else {
+      showToast('⚠️  ' + (data.message||'Update failed'), '#e07060');
+    }
+  } catch { showToast('⚠️  Network error.', '#e07060'); }
+}
+
+// ── PASSWORD RESET MODAL ──
+// FIX: Password reset uses /api/admin/reset_password — works purely on emp_no,
+//      no salary data required. This is a user account operation only.
+function openPw(empNo, name) {
+  document.getElementById('pw-emp_no').value = empNo;
+  document.getElementById('pw-target-name').textContent = `Resetting password for: ${name}`;
+  document.getElementById('pw-new').value     = '';
+  document.getElementById('pw-confirm').value = '';
+  document.getElementById('pw-bar').style.width = '0%';
+  document.getElementById('pw-bar').style.background = '';
+  document.getElementById('pw-label').textContent = '';
+  document.getElementById('pw-match-msg').textContent = '';
+  openModal('modal-pw');
+}
+
+function checkPwStrength(val) {
+  const bar   = document.getElementById('pw-bar');
+  const label = document.getElementById('pw-label');
+  let score = 0;
+  if (val.length >= 6)          score++;
+  if (val.length >= 10)         score++;
+  if (/[A-Z]/.test(val))        score++;
+  if (/[0-9]/.test(val))        score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const levels = [
+    {w:'0%',   c:'#e07060', t:''},
+    {w:'20%',  c:'#e07060', t:'Too short'},
+    {w:'40%',  c:'#e8c97a', t:'Weak'},
+    {w:'60%',  c:'#e8c97a', t:'Fair'},
+    {w:'80%',  c:'#4dd88a', t:'Good'},
+    {w:'100%', c:'#4dd88a', t:'Strong'},
+  ];
+  const l = levels[Math.min(score, 5)];
+  bar.style.width      = l.w;
+  bar.style.background = l.c;
+  label.style.color    = l.c;
+  label.textContent    = l.t;
+}
+
+function togglePw(inputId, eyeEl) {
+  const inp = document.getElementById(inputId);
+  if (inp.type === 'password') { inp.type = 'text';     eyeEl.textContent = '🙈'; }
+  else                          { inp.type = 'password'; eyeEl.textContent = '👁'; }
+}
+
+async function submitPwReset(e) {
+  e.preventDefault();
+  const empNo   = document.getElementById('pw-emp_no').value;
+  const newPw   = document.getElementById('pw-new').value;
+  const confirm = document.getElementById('pw-confirm').value;
+  const matchEl = document.getElementById('pw-match-msg');
+
+  if (newPw !== confirm) {
+    matchEl.style.color = '#e07060';
+    matchEl.textContent = '⚠ Passwords do not match';
+    return;
+  }
+  matchEl.textContent = '';
+
+  try {
+    const res  = await fetch('/api/admin/reset_password', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ emp_no: empNo, new_password: newPw })
+    });
+    const data = await res.json();
+    if (data.success) {
+      closeModal('modal-pw');
+      showToast('🔑  Password reset successfully.', '#c08ee0');
+    } else {
+      showToast('⚠️  ' + (data.message||'Reset failed'), '#e07060');
+    }
+  } catch { showToast('⚠️  Network error.', '#e07060'); }
+}
+
+// ── USER DELETE ──
+let _deleteUserEmpNo = null;
+function openUserDelete(empNo, name) {
+  _deleteUserEmpNo = empNo;
+  document.getElementById('user-del-name-display').textContent = name;
+  openModal('modal-user-delete');
+}
+async function confirmUserDelete() {
+  if (!_deleteUserEmpNo) return;
+  try {
+    const res  = await fetch(`/api/admin/delete_user/${_deleteUserEmpNo}`, { method: 'DELETE' });
+    const data = await res.json();
+    if (data.success) {
+      closeModal('modal-user-delete');
+      showToast('🗑️  User deleted.', '#e07060');
+      loadUsers();
+    } else {
+      showToast('⚠️  ' + (data.message||'Delete failed'), '#e07060');
+    }
+  } catch { showToast('⚠️  Network error.', '#e07060'); }
+}
 </script>
 </body>
 </html>
