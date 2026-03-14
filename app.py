@@ -51,7 +51,7 @@ def nusermain():
 def register():
     if request.method == 'POST':
  
-        emp_no=request.form['emp_no']
+        emp_no=request.form['emp_no'].strip()
         name=request.form['Name']
         designation=request.form['designation']
         department=request.form['department']
@@ -94,8 +94,7 @@ def register():
 
     return render_template('register.html')
 
-# ── LOGIN ──────────────────────────────────────────────────
-@app.route('/', methods=['GET', 'POST'])
+# ── login@app.route('/', methods=['GET', 'POST'])
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if 'emp_no' in session:
@@ -105,6 +104,12 @@ def login():
     if request.method == 'POST':
         emp_no   = request.form.get('emp_no', '').strip()
         password = request.form.get('password', '').strip()
+
+        try:
+            emp_no = int(emp_no)
+        except ValueError:
+            error = 'Invalid Employee Number.'
+            return render_template('login.html', error=error)
 
         conn = get_db()
         if conn:
@@ -124,14 +129,11 @@ def login():
                 session['department']  = user['department']
                 session['email']       = user['email']
                 session['role']        = user['role']
-                
-                # Redirect based on role
+
                 if user['role'] == 'admin':
-                  return redirect(url_for('usermain'))
-                else:
-                  return redirect(url_for('dashboard'))
-         
-                
+                    return redirect(url_for('usermain'))
+                if user['role'] == 'employee':
+                    return redirect(url_for('dashboard'))
             else:
                 error = 'Invalid Employee Number or Password.'
         else:
@@ -319,7 +321,22 @@ def change_password():
 def save_salary():
 
     # Employee details
-    emp_no = request.form.get('emp_no',0)
+    emp_no = request.form.get('emp_no').strip()
+    
+    conn = get_db()
+    if not conn:
+        flash('Database connection failed. Please try again.', 'error')
+        return redirect(url_for('usermain'))
+    cursor = conn.cursor(dictionary=True)
+    cursor.execute("SELECT emp_no FROM users WHERE emp_no = %s", (emp_no,))
+    user = cursor.fetchone()
+    
+    if not user:
+        cursor.close()
+        conn.close()
+        flash('Employee {emp_no} number not found. Please check and try again.', 'error')
+        return redirect(url_for('usermain'))
+    
     name = request.form.get('name')
     designation = request.form.get('designation')
     pay_period = request.form.get('pay_period')
@@ -329,7 +346,7 @@ def save_salary():
     # Earnings
     basic_salary = float(request.form.get('basic_salary') or 0)
     language_allowance = float(request.form.get('language_allowance') or 0)
-    coliving = float(request.form.get('coliving') or 0)
+   
     coliving = float(request.form.get('coliving') or 0)
     telephone_allowance = float(request.form.get('telephone_allowance') or 0)
     fuel_allowance = float(request.form.get('fuel_allowance') or 0)
