@@ -554,7 +554,7 @@ def api_all_users():
 
     cursor = conn.cursor(dictionary=True)
     cursor.execute("""
-        SELECT emp_no, name, designation, department, email, role
+        SELECT emp_no, name, designation, department, email, role,created_at
         FROM users
         ORDER BY role DESC, name ASC
     """)

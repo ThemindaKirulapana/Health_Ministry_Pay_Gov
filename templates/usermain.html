@@ -434,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function () {
       </div>
       <div class="panel">
         <div class="panel-header">
-          <div class="panel-title">🔐 All Users &amp; Administrators</div>
+          <div class="panel-title">🔐 All Employees &amp; Admins</div>
           <div class="table-controls">
             <div class="search-wrap">
               <span class="search-icon">🔍</span>
@@ -1058,6 +1058,7 @@ function renderUserTable(rows) {
       <td>${u.designation||'—'}</td>
       <td>${u.department||'—'}</td>
       <td><span class="role-badge ${u.role==='admin'?'role-admin':'role-user'}">${u.role}</span></td>
+      <td>${u.created_at||'—'}</td>
       <td>
         <div class="action-btns">
           <button class="btn-view" onclick="openUserView('${u.emp_no}')">👁 View</button>
@@ -1072,7 +1073,7 @@ function renderUserTable(rows) {
       <thead>
         <tr>
           <th>Emp ID</th><th>Name / Email</th><th>Designation</th>
-          <th>Department</th><th>Role</th><th>Actions</th>
+          <th>Department</th><th>Role</th><th>Created At </th><th>Actions</th>
         </tr>
       </thead>
       <tbody>${tbody}</tbody>
